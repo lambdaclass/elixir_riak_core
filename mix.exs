@@ -46,9 +46,13 @@ defmodule Riax.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:cuttlefish, git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
+      {:cuttlefish,
+       git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
       {:hut, "~> 1.3", manager: :rebar3, override: true},
-      {:rc_example, manager: :rebar3, path: "/Users/fran/Programming/Erlang/riak_core_tutorial/"}
+      {:rc_example,
+        manager: :rebar3,
+        path: "/Users/fran/Programming/Erlang/riak_core_tutorial/",
+        only: [:dev1, :dev2, :dev3]}
     ]
   end
 
