@@ -51,7 +51,8 @@ defmodule Riax.MixProject do
       {:hut, "~> 1.3", manager: :rebar3, override: true},
       {:rc_example,
         manager: :rebar3,
-        path: "/Users/fran/Programming/Erlang/riak_core_tutorial/",
+        path: "https://github.com/lambdaclass/riak_core_tutorial/pull/31",
+        branch: "update-repo-files",
         only: [:dev1, :dev2, :dev3]}
     ]
   end
