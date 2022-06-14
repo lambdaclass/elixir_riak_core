@@ -18,10 +18,18 @@ defmodule Riax.MixProject do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [
-      mod: {Riax.Application, []},
-      extra_applications: [:logger, :runtime_tools]
-    ]
+    if System.fetch_env!("MIX_ENV") == "DEV" do
+      [
+        mod: {Riax.Application, []},
+        applications: [:phoenix, :cowboy],
+        extra_applications: [:logger, :runtime_tools]
+      ]
+    else
+      [
+        mod: {Riax.Application, []},
+        extra_applications: [:logger, :runtime_tools]
+      ]
+    end
   end
 
   # Specifies which paths to compile per environment.
@@ -49,10 +57,17 @@ defmodule Riax.MixProject do
       {:cuttlefish,
        git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
       {:hut, "~> 1.3", manager: :rebar3, override: true},
-      {:rc_example,
+      # {:riak_core,
+      #  manager: :reabr3,
+      #  git: "https://github.com/basho/riak_core",
+      #  only: [:dev],
+      #  runtime: false},
+      {
+        :rc_example,
         manager: :rebar3,
-        path: "/Users/fran/Programming/Erlang/riak_core_tutorial/",
-        only: [:dev1, :dev2, :dev3]}
+        path: "/Users/fran/Programming/Erlang/riak_core_tutorial/"
+        # only: [:dev1, :dev2, :dev3]
+      }
     ]
   end
 
