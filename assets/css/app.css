@@ -1,4 +1,5 @@
 /* This file is for your main application CSS */
+@import "../../deps/phoenix_live_view/assets/css/live_view.css";
 @import "./phoenix.css";
 
 /* Alerts and form errors used by phx.new */
