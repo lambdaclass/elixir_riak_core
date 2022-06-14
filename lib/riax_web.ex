@@ -1,4 +1,6 @@
 defmodule RiaxWeb do
+  import Phoenix.LiveView.Controller
+
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
@@ -37,6 +39,7 @@ defmodule RiaxWeb do
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
+      import Phoenix.LiveView.Helpers
       # Include shared imports and aliases for views
       unquote(view_helpers())
     end
@@ -70,7 +73,6 @@ defmodule RiaxWeb do
   def router do
     quote do
       use Phoenix.Router
-
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router

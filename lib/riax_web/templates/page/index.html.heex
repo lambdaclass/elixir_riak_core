@@ -2,10 +2,14 @@
   <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
   <p>Peace of mind from prototype to production</p>
 </section>
-
+    <div>
+    </div>
 <section class="row">
   <article class="column">
     <h2>Resources</h2>
+    <%= "Node 1 ping: #{@conn.assigns.node_1}" %>
+    <%= "Node 2 ping: #{@conn.assigns.node_2}" %>
+    <%= "Node 3 ping: #{@conn.assigns.node_3}" %>
     <ul>
       <li>
         <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>

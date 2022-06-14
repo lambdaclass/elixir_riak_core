@@ -57,17 +57,7 @@ defmodule Riax.MixProject do
       {:cuttlefish,
        git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
       {:hut, "~> 1.3", manager: :rebar3, override: true},
-      # {:riak_core,
-      #  manager: :reabr3,
-      #  git: "https://github.com/basho/riak_core",
-      #  only: [:dev],
-      #  runtime: false},
-      {
-        :rc_example,
-        manager: :rebar3,
-        path: "/Users/fran/Programming/Erlang/riak_core_tutorial/"
-        # only: [:dev1, :dev2, :dev3]
-      }
+      {:rc_example, manager: :rebar3, git: "https://github.com/lambdaclass/riak_core_tutorial", ref: "update-repo-files"}
     ]
   end
 
