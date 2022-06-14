@@ -17,8 +17,7 @@ defmodule RiaxWeb.Router do
   scope "/", RiaxWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-    live "/live", Counterlive
+    live "/", Counterlive
   end
 
   # Other scopes may use custom stacks.
