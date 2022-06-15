@@ -11,23 +11,35 @@ defmodule Riax do
     :rpc.call(node(), :rc_example, :keys, [])
   end
 
-  def get_key_node(key) do
-    case find_key(key) |> IO.inspect(label: :keys) do
-      {_hash, node, _} -> node
-      _ -> :no_key
+  def ping() do
+    ping(:os.timestamp())
+  end
+
+  def ping(key) do
+    sync_command(key, :ping)
+  end
+
+  # This should be moved to something like
+  # Riax.Helpers or an specific
+  # behaviour?
+  defp sync_command(key, command) do
+    doc_idx = hash_key(key) |> IO.inspect(label: :dox_idx)
+    preflist = :riak_core_apl.get_apl(doc_idx, 1, :riax)
+    [index_node] = preflist
+    :riak_core_vnode_master.sync_spawn_command(index_node, command, :riax_vnode_master)
+  end
+
+  defp hash_key(key) do
+    :riak_core_util.chash_key({<<"riak">>, :erlang.term_to_binary(key)})
+  end
+
+  defp coverage_command(command) do
+    timeout = 5000
+    req_id = :erlang.phash2(:erlang.monotonic_time())
+    # {:ok, _} =
+    receive do
+      {req_id, val} ->
+        val
     end
   end
-
-  defp find_key(key) do
-    {:ok, keys} = keys()
-
-    keys
-    |> Enum.find(fn tuple ->
-      case tuple do
-        {_hash, node, ^key} -> true
-        _ -> false
-      end
-    end)
-  end
 end
-

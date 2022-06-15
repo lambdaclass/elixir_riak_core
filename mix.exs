@@ -21,7 +21,7 @@ defmodule Riax.MixProject do
     if System.fetch_env!("MIX_ENV") == "DEV" do
       [
         mod: {Riax.Application, []},
-        applications: [:phoenix, :cowboy],
+        applications: [:phoenix, :cowboy, :riak_core],
         extra_applications: [:logger, :runtime_tools]
       ]
     else
@@ -57,7 +57,8 @@ defmodule Riax.MixProject do
       {:cuttlefish,
        git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
       {:hut, "~> 1.3", manager: :rebar3, override: true},
-      {:rc_example, manager: :rebar3, git: "https://github.com/lambdaclass/riak_core_tutorial", ref: "update-repo-files"}
+      {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"}
+      # {:rc_example, manager: :rebar3, git: "https://github.com/lambdaclass/riak_core_tutorial", ref: "update-repo-files"}
     ]
   end
 
