@@ -1,21 +1,20 @@
-defmodule Riax.VNodeMaster do
+defmodule Riax.VMaster do
   use Supervisor
 
-  def start_link(_) do
+  def start_link(_), do: start_link()
+  def start_link() do
+    # riak_core appends _sup to the application name.
     Supervisor.start_link(__MODULE__, [], name: :riax_sup)
-    |> IO.inspect(label: :start_link_sup_result)
   end
 
   def init(_args) do
-    v_master = worker(:riak_core_vnode_master, [Riax.Vnode], id: Riax.VNodeMaster)
-    # v_master =
-    #   {:riax_vnode_master, {:riak_core_vnode_master, :start_link, [Riax.Vnode]}, :permanent, 5000,
-    #    :worker, [:riak_core_vnode_master]}
+    children = [
+      %{
+        id: Riax.VNode_master_worker,
+        start: {:riak_core_vnode_master, :start_link, [Riax.VNode]}
+      }
+    ]
 
-    # coverage_fsm = {
-    #   :
-    # }
-
-    {:ok, {{:one_for_one, 5, 10}, [v_master]}}
+    Supervisor.init(children, strategy: :one_for_one, max_restarts: 5, max_seconds: 10)
   end
 end

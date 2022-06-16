@@ -19,12 +19,11 @@ defmodule Riax.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Riax.PubSub},
       # Start the Endpoint (http/https)
-      RiaxWeb.Endpoint,
+      {RiaxWeb.Endpoint, vnode_module: Riax.VNode, name: :riax_sup}
       # Start a worker by calling: Riax.Worker.start_link(arg)
-      Riax.VNodeMaster
+      # Riax.VMaster
     ]
 
-    # {:ok, _} = Riax.Sup.start_link() |> IO.inspect(label: :START_LINK_RESULT)
 
     [:ok, :ok, :ok] = connect_nodes()
 
@@ -35,7 +34,7 @@ defmodule Riax.Application do
   end
 
   defp start_riak do
-    case MyRiax.Supervisor.start_link() do
+    case Riax.VMaster.start_link() do
       {:ok, _pid} ->
         # Register Vnode implementation
         :ok = :riak_core.register(vnode_module: Riax.VNode)
@@ -43,7 +42,7 @@ defmodule Riax.Application do
         :ok = :riak_core_node_watcher.service_up(:riax_service, self())
         :ok
       {:error, reason} ->
-        Logger.info("Could not start riak due to: #{inspect reason}")
+        Logger.info("Could not start riak: #{inspect reason}")
         :error
     end
   end
