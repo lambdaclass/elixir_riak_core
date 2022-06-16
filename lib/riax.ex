@@ -20,20 +20,31 @@ defmodule Riax do
   end
 
   @doc """
-  Return the node which is most likely
+  Return the node's name which is most likely
   to receive the given key as a parameter
   """
-  def prefered_node(key) do
+  def prefered_node_name(key) do
+    {:ok, {_, name}} = prefered_node(key)
+    name
+  end
+
+  @doc """
+  Return the node's {index, name} tuple which is most likely
+  to receive the given key as a parameter
+  """
+  defp prefered_node(key) do
     # Get the key's hash
     doc_idx = hash_key(key)
     # Get the prefered node for the given key
-    [index_node] = :riak_core_apl.get_apl(doc_idx, 1, :riax_service)
-    index_node
+    case :riak_core_apl.get_apl(doc_idx, 1, :riax_service) do
+      [{index_node, node_name}] -> {:ok, {index_node, node_name}}
+      [] -> {:error, "Missing node for this service"}
+    end
   end
 
   defp sync_command(key, command) do
-    index_node = prefered_node(key)
-    :riak_core_vnode_master.sync_spawn_command(index_node, command, Riax.VNode_master)
+    {:ok, node} = prefered_node(key)
+    :riak_core_vnode_master.sync_spawn_command(node, command, Riax.VNode_master)
   end
 
   defp hash_key(key), do: hash_key(key, <<"riak">>)
