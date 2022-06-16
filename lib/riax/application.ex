@@ -12,9 +12,10 @@ defmodule Riax.Application do
   ]
   @impl true
   def start(_type, _args) do
-    :ok = :riak_core.register(:riax, [{:vnode_module, Riax.Vnode}])
-    :ok = :riak_core_node_watcher.service_up(:riax, self())
-
+    {:ok, pid} = Civile.Supervisor.start_link()
+    
+    :ok = :riak_core.register(vnode_module: Civile.VNode)
+    :ok = :riak_core_node_watcher.service_up(Civile.Service, self())
     children = [
       # Start the Telemetry supervisor
       RiaxWeb.Telemetry,
@@ -24,8 +25,9 @@ defmodule Riax.Application do
       RiaxWeb.Endpoint,
       # Start a worker by calling: Riax.Worker.start_link(arg)
       # {Riax.Worker, arg},
-      Riax.Sup
+      Riax.VNodeMaster
     ]
+
     # {:ok, _} = Riax.Sup.start_link() |> IO.inspect(label: :START_LINK_RESULT)
 
     [:ok, :ok, :ok] = connect_nodes()

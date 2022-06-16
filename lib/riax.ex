@@ -26,7 +26,7 @@ defmodule Riax do
     doc_idx = hash_key(key) |> IO.inspect(label: :dox_idx)
     preflist = :riak_core_apl.get_apl(doc_idx, 1, :riax)
     [index_node] = preflist
-    :riak_core_vnode_master.sync_spawn_command(index_node, command, :riax_vnode_master)
+    :riak_core_vnode_master.sync_spawn_command(index_node, command, Riax.VnodeMaster)
   end
 
   defp hash_key(key) do
