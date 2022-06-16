@@ -26,13 +26,20 @@ defmodule Riax.VNode do
 
   def handle_command({:put, {k, v}}, _sender, state = %{data: data}) do
     Logger.info("PUT Key: #{k}, Value: #{v}", state)
-    new_data = %{data | k => v}
+    new_data = Map.put(data, k, v)
     {:reply, :ok, %{state | data: new_data}}
   end
 
   def handle_command({:get, key}, _sender, state = %{data: data}) do
     Logger.info("GET #{key}", state)
-    {:reply, Map.get(key, data), state}
+
+    reply =
+      case Map.get(data, key) do
+        nil -> :not_found
+        value -> value
+      end
+
+    {:reply, reply, state}
   end
 
   def handle_command({:delete, key}, _sender, state = %{data: data}) do
