@@ -12,10 +12,7 @@ defmodule Riax.Application do
   ]
   @impl true
   def start(_type, _args) do
-    {:ok, pid} = Civile.Supervisor.start_link()
-    
-    :ok = :riak_core.register(vnode_module: Civile.VNode)
-    :ok = :riak_core_node_watcher.service_up(Civile.Service, self())
+    :ok = start_riak()
     children = [
       # Start the Telemetry supervisor
       RiaxWeb.Telemetry,
@@ -24,7 +21,6 @@ defmodule Riax.Application do
       # Start the Endpoint (http/https)
       RiaxWeb.Endpoint,
       # Start a worker by calling: Riax.Worker.start_link(arg)
-      # {Riax.Worker, arg},
       Riax.VNodeMaster
     ]
 
@@ -36,6 +32,20 @@ defmodule Riax.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Riax.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp start_riak do
+    case MyRiax.Supervisor.start_link() do
+      {:ok, _pid} ->
+        # Register Vnode implementation
+        :ok = :riak_core.register(vnode_module: Riax.VNode)
+        # Give name to the service
+        :ok = :riak_core_node_watcher.service_up(:riax_service, self())
+        :ok
+      {:error, reason} ->
+        Logger.info("Could not start riak due to: #{inspect reason}")
+        :error
+    end
   end
 
   defp connect_nodes do

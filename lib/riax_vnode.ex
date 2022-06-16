@@ -1,4 +1,4 @@
-defmodule Riax.Vnode do
+defmodule Riax.VNode do
   require Logger
   @behaviour :riak_core_vnode
 
@@ -19,6 +19,7 @@ defmodule Riax.Vnode do
   end
 
   def handle_command({:ping, v}, _sender, state = %{partition: partition}) do
+    IO.inspect("paso por handle_command")
     Logger.info("Received ping command!", state)
     {:reply, {:pong, v + 1, node(), partition}, state}
   end

@@ -23,10 +23,15 @@ defmodule Riax do
   # Riax.Helpers or an specific
   # behaviour?
   defp sync_command(key, command) do
+    # Get the key's hash
     doc_idx = hash_key(key) |> IO.inspect(label: :dox_idx)
-    preflist = :riak_core_apl.get_apl(doc_idx, 1, :riax)
+    # Get the prefered node for the given key
+    preflist = :riak_core_apl.get_apl(doc_idx, 1, :riax_service)
     [index_node] = preflist
-    :riak_core_vnode_master.sync_spawn_command(index_node, command, Riax.VnodeMaster)
+    v = 1
+    IO.inspect("paso por sync_command")
+    :riak_core_vnode_master.sync_spawn_command(index_node, {:ping, v}, Riax.VNode_master)
+    # :riak_core_vnode_master.sync_spawn_command(index_node, command, Riax.VnodeMaster)
   end
 
   defp hash_key(key) do

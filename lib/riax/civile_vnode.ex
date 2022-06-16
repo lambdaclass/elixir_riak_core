@@ -1,4 +1,4 @@
-defmodule Civile.VNode do
+defmodule MyRiax.VNode do
   @behaviour :riak_core_vnode
 
   def start_vnode(partition) do

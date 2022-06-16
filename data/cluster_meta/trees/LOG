@@ -1,0 +1,35 @@
+2022/06/16-13:51:15.661702 170f4f000                        Version: 2.0.37 (enterprise edition)
+2022/06/16-13:51:15.661729 170f4f000             Options.comparator: leveldb.InternalKeyComparator
+2022/06/16-13:51:15.661735 170f4f000      Options.create_if_missing: 1
+2022/06/16-13:51:15.661739 170f4f000        Options.error_if_exists: 0
+2022/06/16-13:51:15.661743 170f4f000        Options.paranoid_checks: 0
+2022/06/16-13:51:15.661747 170f4f000     Options.verify_compactions: 1
+2022/06/16-13:51:15.661751 170f4f000                    Options.env: 0x6000028ec000
+2022/06/16-13:51:15.661755 170f4f000               Options.info_log: 0x600001ae0700
+2022/06/16-13:51:15.661758 170f4f000      Options.write_buffer_size: 5847452
+2022/06/16-13:51:15.661762 170f4f000         Options.max_open_files: 1000
+2022/06/16-13:51:15.661766 170f4f000            Options.block_cache: 0x140809400
+2022/06/16-13:51:15.661769 170f4f000             Options.block_size: 4096
+2022/06/16-13:51:15.661773 170f4f000       Options.block_size_steps: 16
+2022/06/16-13:51:15.661776 170f4f000 Options.block_restart_interval: 16
+2022/06/16-13:51:15.661780 170f4f000            Options.compression: 2
+2022/06/16-13:51:15.661783 170f4f000          Options.filter_policy: leveldb.BuiltinBloomFilter2
+2022/06/16-13:51:15.661787 170f4f000              Options.is_repair: false
+2022/06/16-13:51:15.661790 170f4f000         Options.is_internal_db: true
+2022/06/16-13:51:15.661794 170f4f000      Options.total_leveldb_mem: 2576980377
+2022/06/16-13:51:15.661797 170f4f000  Options.block_cache_threshold: 33554432
+2022/06/16-13:51:15.661800 170f4f000  Options.limited_developer_mem: false
+2022/06/16-13:51:15.661804 170f4f000              Options.mmap_size: 0
+2022/06/16-13:51:15.661807 170f4f000       Options.delete_threshold: 1000
+2022/06/16-13:51:15.661810 170f4f000       Options.fadvise_willneed: false
+2022/06/16-13:51:15.661814 170f4f000      Options.tiered_slow_level: 0
+2022/06/16-13:51:15.661817 170f4f000     Options.tiered_fast_prefix: data/cluster_meta/trees
+2022/06/16-13:51:15.661820 170f4f000     Options.tiered_slow_prefix: data/cluster_meta/trees
+2022/06/16-13:51:15.661824 170f4f000                         crc32c: software
+2022/06/16-13:51:15.661827 170f4f000   Options.cache_object_warming: true
+2022/06/16-13:51:15.661830 170f4f000        Options.ExpiryActivated: false
+2022/06/16-13:51:15.661833 170f4f000          Options.expiry_module: NULL
+2022/06/16-13:51:15.661837 170f4f000                File cache size: 494582981
+2022/06/16-13:51:15.661840 170f4f000               Block cache size: 496680133
+2022/06/16-13:51:15.663100 170f4f000 Delete type=3 #1
+2022/06/16-13:51:15.663201 170f4f000 No cache warming file detected.
