@@ -19,12 +19,20 @@ defmodule Riax do
     sync_command(key, {:ping, 1})
   end
 
-  defp sync_command(key, command) do
+  @doc """
+  Return the node which is most likely
+  to receive the given key as a parameter
+  """
+  def prefered_node(key) do
     # Get the key's hash
     doc_idx = hash_key(key)
     # Get the prefered node for the given key
-    preflist = :riak_core_apl.get_apl(doc_idx, 1, :riax_service)
-    [index_node] = preflist
+    [index_node] = :riak_core_apl.get_apl(doc_idx, 1, :riax_service)
+    index_node
+  end
+
+  defp sync_command(key, command) do
+    index_node = prefered_node(key)
     :riak_core_vnode_master.sync_spawn_command(index_node, command, Riax.VNode_master)
   end
 
