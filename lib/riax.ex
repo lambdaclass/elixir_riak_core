@@ -62,13 +62,23 @@ defmodule Riax do
     end
   end
 
+  @doc """
+  Use the VNode master to send a command
+  to the VNode that receive the key
+  """
   defp sync_command(key, command) do
     {:ok, node} = prefered_node(key)
     :riak_core_vnode_master.sync_spawn_command(node, command, Riax.VNode_master)
   end
 
+  @doc """
+  Hash a key with the default bucket being "riak"
+  """
   defp hash_key(key), do: hash_key(key, <<"riak">>)
 
+  @doc """
+  Hash a key inside the given bucket name
+  """
   defp hash_key(key, bucket) when is_binary(bucket) do
     :riak_core_util.chash_key({bucket, :erlang.term_to_binary(key)})
   end
