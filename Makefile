@@ -8,4 +8,4 @@ node3:
 	MIX_ENV=dev3 iex --name dev3@127.0.0.1 -S mix run
 
 phoenix:
-	iex -S mix phx.server
+	MIX_ENV=dev iex --name phoenix@127.0.0.1 -S mix phx.server
