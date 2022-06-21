@@ -1,22 +1,39 @@
 defmodule Riax do
+  @doc """
+  Store a value tied to a key
+  """
   def put(key, value) do
     sync_command(key, {:put, {key, value}})
   end
 
+  @doc """
+  Retrive a key's value
+  """
   def get(key) do
     sync_command(key, {:get, key})
   end
 
+  @doc """
+  Retrieve keys
+  """
   def keys() do
     sync_command(:key, :keys)
   end
 
+  def ring_status() do
+    {:ok, ring} = :riak_core_ring_manager.get_my_ring()
+    :riak_core_ring.pretty_print(ring, [:legend])
+  end
+
+  @doc """
+  :pong!
+  """
   def ping() do
     ping(:os.timestamp())
   end
 
   def ping(key) do
-    sync_command(key, {:ping, 1})
+    sync_command(key, {:ping, key})
   end
 
   @doc """
