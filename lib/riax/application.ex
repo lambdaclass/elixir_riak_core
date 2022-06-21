@@ -19,7 +19,7 @@ defmodule Riax.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Riax.PubSub},
       # Start the Endpoint (http/https)
-      {RiaxWeb.Endpoint, vnode_module: Riax.VNode, name: :riax_sup}
+      {RiaxWeb.Endpoint, name: Riax.Endpoint}
       # Start a worker by calling: Riax.Worker.start_link(arg)
       # Riax.VMaster
     ]
