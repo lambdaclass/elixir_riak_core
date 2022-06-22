@@ -70,3 +70,4 @@ config :riak_core,
   schema_dirs: ['priv']
 config :sasl,
   errlog_type: :error
+
