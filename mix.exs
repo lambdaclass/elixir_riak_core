@@ -18,18 +18,11 @@ defmodule Riax.MixProject do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    if System.fetch_env!("MIX_ENV") == "DEV" do
       [
         mod: {Riax.Application, []},
         applications: [:phoenix, :cowboy, :riak_core],
         extra_applications: [:logger, :runtime_tools]
       ]
-    else
-      [
-        mod: {Riax.Application, []},
-        extra_applications: [:logger, :runtime_tools]
-      ]
-    end
   end
 
   # Specifies which paths to compile per environment.
