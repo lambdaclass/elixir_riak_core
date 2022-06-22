@@ -63,12 +63,11 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
-
-
 config :riak_core,
-  node: 'phoenix@127.0.0.1',
-  web_port: 8998,
+  ring_state_dir: 'ring_data_dir',
   handoff_port: 8999,
-  ring_state_dir: 'phoenix_ring',
-  platform_data_dir: 'phoenix_data',
+  handoff_ip: '127.0.0.1',
   schema_dirs: ['priv']
+config :sasl,
+  errlog_type: :error
+
