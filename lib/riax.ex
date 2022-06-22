@@ -7,7 +7,7 @@ defmodule Riax do
   end
 
   @doc """
-  Retrive a key's value
+  Retrieve a key's value
   """
   def get(key) do
     sync_command(key, {:get, key})
@@ -43,8 +43,8 @@ defmodule Riax do
   Return the node's name which is most likely
   to receive the given key as a parameter
   """
-  def prefered_node_name(key) do
-    {:ok, {_, name}} = prefered_node(key)
+  def preferred_node_name(key) do
+    {:ok, {_, name}} = preferred_node(key)
     name
   end
 
@@ -52,10 +52,10 @@ defmodule Riax do
   Return the node's {index, name} tuple which is most likely
   to receive the given key as a parameter
   """
-  defp prefered_node(key) do
+  defp preferred_node(key) do
     # Get the key's hash
     doc_idx = hash_key(key)
-    # Get the prefered node for the given key
+    # Get the preferred node for the given key
     case :riak_core_apl.get_apl(doc_idx, 1, :riax_service) do
       [{index_node, node_name}] -> {:ok, {index_node, node_name}}
       [] -> {:error, "Missing node for this service"}
@@ -67,7 +67,7 @@ defmodule Riax do
   to the VNode that receive the key
   """
   defp sync_command(key, command) do
-    {:ok, node} = prefered_node(key)
+    {:ok, node} = preferred_node(key)
     :riak_core_vnode_master.sync_spawn_command(node, command, Riax.VNode_master)
   end
 
