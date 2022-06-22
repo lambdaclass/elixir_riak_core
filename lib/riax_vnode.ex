@@ -2,14 +2,6 @@ defmodule Riax.VNode do
   require Logger
   @behaviour :riak_core_vnode
 
-  require Record
-
-  Record.defrecord(
-    :fold_req_v2,
-    :riak_core_fold_req_v2,
-    Record.extract(:riak_core_fold_req_v2, from_lib: "riak_core/include/riak_core_vnode.hrl")
-  )
-
   def start_vnode(partition) do
     :riak_core_vnode_master.get_vnode_pid(partition, __MODULE__)
   end
@@ -52,31 +44,62 @@ defmodule Riax.VNode do
     {:noreply, state}
   end
 
-  def handoff_finished(_dest, state = %{partition: partition}) do
-    Logger.debug("handoff_finished #{partition}")
+  def handoff_finished(dest, state = %{partition: partition}) do
+    Logger.debug(
+      "[Handoff] Finished with target: #{inspect(dest)}, partition: #{inspect(partition)}"
+    )
+
     {:ok, state}
   end
 
-  def handle_handoff_command(
-        fold_req_v2() = fold_req,
-        _sender,
-        state = %{data: data}
-      ) do
-    Logger.debug("Received fold request for handoff #{state}")
-    foldfun = fold_req_v2(fold_req, :foldfun)
-    acc0 = fold_req_v2(fold_req, :acc0)
-
-    acc_final = []
-    {:reply, acc_final, state}
-  end
-
   def handoff_starting(target_node, state = %{partition: partition}) do
-    Logger.debug("Handoff starting with target: #{target_node}", state)
+    Logger.debug("Handoff starting with target: #{inspect(target_node)}", state)
     {true, state}
   end
 
+  require Record
+
+  Record.defrecord(
+    :fold_req_v1,
+    :riak_core_fold_req_v1,
+    Record.extract(:riak_core_fold_req_v1, from_lib: "riak_core/include/riak_core_vnode.hrl")
+  )
+
+  Record.defrecord(
+    :fold_req_v2,
+    :riak_core_fold_req_v2,
+    Record.extract(:riak_core_fold_req_v2, from_lib: "riak_core/include/riak_core_vnode.hrl")
+  )
+
+  def handle_handoff_command(fold_req_v1() = fold_req, sender, state) do
+    Logger.debug(">>>>> Handoff V1 <<<<<<")
+    foldfun = fold_req_v1(fold_req, :foldfun)
+    acc0 = fold_req_v1(fold_req, :acc0)
+    handle_handoff_command(fold_req_v2(foldfun: foldfun, acc0: acc0), sender, state)
+  end
+
+  def handle_handoff_command(fold_req_v2() = fold_req, _sender, state) do
+    Logger.debug(">>>>> Handoff V2 <<<<<<")
+    foldfun = fold_req_v2(fold_req, :foldfun)
+    acc0 = fold_req_v2(fold_req, :acc0)
+
+    acc_final =
+      state.data
+      |> Enum.reduce(acc0, fn {k, v}, acc ->
+        foldfun.(k, v, acc)
+      end)
+
+    {:reply, acc_final, state}
+  end
+
+  def handle_handoff_command(request, sender, state) do
+    Logger.debug(">>> Handoff generic request <<<")
+    Logger.debug("[Handoff] Generic request: #{inspect(request)}")
+    handle_command(request, sender, state)
+  end
+
   def is_empty(state = %{data: data}) do
-    is_empty = Map.size(data) == 1
+    is_empty = map_size(data) == 0
     {is_empty, state}
   end
 
@@ -90,11 +113,11 @@ defmodule Riax.VNode do
     {:ok, %{state | data: %{}}}
   end
 
-  def handle_handoff_data(bin_data, state = %{data: data}) do
-    {key, val} = :erlang.binary_to_term(bin_data)
-    Logger.debug("receieved handoff data with key-value #{key} #{val}")
-    new_data = %{data | key => val}
-    {:reply, :ok, %{state | data => new_data}}
+  def handle_handoff_data(bin_data, state) do
+    Logger.debug("[handle_handoff_data] bin_data: #{inspect(bin_data)} - #{inspect(state)}")
+    {k, v} = :erlang.binary_to_term(bin_data)
+    new_state = Map.update(state, :data, %{}, fn data -> Map.put(data, k, v) end)
+    {:reply, :ok, new_state}
   end
 
   def encode_handoff_item(k, v) do
