@@ -13,6 +13,8 @@ defmodule Riax.Application do
   @impl true
   def start(_type, _args) do
     :ok = start_riak()
+    {:ok, _pid} = Riax.CoverageSup.start_link()
+
     children = [
       # Start the Telemetry supervisor
       RiaxWeb.Telemetry,
@@ -41,8 +43,9 @@ defmodule Riax.Application do
         # Give name to the service
         :ok = :riak_core_node_watcher.service_up(:riax_service, self())
         :ok
+
       {:error, reason} ->
-        Logger.info("Could not start riak: #{inspect reason}")
+        Logger.info("Could not start riak: #{inspect(reason)}")
         :error
     end
   end
