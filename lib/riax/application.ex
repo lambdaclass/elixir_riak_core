@@ -3,6 +3,7 @@ defmodule Riax.Application do
   # for more information on OTP Applications
   @moduledoc false
 
+  require Logger
   use Application
 
   @nodes [
