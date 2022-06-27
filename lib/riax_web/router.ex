@@ -17,8 +17,7 @@ defmodule RiaxWeb.Router do
   scope "/", RiaxWeb do
     pipe_through([:browser])
 
-    get("/", PageController, :index)
-    live "/foo", FooLive
+    live "/", Counterlive
   end
 
   # Other scopes may use custom stacks.
@@ -37,9 +36,9 @@ defmodule RiaxWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: RiaxWeb.Telemetry
+      live_dashboard("/dashboard", metrics: RiaxWeb.Telemetry)
     end
   end
 
@@ -49,9 +48,9 @@ defmodule RiaxWeb.Router do
   # node running the Phoenix server.
   if Mix.env() == :dev do
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 end

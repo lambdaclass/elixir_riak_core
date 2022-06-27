@@ -48,6 +48,8 @@ config :phoenix, :json_library, Jason
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
 
+config :sasl,
+  errlog_type: :error
 config :riax, RiaxWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Aq2IH+MBzO3h1LgvK3EQn2Dmi2Cj2N55++zmEFahcmLJARgior2VAzzyFD7tHQS9",
