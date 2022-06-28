@@ -8,7 +8,7 @@ defmodule Riax.CoverageFsm do
   def init({:pid, req_id, client_pid}, [request, timeout]) do
     Logger.info("Starting coverage request #{req_id} #{request}")
     state = %{req_id: req_id, from: client_pid, request: request, accum: []}
-    {request, :allup, 1, 1, :riax_service, Riax.VMaster, timeout, state}
+    {request, :allup, 1, 1, :riax_service, Riax.VNode_master, timeout, state}
   end
 
   def process_results({{_req_id, {_partition, _naode}}, []}, state), do: {:done, state}

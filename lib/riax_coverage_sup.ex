@@ -1,14 +1,16 @@
 defmodule Riax.CoverageSup do
-  @behaviour Supervisor
+  use Supervisor
+
+  def start_link(_), do: start_link()
   def start_link() do
-    Supervisor.start_link(__MODULE__, [], name: :coverage_sup)
+    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def init([]) do
     children = [
       %{
         id: :undefined,
-        start: {Riax.CoverageSup, :start_link, [Riax.CoverageSup]},
+        start: {Riax.CoverageFsm, :start_link, []},
         restart: :temporary,
         type: :worker
       }
