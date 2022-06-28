@@ -17,7 +17,7 @@ defmodule Riax do
   Retrieve keys
   """
   def keys() do
-    sync_command(:key, :keys)
+  coverage_command(:keys)
   end
 
   @doc """
@@ -48,6 +48,15 @@ defmodule Riax do
     name
   end
 
+def coverage_command(command) do
+  timeout = 5000
+  req_id = :erlang.phash2(:erlang.monotonic_time())
+  {:ok, _} = Riax.CoverageSup.start_fsm([req_id, self(), command, timeout]) |> IO.inspect(label: :START_FSM_RESULT)
+
+  receive do
+    {req_id, val} -> val
+  end
+end
   @doc """
   Return the node's {index, name} tuple which is most likely
   to receive the given key as a parameter
