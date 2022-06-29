@@ -138,7 +138,7 @@ defmodule Riax.VNode do
   end
 
   def handle_coverage(:clear, _key_spaces, {_, req_id, _}, state) do
-    Logger.debug("Receieved clear coverage: #{inspect state} ")
+    Logger.debug("Received clear coverage: #{inspect state} ")
     new_state = %{state | data: %{}}
     {:reply, {req_id, []}, new_state}
   end
