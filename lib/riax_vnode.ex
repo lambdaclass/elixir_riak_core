@@ -126,26 +126,26 @@ defmodule Riax.VNode do
   end
 
   def handle_coverage(:keys, _key_spaces, {_, req_id, _}, state = %{data: data}) do
-    Logger.info("Received keys coverage: #{inspect state}")
+    Logger.debug("Received keys coverage: #{inspect state}")
     keys = Map.keys(data)
     {:reply, {req_id, keys}, state}
   end
 
   def handle_coverage(:values, _key_spaces, {_, req_id, _}, state = %{data: data}) do
-    Logger.info("Received values coverage: #{state}")
+    Logger.debug("Received values coverage: #{inspect state}")
     values = Map.values(data)
     {:reply, {req_id, values}, state}
   end
 
   def handle_coverage(:clear, _key_spaces, {_, req_id, _}, state) do
-    Logger.info("Receieved clear coverage: #{state} ")
+    Logger.debug("Receieved clear coverage: #{inspect state} ")
     new_state = %{state | data: %{}}
     {:reply, {req_id, []}, new_state}
   end
 
   def handle_exit(pid, reason, state) do
     Logger.error(
-      "[handle_exit] self: #{inspect(self())} - pid: #{inspect(pid)} - reason: #{inspect(reason)} - state: #{inspect(state)}"
+      "Handling exit: self: #{inspect(self())} - pid: #{inspect(pid)} - reason: #{inspect(reason)} - state: #{inspect(state)}"
     )
 
     {:noreply, state}
