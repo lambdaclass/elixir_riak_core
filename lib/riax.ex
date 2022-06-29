@@ -53,15 +53,10 @@ defmodule Riax do
     sync_command(key, {:ping, key})
   end
 
-  @doc """
-  Return the node's name which is most likely
-  to receive the given key as a parameter
-  """
-  def preferred_node_name(key) do
-    {:ok, {_, name}} = preferred_node(key)
-    name
-  end
 
+  @doc """
+  Execute a command across every available VNode
+  """
   defp coverage_command(command) do
     timeout = 5000
     req_id = :erlang.phash2(:erlang.monotonic_time())
@@ -71,6 +66,15 @@ defmodule Riax do
     receive do
       {^req_id, val} -> val
     end
+  end
+
+  @doc """
+  Return the node's name which is most likely
+  to receive the given key as a parameter
+  """
+  def preferred_node_name(key) do
+    {:ok, {_, name}} = preferred_node(key)
+    name
   end
 
   @doc """
