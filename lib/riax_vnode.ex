@@ -104,7 +104,7 @@ defmodule Riax.VNode do
   end
 
   def terminate(reason, %{partition: partition}) do
-    Logger.debug("terminate #{partition}: #{reason}")
+    Logger.debug("terminate #{inspect partition}: #{inspect reason}")
     :ok
   end
 
@@ -126,7 +126,7 @@ defmodule Riax.VNode do
   end
 
   def handle_coverage(:keys, _key_spaces, {_, req_id, _}, state = %{data: data}) do
-    Logger.info("Received keys coverage: #{state}")
+    Logger.info("Received keys coverage: #{inspect state}")
     keys = Map.keys(data)
     {:reply, {req_id, keys}, state}
   end
@@ -143,7 +143,11 @@ defmodule Riax.VNode do
     {:reply, {req_id, []}, new_state}
   end
 
-  def handle_exit(_pid, _reason, state) do
+  def handle_exit(pid, reason, state) do
+    Logger.error(
+      "[handle_exit] self: #{inspect(self())} - pid: #{inspect(pid)} - reason: #{inspect(reason)} - state: #{inspect(state)}"
+    )
+
     {:noreply, state}
   end
 
