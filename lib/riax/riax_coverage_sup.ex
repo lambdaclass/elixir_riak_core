@@ -1,25 +1,24 @@
 defmodule Riax.Coverage.Sup do
-  use Supervisor
+  use DynamicSupervisor
 
-  def start_link(_), do: start_link()
   def start_link() do
-    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+    DynamicSupervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def init([]) do
-    children = [
-      %{
-        id: :undefined,
-        start: {Riax.Coverage.Fsm, :start_link, []},
-        restart: :temporary,
-        type: :worker
-      }
-    ]
-
-    Supervisor.init(children, strategy: :simple_one_for_one, max_restarts: 10, max_seconds: 10)
+    DynamicSupervisor.init(
+      strategy: :one_for_one
+    )
   end
 
-  def start_fsm(args) do
-    Supervisor.start_child(__MODULE__, args)
+  def start_fsm(args) when is_list(args) do
+    fsm_spec = %{
+      id: :undefined,
+      start: {Riax.Coverage.Fsm, :start_link, args},
+      restart: :temporary,
+      type: :worker
+    }
+
+    DynamicSupervisor.start_child(__MODULE__, fsm_spec)
   end
 end
