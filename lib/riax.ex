@@ -62,7 +62,7 @@ defmodule Riax do
     name
   end
 
-  def coverage_command(command) do
+  defp coverage_command(command) do
     timeout = 5000
     req_id = :erlang.phash2(:erlang.monotonic_time())
 
