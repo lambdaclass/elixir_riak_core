@@ -17,7 +17,21 @@ defmodule Riax do
   Retrieve keys
   """
   def keys() do
-  coverage_command(:keys)
+    coverage_command(:keys)
+  end
+
+  @doc """
+  Clean state of every available VNode
+  """
+  def clear() do
+    coverage_command(:clear)
+  end
+
+  @doc """
+  Return every value of every available VNode
+  """
+  def values() do
+    coverage_command(:value)
   end
 
   @doc """
