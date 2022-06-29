@@ -62,15 +62,18 @@ defmodule Riax do
     name
   end
 
-def coverage_command(command) do
-  timeout = 5000
-  req_id = :erlang.phash2(:erlang.monotonic_time())
-  {:ok, _} = Riax.CoverageSup.start_fsm([req_id, self(), command, timeout]) |> IO.inspect(label: :START_FSM_RESULT)
+  def coverage_command(command) do
+    timeout = 5000
+    req_id = :erlang.phash2(:erlang.monotonic_time())
 
-  receive do
-    {req_id, val} -> val
+    {:ok, _} =
+      Riax.CoverageSup.start_fsm([req_id, self(), command, timeout])
+
+    receive do
+      {^req_id, val} -> val
+    end
   end
-end
+
   @doc """
   Return the node's {index, name} tuple which is most likely
   to receive the given key as a parameter
