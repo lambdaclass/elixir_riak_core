@@ -31,7 +31,7 @@ defmodule Riax do
   Return every value of every available VNode
   """
   def values() do
-    coverage_command(:value)
+    coverage_command(:values)
   end
 
   @doc """
@@ -66,8 +66,7 @@ defmodule Riax do
     timeout = 5000
     req_id = :erlang.phash2(:erlang.monotonic_time())
 
-    {:ok, _} =
-      Riax.CoverageSup.start_fsm([req_id, self(), command, timeout])
+    {:ok, _} = Riax.CoverageSup.start_fsm([req_id, self(), command, timeout])
 
     receive do
       {^req_id, val} -> val
