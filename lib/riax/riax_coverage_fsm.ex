@@ -1,4 +1,4 @@
-defmodule Riax.CoverageFsm do
+defmodule Riax.Coverage.Fsm do
   require Logger
   @behaviour :riak_core_coverage_fsm
   def start_link(req_id, client_pid, request, timeout) do

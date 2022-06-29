@@ -23,7 +23,7 @@ defmodule Riax.Application do
       # Start Riak's supervisor,
       # vnode: the vnode implementation,
       # coverage: the supervisor for the coverage.
-      {Riax.Supervisor, name: Riax.Sup, vnode: Riax.VNode, coverage: Riax.CoverageSup}
+      {Riax.Supervisor, name: Riax.Sup, vnode: Riax.VNode, coverage: Riax.Coverage.Sup}
     ]
 
 

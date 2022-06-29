@@ -18,7 +18,7 @@ defmodule Riax.Supervisor do
         type: :worker
       },
       %{
-        id: Riax.CoverageSup,
+        id: Riax.Coverage.Sup,
         start: {coverage, :start_link, []},
         restart: :permanent,
         type: :supervisor,

@@ -1,4 +1,4 @@
-defmodule Riax.CoverageSup do
+defmodule Riax.Coverage.Sup do
   use Supervisor
 
   def start_link(_), do: start_link()
@@ -10,7 +10,7 @@ defmodule Riax.CoverageSup do
     children = [
       %{
         id: :undefined,
-        start: {Riax.CoverageFsm, :start_link, []},
+        start: {Riax.Coverage.Fsm, :start_link, []},
         restart: :temporary,
         type: :worker
       }
