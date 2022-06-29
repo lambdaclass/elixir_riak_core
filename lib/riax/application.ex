@@ -26,10 +26,6 @@ defmodule Riax.Application do
       {Riax.Supervisor, name: Riax.Sup, vnode: Riax.VNode, coverage: Riax.CoverageSup}
     ]
 
-    # Register Vnode implementation
-    :ok = :riak_core.register(vnode_module: Riax.VNode)
-    # Give name to the service
-    :ok = :riak_core_node_watcher.service_up(:riax_service, self())
 
     [:ok, :ok, :ok] = connect_nodes()
 
