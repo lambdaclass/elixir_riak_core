@@ -21,7 +21,7 @@ defmodule Riax do
   end
 
   @doc """
-  Clean state of every available VNode
+  Set empty state of every available VNode
   """
   def clear() do
     coverage_command(:clear)
