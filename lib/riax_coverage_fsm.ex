@@ -26,7 +26,7 @@ defmodule Riax.CoverageFsm do
   end
 
   def finish({:error, reason}, state = %{req_id: req_id, from: from, accum: accum}) do
-    Logger.info("Coverage query failed! Reason: #{reason}")
+    Logger.error("Coverage query failed!: #{reason}")
 
     send(from, {req_id, {:partial, reason, accum}})
     {:stop, :normal, state}
