@@ -13,7 +13,6 @@ defmodule Riax.Application do
   ]
   @impl true
   def start(_type, _args) do
-    # {:ok, _} = Riax.CoverageSup.start_link()
     children = [
       # Start the Telemetry supervisor
       RiaxWeb.Telemetry,
@@ -21,9 +20,10 @@ defmodule Riax.Application do
       {Phoenix.PubSub, name: Riax.PubSub},
       # Start the Endpoint (http/https)
       {RiaxWeb.Endpoint, name: Riax.Endpoint},
-      {Riax.VMaster, name: Riax.VMaster}
-      # Start a worker by calling: Riax.Worker.start_link(arg)
-      # Riax.VMaster
+      # Start Riak's supervisor,
+      # vnode: the vnode implementation,
+      # coverage: the supervisor for the coverage.
+      {Riax.Supervisor, name: Riax.Sup, vnode: Riax.VNode, coverage: Riax.CoverageSup}
     ]
 
     # Register Vnode implementation
@@ -37,17 +37,6 @@ defmodule Riax.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Riax.Supervisor]
     Supervisor.start_link(children, opts)
-  end
-
-  defp start_riak do
-    case Riax.VMaster.start_link() do
-      {:ok, _pid} ->
-        :ok
-
-      {:error, reason} ->
-        Logger.info("Could not start riak: #{inspect(reason)}")
-        :error
-    end
   end
 
   defp connect_nodes do
