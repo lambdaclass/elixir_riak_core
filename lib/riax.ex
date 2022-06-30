@@ -57,8 +57,7 @@ defmodule Riax do
   @doc """
   Execute a command across every available VNode
   """
-  defp coverage_command(command) do
-    timeout = 5000
+  defp coverage_command(command, timeout \\ 5000) do
     req_id = :erlang.phash2(:erlang.monotonic_time())
 
     {:ok, _} = Riax.Coverage.Sup.start_fsm([req_id, self(), command, timeout])
