@@ -1,8 +1,9 @@
 defmodule Riax.Supervisor do
   use Supervisor
 
-  def start_link(args = [name: name, vnode: _, coverage: _]) do
-    Supervisor.start_link(__MODULE__, tl(args), name: name)
+  def start_link(args) do
+     # riak_core appends _sup to the application name.
+    Supervisor.start_link(__MODULE__, (args), name: :riax_sup)
   end
 
   def init(vnode: vnode, coverage: coverage) do
