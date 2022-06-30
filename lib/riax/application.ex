@@ -26,24 +26,10 @@ defmodule Riax.Application do
       {Riax.Supervisor, vnode: Riax.VNode, coverage: Riax.Coverage.Sup}
     ]
 
-
-    [:ok, :ok, :ok] = connect_nodes()
-
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Riax.Supervisor]
     Supervisor.start_link(children, opts)
-  end
-
-  defp connect_nodes do
-    phoenix_node = node()
-
-    Enum.map(@nodes, fn node ->
-      case :rpc.call(node, :riak_core, :join, [phoenix_node]) do
-        {:error, :not_reachable} -> {:error, node}
-        _ -> :ok
-      end
-    end)
   end
 
   # Tell Phoenix to update the endpoint configuration
