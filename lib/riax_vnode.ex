@@ -16,7 +16,7 @@ defmodule Riax.VNode do
   end
 
   def handle_command({:put, {k, v}}, _sender, state = %{data: data}) do
-    Logger.info("PUT Key: #{k}, Value: #{v}", state)
+    Logger.info("PUT Key: #{inspect k}, Value: #{inspect v}", state)
     new_data = Map.put(data, k, v)
     {:reply, :ok, %{state | data: new_data}}
   end
@@ -34,13 +34,13 @@ defmodule Riax.VNode do
   end
 
   def handle_command({:delete, key}, _sender, state = %{data: data}) do
-    Logger.debug("DELETE #{key}", state)
+    Logger.debug("DELETE #{inspect key}", state)
     new_data = Map.delete(data, key)
     {:reply, Map.get(data, key, :not_found), %{state | data: new_data}}
   end
 
   def handle_command(message, _sender, state) do
-    Logger.debug("unhandle command #{message}")
+    Logger.debug("unhandle command #{inspect message}")
     {:noreply, state}
   end
 
