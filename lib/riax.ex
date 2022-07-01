@@ -1,4 +1,5 @@
 defmodule Riax do
+  ## ------------------------------- Key Value API -----------------
   @doc """
   Store a value tied to a key
   """
@@ -52,8 +53,17 @@ defmodule Riax do
   def ping(key) do
     sync_command(key, {:ping, key})
   end
+  ## ------------------------ File Cache CSV -----------------
 
-
+  @path "/Users/fran/Downloads/covid19.csv"
+  def setup_csv do
+    @path
+    |> File.stream!
+    |> CSV.decode!(headers: :true)
+    |> Stream.with_index()
+    |> Enum.take(10_000)
+    |> Enum.map(fn {data, idx} -> put(idx, data) |> IO.inspect(label: :PUT_RESULT) end)
+  end
   @doc """
   Execute a command across every available VNode
   """
