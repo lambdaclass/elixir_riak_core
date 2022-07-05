@@ -7,6 +7,16 @@ defmodule Riax do
   end
 
   @doc """
+  Store a value tiead to a key, but do not
+  log it.
+
+  Ideal to store fast.
+  """
+  def put(key, value, :no_log) do
+    sync_command(key, {:put, :no_log, {key, value}})
+  end
+
+  @doc """
   Retrieve a key's value
   """
   def get(key) do
@@ -53,26 +63,16 @@ defmodule Riax do
     sync_command(key, {:ping, key})
   end
 
-  ## ------------------------ File Cache CSV -----------------
-
-  def setup_csv do
-    "/Users/fran/Downloads/archive(3)/2020-04-17 Coronavirus Tweets.CSV"
+  @doc """
+  Distribute a CSV among Riak Nodes.
+  """
+  def setup_csv(path) do
+    path
     |> File.stream!()
     |> CSV.decode(headers: true)
     |> Stream.with_index()
     |> Stream.map(fn {val, indx} -> {indx, val} end)
-    |> Enum.each(fn {indx, val} -> sync_command(indx, val) end)
-    |> IO.inspect(label: :the_new_map)
-
-    # |> Stream.each(fn {val, indx} -> Riax.put(indx, val) end)
-
-    # end)
-
-    # path
-    # |> File.stream!()
-    # |> CSV.decode!(headers: true)
-    # |> Stream.with_index()
-    # |> Stream.map(fn {data, idx} -> put(idx, data) end)
+    |> Stream.each(fn {indx, val} -> sync_command(indx, {:put, :no_log, {indx, val}}) end)
   end
 
   @doc """
