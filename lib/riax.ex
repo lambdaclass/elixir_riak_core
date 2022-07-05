@@ -1,5 +1,4 @@
 defmodule Riax do
-  ## ------------------------------- Key Value API -----------------
   @doc """
   Store a value tied to a key
   """
@@ -73,6 +72,7 @@ defmodule Riax do
     |> Stream.with_index()
     |> Stream.map(fn {val, indx} -> {indx, val} end)
     |> Stream.each(fn {indx, val} -> sync_command(indx, {:put, :no_log, {indx, val}}) end)
+    |> Stream.run
   end
   @doc """
   Execute a command across every available VNode
