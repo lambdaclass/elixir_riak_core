@@ -5,11 +5,6 @@ defmodule Riax.Application do
 
   use Application
 
-  @nodes [
-    :"dev1@127.0.0.1",
-    :"dev2@127.0.0.1",
-    :"dev3@127.0.0.1"
-  ]
   @impl true
   def start(_type, _args) do
     children = [
