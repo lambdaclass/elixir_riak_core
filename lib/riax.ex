@@ -53,6 +53,27 @@ defmodule Riax do
     sync_command(key, {:ping, key})
   end
 
+  ## ------------------------ File Cache CSV -----------------
+
+  def setup_csv do
+    "/Users/fran/Downloads/archive(3)/2020-04-17 Coronavirus Tweets.CSV"
+    |> File.stream!()
+    |> CSV.decode(headers: true)
+    |> Stream.with_index()
+    |> Stream.map(fn {val, indx} -> {indx, val} end)
+    |> Enum.each(fn {indx, val} -> sync_command(indx, val) end)
+    |> IO.inspect(label: :the_new_map)
+
+    # |> Stream.each(fn {val, indx} -> Riax.put(indx, val) end)
+
+    # end)
+
+    # path
+    # |> File.stream!()
+    # |> CSV.decode!(headers: true)
+    # |> Stream.with_index()
+    # |> Stream.map(fn {data, idx} -> put(idx, data) end)
+  end
 
   @doc """
   Execute a command across every available VNode
