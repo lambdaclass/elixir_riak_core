@@ -1,4 +1,6 @@
 defmodule Riax do
+  alias NimbleCSV.RFC4180, as: CSV
+
   @doc """
   Store a value tied to a key
   """
@@ -63,38 +65,38 @@ defmodule Riax do
     sync_command(key, {:ping, key})
   end
 
-  @doc """
-  Distribute a CSV among Riak Nodes.
-  """
   def setup_local_csv(path) do
-    curr_node = node()
-
     path
     |> File.ls!()
     |> Enum.map(fn csv -> path <> "/" <> csv end)
-    # |> Enum.take(10)
     |> IO.inspect(label: :result)
-    |> Enum.each(fn csv ->
-      csv
-      |> File.stream!(read_ahead: 100_000)
-      |> NimbleCSV.RFC4180.parse_stream()
-      |> Stream.with_index()
-      |> Stream.each(fn {row, indx} ->
-        case preferred_node_name(indx) do
-          ^curr_node ->
-            put(indx, row, :no_log)
-
-          _ ->
-            nil
-        end
-      end)
-      |> Stream.run()
-      |> IO.inspect(label: :result)
-    end)
+    |> Enum.each(&store_csv/1)
   end
 
-  def setup_every_node do
-    path = "/Users/fran/Downloads/archive"
+  defp store_csv(csv) do
+    curr_node = node()
+    csv
+    |> File.stream!(read_ahead: 100_000)
+    |> CSV.parse_stream()
+    |> Stream.with_index()
+    |> Stream.each(fn {row, indx} ->
+      case preferred_node_name(indx) do
+        ^curr_node ->
+          put(indx, row, :no_log)
+
+        _ ->
+          nil
+      end
+    end)
+    |> Stream.run()
+  end
+
+  @doc """
+  Distribute a CSV among Riak Nodes.
+  """
+  def setup_nodes do
+    path = "/Users/fran/Programming/Elixir/elixir_riak_core/csv"
+
     :rpc.multicall(Riax, :setup_local_csv, [path])
   end
 
