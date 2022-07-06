@@ -60,7 +60,9 @@ defmodule Riax do
   end
 
   @doc """
-  Execute a command across every available VNode
+  Execute a command across every available VNode.
+  This will start the coverage FSM (implemented in Riax.Coverage.Fsm), via
+  the coverage supervisor, and gather the results from every VNode.
   """
   defp coverage_command(command, timeout \\ 5000) do
     req_id = :erlang.phash2(:erlang.monotonic_time())
