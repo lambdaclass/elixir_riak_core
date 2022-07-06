@@ -11,7 +11,7 @@ defmodule Riax.VNode do
   end
 
   def handle_command({:ping, v}, _sender, state = %{partition: partition}) do
-    Logger.info("Received ping command!", state)
+    Logger.debug("Received ping command!", state)
     {:reply, {:pong, v + 1, node(), partition}, state}
   end
 
@@ -21,13 +21,13 @@ defmodule Riax.VNode do
   end
 
   def handle_command({:put, {k, v}}, _sender, state = %{data: data}) do
-    Logger.info("PUT Key: #{inspect(k)}, Value: #{inspect(v)}", state)
+    Logger.debug("PUT Key: #{inspect k}, Value: #{inspect v}", state)
     new_data = Map.put(data, k, v)
     {:reply, :ok, %{state | data: new_data}}
   end
 
   def handle_command({:get, key}, _sender, state = %{data: data}) do
-    Logger.info("GET #{key}", state)
+    Logger.debug("GET #{key}", state)
 
     reply =
       case Map.get(data, key) do

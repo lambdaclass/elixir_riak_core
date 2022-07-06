@@ -1,6 +1,11 @@
 defmodule Riax do
+  @moduledoc """
+  Module to superficially interact with the implemented VNodes, and
+  converage commands.
+  As the implemented VNode is mostly a Key-Value store,
+  this module reflects that.
+  """
   alias NimbleCSV.RFC4180, as: CSV
-
   @doc """
   Store a value tied to a key
   """
@@ -91,12 +96,10 @@ defmodule Riax do
         _ ->
           nil
       end
-    end)
-    |> Stream.run()
-  end
-
   @doc """
-  Execute a command across every available VNode
+  Execute a command across every available VNode.
+  This will start the coverage FSM (implemented in Riax.Coverage.Fsm), via
+  the coverage supervisor, and gather the results from every VNode.
   """
   defp coverage_command(command, timeout \\ 5000) do
     req_id = :erlang.phash2(:erlang.monotonic_time())
