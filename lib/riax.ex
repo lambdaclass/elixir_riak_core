@@ -2,10 +2,9 @@ defmodule Riax do
   @moduledoc """
   Module to superficially interact with the implemented VNodes, and
   converage commands.
-  As the implemented VNode is mostly a Key-Value store,
+  As the implemented VNode is mostly a Key-Value store (for now)
   this module reflects that.
   """
-  alias NimbleCSV.RFC4180, as: CSV
 
   @doc """
   Store a value tied to a key
