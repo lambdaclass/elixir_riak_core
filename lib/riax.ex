@@ -65,16 +65,19 @@ defmodule Riax do
     sync_command(key, {:ping, key})
   end
 
-  def setup_local_csv(path) do
-    path
-    |> File.ls!()
-    |> Enum.map(fn csv -> path <> "/" <> csv end)
-    |> IO.inspect(label: :result)
-    |> Enum.each(&store_csv/1)
+  @doc """
+  Distribute the given path's CSV among Riak Nodes.
+  """
+  def distribute_csv(path) do
+    :rpc.multicall(Riax, :setup_local_csv, [path])
   end
 
+  @doc """
+  Stores a CSV in the running node's assigned ring partitions.
+  """
   defp store_csv(csv) do
     curr_node = node()
+
     csv
     |> File.stream!(read_ahead: 100_000)
     |> CSV.parse_stream()
@@ -89,15 +92,6 @@ defmodule Riax do
       end
     end)
     |> Stream.run()
-  end
-
-  @doc """
-  Distribute a CSV among Riak Nodes.
-  """
-  def setup_nodes do
-    path = "/Users/fran/Programming/Elixir/elixir_riak_core/csv"
-
-    :rpc.multicall(Riax, :setup_local_csv, [path])
   end
 
   @doc """
