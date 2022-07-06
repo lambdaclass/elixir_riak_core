@@ -1,4 +1,9 @@
 defmodule Riax.Coverage.Fsm do
+  @moduledoc """
+   This module handles coverage commands.
+   That is, a command that runs across every available Virtual Node,
+   and gathers their answers.
+  """
   require Logger
   @behaviour :riak_core_coverage_fsm
   def start_link(req_id, client_pid, request, timeout) do
