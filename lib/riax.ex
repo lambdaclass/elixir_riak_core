@@ -6,6 +6,7 @@ defmodule Riax do
   this module reflects that.
   """
   alias NimbleCSV.RFC4180, as: CSV
+
   @doc """
   Store a value tied to a key
   """
@@ -70,32 +71,6 @@ defmodule Riax do
     sync_command(key, {:ping, key})
   end
 
-  @doc """
-  Distribute the given path's CSV among Riak Nodes.
-  """
-  def distribute_csv(path) do
-    :rpc.multicall(Riax, :setup_local_csv, [path])
-  end
-
-  @doc """
-  Stores a CSV in the running node's assigned ring partitions.
-  Each of the CSV's rows are stored using the row's index number as key.
-  """
-  def store_csv(csv) do
-    curr_node = node()
-
-    csv
-    |> File.stream!(read_ahead: 100_000)
-    |> CSV.parse_stream()
-    |> Stream.with_index()
-    |> Stream.each(fn {row, indx} ->
-      case preferred_node_name(indx) do
-        ^curr_node ->
-          put(indx, row, :no_log)
-
-        _ ->
-          nil
-      end
   @doc """
   Execute a command across every available VNode.
   This will start the coverage FSM (implemented in Riax.Coverage.Fsm), via
