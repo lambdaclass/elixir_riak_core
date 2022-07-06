@@ -62,18 +62,42 @@ defmodule Riax do
   def ping(key) do
     sync_command(key, {:ping, key})
   end
+
   @doc """
   Distribute a CSV among Riak Nodes.
   """
-  def setup_csv(path) do
+  def setup_local_csv(path) do
+    curr_node = node()
+
     path
-    |> File.stream!()
-    |> CSV.decode(headers: true)
-    |> Stream.with_index()
-    |> Stream.map(fn {val, indx} -> {indx, val} end)
-    |> Stream.each(fn {indx, val} -> sync_command(indx, {:put, :no_log, {indx, val}}) end)
-    |> Stream.run
+    |> File.ls!()
+    |> Enum.map(fn csv -> path <> "/" <> csv end)
+    # |> Enum.take(10)
+    |> IO.inspect(label: :result)
+    |> Enum.each(fn csv ->
+      csv
+      |> File.stream!(read_ahead: 100_000)
+      |> NimbleCSV.RFC4180.parse_stream()
+      |> Stream.with_index()
+      |> Stream.each(fn {row, indx} ->
+        case preferred_node_name(indx) do
+          ^curr_node ->
+            put(indx, row, :no_log)
+
+          _ ->
+            nil
+        end
+      end)
+      |> Stream.run()
+      |> IO.inspect(label: :result)
+    end)
   end
+
+  def setup_every_node do
+    path = "/Users/fran/Downloads/archive"
+    :rpc.multicall(Riax, :setup_local_csv, [path])
+  end
+
   @doc """
   Execute a command across every available VNode
   """
@@ -116,6 +140,7 @@ defmodule Riax do
   """
   defp sync_command(key, command) do
     {:ok, node} = preferred_node(key)
+
     :riak_core_vnode_master.sync_spawn_command(node, command, Riax.VNode_master)
   end
 
