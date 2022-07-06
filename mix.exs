@@ -20,7 +20,7 @@ defmodule Riax.MixProject do
   def application do
     [
       mod: {Riax.Application, []},
-      applications: [:phoenix, :cowboy, :riak_core],
+      applications: [:phoenix, :cowboy, :riak_core, :phoenix_html],
       extra_applications: [:logger, :runtime_tools]
     ]
   end
