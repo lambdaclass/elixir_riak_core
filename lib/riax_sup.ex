@@ -7,7 +7,6 @@ defmodule Riax.Supervisor do
   end
 
   def init(vnode: vnode, coverage: coverage) do
-    # Register Vnode implementation
     :ok = :riak_core.register(vnode_module: vnode)
     # Give name to the service
     :ok = :riak_core_node_watcher.service_up(:riax_service, self())
