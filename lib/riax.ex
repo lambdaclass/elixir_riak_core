@@ -110,7 +110,7 @@ defmodule Riax do
 
   @doc """
   Use the VNode master to send a command
-  to the VNode that receive the key
+  to the VNode that receives the key
   """
   defp sync_command(key, command) do
     {:ok, node} = preferred_node(key)
