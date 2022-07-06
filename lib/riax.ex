@@ -1,5 +1,4 @@
 defmodule Riax do
-  ## ------------------------------- Key Value API -----------------
   @doc """
   Store a value tied to a key
   """
