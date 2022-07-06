@@ -1,4 +1,10 @@
 defmodule Riax do
+  @moduledoc """
+  Module to superficially interact with the implemented VNodes, and
+  converage commands.
+  As the implemented VNode is mostly a Key-Value store,
+  this module reflects that.
+  """
   @doc """
   Store a value tied to a key
   """
