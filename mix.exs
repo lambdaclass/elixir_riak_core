@@ -50,8 +50,7 @@ defmodule Riax.MixProject do
       {:cuttlefish,
        git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
       {:hut, "~> 1.3", manager: :rebar3, override: true},
-      {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"},
-      {:csv, "~> 2.4"}
+      {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"}
     ]
   end
 
