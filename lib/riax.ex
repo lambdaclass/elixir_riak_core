@@ -74,6 +74,7 @@ defmodule Riax do
 
   @doc """
   Stores a CSV in the running node's assigned ring partitions.
+  Each of the CSV's rows are stored using the row's index number as key.
   """
   defp store_csv(csv) do
     curr_node = node()
