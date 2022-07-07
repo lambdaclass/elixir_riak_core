@@ -1,6 +1,6 @@
 defmodule Riax do
   @moduledoc """
-  Module to interact with the VNode given
+  Module to interact with the VNode module given
   to the Riax.Supervisor module
   """
 
