@@ -156,16 +156,34 @@ defmodule Riax do
   Execute a command across every available VNode.
   This will start the coverage FSM (implemented in `Riax.Coverage.Fsm`), via
   the coverage supervisor, and gather the results from every VNode.
+  Be careful, coverage commands can be quite expensive.
+  The results are gathered as a list of 3 tuple elements: {partition, node, data}
+  ## Parameters:
+    - command: Command for the VNode, should match the first argument of a
+               handle_coverage/4 definition from your VNode.
+    - timeout: timeout in microseconds, 5000 by default.
 
-  The command argument should match the first argument of a
-  handle_coverage/4 definition from your VNode.
+  ## Example:
   Let's say we want to call this function:
   ```
-  def handle_coverage(:ping, _, _, _), do: {:reply, :pong, %{}}
+  def handle_coverage(:keys, _key_spaces, {_, req_id, _}, state = %{data: data}) do
+    keys = Map.keys(data)
+    {:reply, {req_id, keys}, state}
+  end
   ```
   Then, we must do:
   ```
-  coverage_command(:ping, 5000)
+  iex(dev2@127.0.0.1)6> Riax.coverage_command(:keys)
+    14:25:33.084 [info] Starting coverage request 74812649 keys
+    {:ok,
+    [
+    {1027618338748291114361965898003636498195577569280, :"dev2@127.0.0.1", '\f'},
+    {936274486415109681974235595958868809467081785344, :"dev2@127.0.0.1", [22]},
+    {1415829711164312202009819681693899175291684651008, :"dev2@127.0.0.1", 'E'},
+    {1392993748081016843912887106182707253109560705024, :"dev2@127.0.0.1", 'AV'},
+    {959110449498405040071168171470060731649205731328, :"dev2@127.0.0.1", 'CZ'},
+    ...
+    ]
   ```
   """
   def coverage_command(command, timeout \\ 5000) do
