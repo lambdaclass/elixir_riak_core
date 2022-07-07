@@ -15,7 +15,7 @@ defmodule Riax do
   ```
   iex(dev2@127.0.0.1)3> Riax.ring_status
     ==================================== Nodes ====================================
-    Node a: 64 (100.0%) dev1@127.0.0.1
+    Node a: 64 (100.0%) dev2@127.0.0.1
     ==================================== Ring =====================================
     aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
     :ok
