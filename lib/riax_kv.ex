@@ -1,4 +1,7 @@
 defmodule Riax.KV do
+  @moduledoc """
+  Riax Key-Value API
+  """
   @doc """
   Store a value tied to a key
   """
