@@ -7,7 +7,7 @@ defmodule Riax do
   @doc """
   Prints the [ring status](https://github.com/basho/riak_core/wiki#ring).
   The ring is, basically, a representation of the partitioned keys over nodes.
-  Here's a [visual representation] (https://github.com/lambdaclass/riak_core_tutorial/blob/master/ring.png)
+  Here's a [visual representation](https://github.com/lambdaclass/riak_core_tutorial/blob/master/ring.png)
   of said ring
   ## Example:
   Join 2 running nodes and print the ring, to see the key
