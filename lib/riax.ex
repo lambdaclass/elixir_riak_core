@@ -160,7 +160,7 @@ defmodule Riax do
   The results are gathered as a list of 3 tuple elements: {partition, node, data}
   ## Parameters:
     - command: Command for the VNode, should match the first argument of a
-               handle_coverage/4 definition from your VNode.
+               `handle_coverage/4` definition from your VNode.
     - timeout: timeout in microseconds, 5000 by default.
 
   ## Example:
