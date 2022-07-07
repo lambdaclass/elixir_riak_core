@@ -1,58 +1,39 @@
 defmodule Riax do
   @moduledoc """
-  Module to superficially interact with the implemented VNodes, and
-  converage commands.
-  As the implemented VNode is mostly a Key-Value store (for now)
-  this module reflects that.
+  Module to interact with the VNode given
+  to the Riax.Supervisor module
   """
 
   @doc """
-  Store a value tied to a key
-  """
-  def put(key, value) do
-    sync_command(key, {:put, {key, value}})
-  end
-
-  @doc """
-  Store a value tiead to a key, but do not
-  log it.
-
-  Ideal to store fast.
-  """
-  def put(key, value, :no_log) do
-    sync_command(key, {:put, :no_log, {key, value}})
-  end
-
-  @doc """
-  Retrieve a key's value
-  """
-  def get(key) do
-    sync_command(key, {:get, key})
-  end
-
-  @doc """
-  Retrieve keys
-  """
-  def keys() do
-    coverage_command(:keys)
-  end
-
-  @doc """
-  Set an empty data state for every available VNode
-  """
-  def clear() do
-    coverage_command(:clear)
-  end
-
-  @doc """
-  Return every value of every available VNode
-  """
-  def values() do
-    coverage_command(:values)
-  end
-
-  @doc """
-  Print the ring status
+  Prints the [ring status](https://github.com/basho/riak_core/wiki#ring).
+  The ring is, basically, a representation of the partitioned keys over nodes.
+  Here's a [visual representation] (https://github.com/lambdaclass/riak_core_tutorial/blob/master/ring.png)
+  of said ring
+  ## Example:
+  Join 2 running nodes and print the ring, to see the key
+  distribution (handoff) result:
+  ```
+  iex(dev2@127.0.0.1)3> Riax.ring_status
+    ==================================== Nodes ====================================
+    Node a: 64 (100.0%) dev1@127.0.0.1
+    ==================================== Ring =====================================
+    aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
+    :ok
+  iex(dev2@127.0.0.1)13> Riax.join('dev1@127.0.0.1')
+    13:51:21.258 [debug] Handoff starting with target: {:hinted, {913438523331814323877303020447676887284957839360, :"dev1@127.0.0.1"}}
+    ...
+  iex(dev2@127.0.0.1)6> Riax.ring_status
+    ==================================== Nodes ====================================
+    Node a: 64 (100.0%) dev1@127.0.0.1
+    Node b: 0 (  0.0%) dev2@127.0.0.1
+    ...
+  iex(dev2@127.0.0.1)11> Riax.ring_status
+    ==================================== Nodes ====================================
+    Node a: 32 ( 50.0%) dev1@127.0.0.1
+    Node b: 32 ( 50.0%) dev2@127.0.0.1
+    ==================================== Ring =====================================
+    abba|abba|abba|abba|abba|abba|abba|abba|abba|abba|abba|abba|abba|abba|abba|abba|
+  ```
   """
   def ring_status() do
     {:ok, ring} = :riak_core_ring_manager.get_my_ring()
@@ -60,47 +41,36 @@ defmodule Riax do
   end
 
   @doc """
-  :pong!
+  Join the running node with the given argument node.
+  This will automatically trigger the handoff - the nodes
+  will start distributing partitions (and therefore, keys)
+  between them. See the ring_status/0 example.
   """
-  def ping() do
-    ping(:os.timestamp())
-  end
-
-  def ping(key) do
-    sync_command(key, {:ping, key})
-  end
-
-  @doc """
-  Execute a command across every available VNode.
-  This will start the coverage FSM (implemented in Riax.Coverage.Fsm), via
-  the coverage supervisor, and gather the results from every VNode.
-  """
-  defp coverage_command(command, timeout \\ 5000) do
-    req_id = :erlang.phash2(:erlang.monotonic_time())
-
-    {:ok, _} = Riax.Coverage.Sup.start_fsm([req_id, self(), command, timeout])
-
-    receive do
-      {^req_id, val} -> val
-    end
+  def join(node) do
+    :riak_core.join(node)
   end
 
   @doc """
-  Return the node's name which is most likely
-  to receive the given key as a parameter
-  """
-  def preferred_node_name(key) do
-    {:ok, {_, name}} = preferred_node(key)
-    name
-  end
+  This is actually the head of the Active Preference List:
+  a list of the available VNodes to handle a given request.
+  We always use the first available one.
 
-  @doc """
-  Return the node's {index, name} tuple which is most likely
-  to receive the given key as a parameter
+  The VNode is represented and returned as: {index, node_name}.
+  The first element denotes the first key in the partition the vnode is
+  responsible for (as an integer), and the second element refers to
+  the (physical) node the vnode is running on.
+
+
+  ## Parameters:
+    - key: can be any erlang term, but it is
+      recommended to use numbers or strings.
+    - bucket: is the name of the bucket for this key.
+      A bucket is a "namespace" for a given Key.
+      [Check this](https://github.com/basho/riak_core/wiki#buckets)
+      for more.
   """
-  defp preferred_node(key) do
-    # Get the key's hash
-    doc_idx = hash_key(key)
+  def preferred_node(key, bucket \\ "riax") do
+    doc_idx = hash_key(key, bucket)
     # Get the preferred node for the given key
     case :riak_core_apl.get_apl(doc_idx, 1, :riax_service) do
       [{index_node, node_name}] -> {:ok, {index_node, node_name}}
@@ -109,19 +79,104 @@ defmodule Riax do
   end
 
   @doc """
-  Use the VNode master to send a command
-  to the VNode that receives the key
+  Like `preferred_node/2`, but returns only
+  the node's name.
   """
-  defp sync_command(key, command) do
-    {:ok, node} = preferred_node(key)
+  def preferred_node_name(key, bucket \\ "riax") do
+    {:ok, {_, name}} = preferred_node(key, bucket)
+    name
+  end
+
+  @doc """
+  Use the VNode master to send a *synchronous* command
+  to the VNode that receives the key.
+  Keep in mind this *blocks* the Master VNode's process,
+  and will not be able multiple requests concurrently.
+  ## Parameters:
+    - key: Can be any erlang term, but it is
+      recommended to use a number or a binary.
+      This is used to determine on which
+      partition will end up, and therefore which VNode
+      handles the command.
+    - bucket: Is the name of the bucket for this key.
+    - command: The command to send to the VNode.
+      This will try to match with the defined handle_command/3
+      clause in the VNode module.
+  ## Example:
+  Let's say we have this function in our VNode module:
+  ```
+  def handle_command({:ping, v}, _sender, _state) do
+    Logger.debug("Received ping command!", state)
+    {:reply, {:pong, v + 1, node(), partition}, state}
+  end
+  ```
+  We can interact with it like this:
+  ```
+  iex(dev1@127.0.0.1)> Riax.sync_command(1, "riax", {:ping, 1})
+    13:13:08.004 [debug] Received ping command!
+    {:pong, 2, :"dev1@127.0.0.1", 822094670998632891489572718402909198556462055424}
+  ```
+  """
+  def sync_command(key, bucket \\ "riax", command) do
+    {:ok, node} = preferred_node(key, bucket)
+
+    :riak_core_vnode_master.sync_command(node, command, Riax.VNode_master)
+  end
+
+  @doc """
+    Same as sync_command/3 but does not block the Master VNode's process.
+    That is, it lets the Master VNode handle multiple requests concurrently.
+  """
+  def async_command(key, bucket \\ "riax", command) do
+    {:ok, node} = preferred_node(key, bucket)
 
     :riak_core_vnode_master.sync_spawn_command(node, command, Riax.VNode_master)
   end
 
   @doc """
-  Hash a key with the default bucket being "riak"
+    Works like sync_command/3, but does not generate a response
+    from the VNode that handles the request.
+    In that way, it's similar to how GenServer.cast/2 works.
+    Following sync_comand/3's example, its usage would be like this:
+    ```
+    iex(dev1@127.0.0.1)3> Riax.cast_command(1, "riax", {:ping, 1})
+    :ok
+    13:36:19.742 [debug] Received ping command!
+    ```
+    As you can see, the VNode does handle the request and logs it, but
+    we only get an :ok as return value, like GenServer.cast/2.
   """
-  defp hash_key(key), do: hash_key(key, <<"riak">>)
+  def cast_command(key, bucket \\ "riax", command) do
+    {:ok, node} = preferred_node(key, bucket)
+
+    :riak_core_vnode_master.command(node, command, Riax.VNode_master)
+  end
+
+  @doc """
+  Execute a command across every available VNode.
+  This will start the coverage FSM (implemented in `Riax.Coverage.Fsm`), via
+  the coverage supervisor, and gather the results from every VNode.
+
+  The command argument should match the first argument of a
+  handle_coverage/4 definition from your VNode.
+  Let's say we want to call this function:
+  ```
+  def handle_coverage(:ping, _, _, _), do: {:reply, :pong, %{}}
+  ```
+  Then, we must do:
+  ```
+  coverage_command(:ping, 5000)
+  ```
+  """
+  def coverage_command(command, timeout \\ 5000) do
+    req_id = :erlang.phash2(:erlang.monotonic_time())
+
+    {:ok, _} = Riax.Coverage.Sup.start_fsm([req_id, self(), command, timeout])
+
+    receive do
+      {^req_id, val} -> val
+    end
+  end
 
   @doc """
   Hash a key inside the given bucket name
