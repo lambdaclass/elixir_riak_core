@@ -3,7 +3,7 @@ defmodule RiaxWeb.API do
 
   def index(conn, %{"num" => num}) do
     {num, ""} = Integer.parse(num)
-    tweet = Riax.get(num)
+    tweet = Riax.KV.get(num)
     render(conn, "index.json", tweet: tweet)
   end
 end

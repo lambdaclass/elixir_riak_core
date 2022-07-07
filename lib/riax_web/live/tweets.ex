@@ -5,7 +5,7 @@ defmodule RiaxWeb.Tweetslive do
     {num, ""} = Integer.parse(num, 10)
 
     tweets =
-      Enum.map((num * 10)..(num * 10 + 10), fn x -> {Riax.preferred_node_name(x), Riax.get(x)} end)
+      Enum.map((num * 10)..(num * 10 + 10), fn x -> {Riax.preferred_node_name(x), Riax.KV.get(x)} end)
 
     {:ok,
      assign(
