@@ -4,8 +4,15 @@ A tutorial on how to cache files over several Riak Nodes.
   * Install dependencies with `mix deps.get`
   * Start the Riak Nodes with `make node1`, `make node2`, `make node3`, this will
     have to be done on separate terminals, or using something like Tmux.
-  * Now, try to join the nodes using `:riak_core.join(node@host)` and use the Riax
+  * Now, in one of the terminals you've just opened with `make node{i}` try to
+    join the nodes using `:riak_core.join(node@host)` and use the Riax
     module as an API connecting to each Node.
+    For example, supposing you're in node1's terminal:
+    ```elixir
+    iex(dev1@127.0.0.1)> :riak_core.join('dev2@127.0.0.1')
+    iex(dev1@127.0.0.1)> :riak_core.join('dev3@127.0.0.1')
+    iex(dev1@127.0.0.1)> Riax.ring_status
+    ``` 
 ## Riak Setup:
   *  PLACEHOLDER: This is where the setup of Riak using the Elixir library
      would be. This could be either a setup here, o a link to the library.
