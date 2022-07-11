@@ -27,6 +27,8 @@ defmodule Riax do
     Node a: 64 (100.0%) dev1@127.0.0.1
     Node b: 0 (  0.0%) dev2@127.0.0.1
     ...
+  # After a little while, run the command again
+  # to check the ring status.
   iex(dev2@127.0.0.1)11> Riax.ring_status
     ==================================== Nodes ====================================
     Node a: 32 ( 50.0%) dev1@127.0.0.1
