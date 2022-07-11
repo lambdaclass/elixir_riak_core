@@ -82,6 +82,10 @@ defmodule Riax.VNode do
 
   defdelegate delete(state), to: @vnode_module
 
+  def terminate(reason, %{partition: partition}) do
+    Logger.debug("terminate #{inspect(partition)}: #{inspect(reason)}")
+    :ok
+  end
   def encode_handoff_item(k, v) do
     Logger.debug("Encode handoff item: #{k} #{v}")
     :erlang.term_to_binary({k, v})
