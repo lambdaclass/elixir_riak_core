@@ -15,10 +15,6 @@ defmodule Riax.VNode do
     :riak_core_vnode_master.get_vnode_pid(partition, __MODULE__)
   end
 
-  def init([partition]) do
-    {:ok, %{partition: partition, data: %{}}}
-  end
-
   @type partition :: :chash.index_as_int()
   @type vnode_req() :: any()
   @type keyspaces() :: [{partition(), [partition()]}]
@@ -32,7 +28,7 @@ defmodule Riax.VNode do
           {:riak_core_handoff_manager.ho_type(), {partition(), node()}}
 
   @doc """
-  This callback is responsible of answering commands
+  Responsible of answering commands
   sent with either `Riax.sync_command/3`, `Riax.async_command/3` or
   `Riax.cast_command/3`.
   """
@@ -44,12 +40,14 @@ defmodule Riax.VNode do
               | {:stop, reason :: term(), new_mod_state :: term()}
 
   @doc """
-  This callback is called when a handoff finishes.
+  Called when a handoff finishes.
   """
   @callback handoff_finished(handoff_dest(), state :: any()) ::
               {:ok, new_state :: term()}
   @doc """
-  This callback is called when a handoff starts.
+  Callback is called when a handoff starts.
+  If it returns {:false, state}, the handoff stops, else
+  it continues.
   """
   @callback handoff_starting(handoff_dest(), state :: any()) ::
               {boolean(), new_state :: any()}
@@ -61,24 +59,49 @@ defmodule Riax.VNode do
               {boolean(), new_state :: term()}
               | {false, size :: pos_integer(), new_state :: any()}
   @doc """
-  Called when a
+  Called when the VNode data is going to be deleted.
   """
   @callback delete(state :: any()) :: {:ok, new_state :: any()}
 
+  @doc """
+  When a handoff is in progress, data is received by the new vnode and must
+  decode it and do something with it, this is done by this callback.
+  """
   @callback handle_handoff_data(binary(), state :: any()) ::
               {:reply, :ok | {:error, reason :: term()}, state :: any()}
+  @doc """
+  Handles a command given by the `Riax.coverage_command/2` function.
+  """
   @callback handle_coverage(request :: any(), keyspaces(), sender :: sender(), state :: any()) ::
               :continue
               | {:reply, reply :: any(), new_state :: any()}
               | {:noreply, new_state :: any()}
               | {:async, work :: function(), from :: sender(), new_state :: any()}
               | {:stop, reason :: any(), new_state :: any()}
+  @doc """
+  Callback called in a the case that a process linked to the VNode process dies
+  and allows the module using the behaviour to take appropiate action.
+  """
   @callback handle_exit(pid(), reason :: any(), state :: any()) ::
               {:noreply, new_mod_state :: any()}
               | {:stop, reason :: any(), new_state :: any()}
   @callback handoff_cancelled(state :: any()) :: {:ok, new_state :: any()}
+  @doc """
+  This function is called before sending data to another running
+  vnode.
+  """
+  @callback encode_handoff_item(key :: any(), value :: any()) :: {:ok, new_state :: any()}
 
+  @doc """
+  Set up VNode state and data structure. It recieves
+  its assigned partitions and should return its initial state.
+  """
+  @callback init([partition()]) :: {:ok, initial_state :: any()}
   # Delegate this functions to the library user,
+  defdelegate init(partitions), to: @vnode_module
+
+  defdelegate encode_handoff_item(k, v), to: @vnode_module
+
   defdelegate handle_command(request, sender, state), to: @vnode_module
 
   defdelegate handoff_finished(dest, state), to: @vnode_module
@@ -89,8 +112,6 @@ defmodule Riax.VNode do
 
   defdelegate is_empty(state), to: @vnode_module
 
-  defdelegate terminate(reason, partition), to: @vnode_module
-
   defdelegate handle_handoff_data(bin_data, state), to: @vnode_module
 
   defdelegate handle_coverage(command, keyspaces, sender, state), to: @vnode_module
@@ -99,13 +120,9 @@ defmodule Riax.VNode do
 
   defdelegate delete(state), to: @vnode_module
 
-  def terminate(reason, %{partition: partition}) do
+  def terminate(reason, partition) do
     Logger.debug("terminate #{inspect(partition)}: #{inspect(reason)}")
     :ok
-  end
-  def encode_handoff_item(k, v) do
-    Logger.debug("Encode handoff item: #{k} #{v}")
-    :erlang.term_to_binary({k, v})
   end
 
   def handle_overload_command(_, _, _), do: :ok

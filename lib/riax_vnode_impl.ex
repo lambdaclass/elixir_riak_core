@@ -1,6 +1,10 @@
 defmodule Riax.VNode.Impl do
   require Logger
   @behaviour Riax.VNode
+  def init([partition]) do
+    {:ok, %{partition: partition, data: %{}}}
+  end
+
   def handle_command({:ping, v}, _sender, state = %{partition: partition}) do
     Logger.debug("Received ping command!", state)
     {:reply, {:pong, v + 1, node(), partition}, state}
@@ -74,12 +78,17 @@ defmodule Riax.VNode.Impl do
   end
 
   def delete(state) do
-    Logger.debug("deleting the vnode data")
+    Logger.debug("Deleting the vnode data")
     {:ok, %{state | data: %{}}}
   end
 
+  def encode_handoff_item(k, v) do
+    Logger.debug("Encode handoff item: #{k} #{v}")
+    :erlang.term_to_binary({k, v})
+  end
+
   def handle_handoff_data(bin_data, state) do
-    Logger.debug("[handle_handoff_data] bin_data: #{inspect(bin_data)} - #{inspect(state)}")
+    Logger.debug("Handle handoff data - bin_data: #{inspect(bin_data)} - #{inspect(state)}")
     {k, v} = :erlang.binary_to_term(bin_data)
     new_state = Map.update(state, :data, %{}, fn data -> Map.put(data, k, v) end)
     {:reply, :ok, new_state}
@@ -110,6 +119,7 @@ defmodule Riax.VNode.Impl do
 
     {:noreply, state}
   end
+
   def handoff_cancelled(state) do
     Logger.error("Handoff cancelled with state: #{state}")
     {:ok, state}
