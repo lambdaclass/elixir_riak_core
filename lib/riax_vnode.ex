@@ -31,6 +31,11 @@ defmodule Riax.VNode do
   @type handoff_dest() ::
           {:riak_core_handoff_manager.ho_type(), {partition(), node()}}
 
+  @doc """
+  This callback is responsible of answering commands
+  sent with either `Riax.sync_command/3`, `Riax.async_command/3` or
+  `Riax.cast_command/3`.
+  """
   @callback handle_command(request :: any(), sender :: sender(), mod_state :: any()) ::
               :continue
               | {:reply, reply :: term(), new_mod_state :: term()}
@@ -44,7 +49,7 @@ defmodule Riax.VNode do
   @callback handoff_finished(handoff_dest(), state :: any()) ::
               {:ok, new_state :: term()}
   @doc """
-  This callback is called when a handoff startes.
+  This callback is called when a handoff starts.
   """
   @callback handoff_starting(handoff_dest(), state :: any()) ::
               {boolean(), new_state :: any()}
@@ -81,6 +86,7 @@ defmodule Riax.VNode do
   defdelegate handoff_starting(target_node, state), to: @vnode_module
 
   defdelegate handoff_cancelled(state), to: @vnode_module
+
   defdelegate is_empty(state), to: @vnode_module
 
   defdelegate terminate(reason, partition), to: @vnode_module
