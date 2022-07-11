@@ -17,7 +17,12 @@ defmodule RiaxWeb.Router do
   scope "/", RiaxWeb do
     pipe_through([:browser])
 
-    live "/", Counterlive
+    live "/csv/:num", Tweetslive
+  end
+  scope "/api", RiaxWeb do
+    pipe_through([:api])
+
+    get "/:num", API, :index
   end
 
   # Other scopes may use custom stacks.
