@@ -73,11 +73,6 @@ defmodule Riax.VNode.Impl do
     {is_empty, state}
   end
 
-  def terminate(reason, %{partition: partition}) do
-    Logger.debug("terminate #{inspect(partition)}: #{inspect(reason)}")
-    :ok
-  end
-
   def delete(state) do
     Logger.debug("deleting the vnode data")
     {:ok, %{state | data: %{}}}
