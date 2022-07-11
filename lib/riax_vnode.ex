@@ -55,7 +55,7 @@ defmodule Riax.VNode do
               {boolean(), new_state :: any()}
   @doc """
   This callback is used to determine if the
-  VNode's state data structrue is empty.
+  VNode's state data structure is empty.
   """
   @callback is_empty(state :: term()) ::
               {boolean(), new_state :: term()}
