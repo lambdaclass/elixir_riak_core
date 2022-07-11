@@ -1,176 +1,138 @@
 defmodule Riax.VNode do
-  defmacro __using__(_) do
-    quote do
-      require Logger
-      @behaviour :riak_core_vnode
-      def start_vnode(partition) do
-        :riak_core_vnode_master.get_vnode_pid(partition, __MODULE__)
-      end
+  @moduledoc """
+  This module is an implementation of the VNode
+  behaviour provided by Riak Core. It's meant to hide some
+  ugly details of setting up a node using Riak Core directly
+  as a dependency. The core logic, that is, init functions,
+  handling of commands, etc. is delegated to a node given
+  in the config. Said node must implement the `Riax.VNode` behaviour
+  """
+  require Logger
+  @behaviour :riak_core_vnode
+  @vnode_module Application.fetch_env!(:riax, :vnode)
 
-      def init([partition]) do
-        {:ok, %{partition: partition, data: %{}}}
-      end
+  def start_vnode(partition) do
+    :riak_core_vnode_master.get_vnode_pid(partition, __MODULE__)
+  end
 
-      defdelegate handle_command(command, sender, state), to: __MODULE__
+  def init([partition]) do
+    {:ok, %{partition: partition, data: %{}}}
+  end
 
-      # def handle_command(command, sender, state) do
+  @type partition :: :chash.index_as_int()
+  @type vnode_req() :: any()
+  @type keyspaces() :: [{partition(), [partition()]}]
+  @type sender_type() :: :fsm | :server | :raw
+  @type sender() ::
+          {sender_type(), reference() | tuple(), pid()}
+          | {:server, :undefined, :undefined}
+          | {:fsm, :undefined, pid()}
+          | :ignore
+  @type handoff_dest() ::
+          {:riak_core_handoff_manager.ho_type(), {partition(), node()}}
 
-      #   __MODULE__.handle_command(command, sender, state)
-      # end
+  @callback handle_command(request :: any(), sender :: sender(), mod_state :: any()) ::
+              :continue
+              | {:reply, reply :: term(), new_mod_state :: term()}
+              | {:noreply, new_mode_state :: term()}
+              | {:async, work :: function(), from :: sender(), new_mod_state :: term()}
+              | {:stop, reason :: term(), new_mod_state :: term()}
 
-      def handle_command({:ping, v}, _sender, state = %{partition: partition}) do
-        Logger.debug("Received ping command!", state)
-        {:reply, {:pong, v + 1, node(), partition}, state}
-      end
+  @callback handoff_finished(handoff_dest(), state :: any()) ::
+              {:ok, new_state :: term()}
+  @callback handoff_starting(handoff_dest(), state :: any()) ::
+              {boolean(), new_state :: any()}
+  @callback is_empty(state :: term()) ::
+              {boolean(), new_state :: term()}
+              | {false, size :: pos_integer(), new_mod_state :: any()}
+  @callback terminate(reason :: any(), mod_state :: any()) ::
+              :ok
+  @callback delete(state :: any()) :: {:ok, new_state :: any()}
 
-      def handle_command({:put, :no_log, {k, v}}, _sender, state = %{data: data}) do
-        new_data = Map.put(data, k, v)
-        {:reply, :ok, %{state | data: new_data}}
-      end
+  @callback handle_handoff_data(binary(), state :: any()) ::
+              {:reply, :ok | {:error, reason :: term()}, state :: any()}
+  @callback handle_coverage(request :: any(), keyspaces(), sender :: sender(), state :: any()) ::
+              :continue
+              | {:reply, reply :: any(), new_state :: any()}
+              | {:noreply, new_state :: any()}
+              | {:async, work :: function(), from :: sender(), new_state :: any()}
+              | {:stop, reason :: any(), new_state :: any()}
+  @callback handle_exit(pid(), reason :: any(), state :: any()) ::
+              {:noreply, new_mod_state :: any()}
+              | {:stop, reason :: any(), new_state :: any()}
+  @callback handoff_cancelled(state :: any()) :: {:ok, new_state :: any()}
 
-      def handle_command({:put, {k, v}}, _sender, state = %{data: data}) do
-        Logger.debug("PUT Key: #{inspect(k)}, Value: #{inspect(v)}", state)
-        new_data = Map.put(data, k, v)
-        {:reply, :ok, %{state | data: new_data}}
-      end
+  # Delegate this functions to the library user,
+  defdelegate handle_command(request, sender, state), to: @vnode_module
 
-      def handle_command({:get, key}, _sender, state = %{data: data}) do
-        Logger.debug("GET #{key}", state)
+  defdelegate handoff_finished(dest, state), to: @vnode_module
 
-        reply =
-          case Map.get(data, key) do
-            nil -> :not_found
-            value -> value
-          end
+  defdelegate handoff_starting(target_node, state), to: @vnode_module
 
-        {:reply, reply, state}
-      end
+  defdelegate is_empty(state), to: @vnode_module
 
-      def handle_command({:delete, key}, _sender, state = %{data: data}) do
-        Logger.debug("DELETE #{inspect(key)}", state)
-        new_data = Map.delete(data, key)
-        {:reply, Map.get(data, key, :not_found), %{state | data: new_data}}
-      end
+  defdelegate terminate(reason, partition), to: @vnode_module
 
-      def handle_command(message, _sender, state) do
-        Logger.debug("unhandle command #{inspect(message)}")
-        {:noreply, state}
-      end
+  defdelegate handle_handoff_data(bin_data, state), to: @vnode_module
 
-      def handoff_finished(dest, state = %{partition: partition}) do
-        Logger.debug(
-          "[Handoff] Finished with target: #{inspect(dest)}, partition: #{inspect(partition)}"
-        )
+  defdelegate handle_coverage(command, keyspaces, sender, state), to: @vnode_module
 
-        {:ok, state}
-      end
+  defdelegate handle_exit(pid, reason, state), to: @vnode_module
 
-      def handoff_starting(target_node, state = %{partition: partition}) do
-        Logger.debug("Handoff starting with target: #{inspect(target_node)}", state)
-        {true, state}
-      end
+  defdelegate delete(state), to: @vnode_module
 
-      require Record
+  def encode_handoff_item(k, v) do
+    Logger.debug("Encode handoff item: #{k} #{v}")
+    :erlang.term_to_binary({k, v})
+  end
 
-      Record.defrecord(
-        :fold_req_v1,
-        :riak_core_fold_req_v1,
-        Record.extract(:riak_core_fold_req_v1, from_lib: "riak_core/include/riak_core_vnode.hrl")
-      )
+  def handle_overload_command(_, _, _) do
+    :ok
+  end
 
-      Record.defrecord(
-        :fold_req_v2,
-        :riak_core_fold_req_v2,
-        Record.extract(:riak_core_fold_req_v2, from_lib: "riak_core/include/riak_core_vnode.hrl")
-      )
+  def handle_overload_info(_, _idx) do
+    :ok
+  end
 
-      def handle_handoff_command(fold_req_v1() = fold_req, sender, state) do
-        Logger.debug(">>>>> Handoff V1 <<<<<<")
-        foldfun = fold_req_v1(fold_req, :foldfun)
-        acc0 = fold_req_v1(fold_req, :acc0)
-        handle_handoff_command(fold_req_v2(foldfun: foldfun, acc0: acc0), sender, state)
-      end
+  require Record
+  # Extract the fold function record definition from
+  # the hrl file.
+  Record.defrecord(
+    :fold_req_v1,
+    :riak_core_fold_req_v1,
+    Record.extract(:riak_core_fold_req_v1, from_lib: "riak_core/include/riak_core_vnode.hrl")
+  )
 
-      def handle_handoff_command(fold_req_v2() = fold_req, _sender, state) do
-        Logger.debug(">>>>> Handoff V2 <<<<<<")
-        foldfun = fold_req_v2(fold_req, :foldfun)
-        acc0 = fold_req_v2(fold_req, :acc0)
+  Record.defrecord(
+    :fold_req_v2,
+    :riak_core_fold_req_v2,
+    Record.extract(:riak_core_fold_req_v2, from_lib: "riak_core/include/riak_core_vnode.hrl")
+  )
 
-        acc_final =
-          state.data
-          |> Enum.reduce(acc0, fn {k, v}, acc ->
-            foldfun.(k, v, acc)
-          end)
+  @callback handle_handoff_command(
+              fold_function :: fun(),
+              acc :: any(),
+              sender :: sender(),
+              state :: any()
+            ) ::
+              {:reply, reply :: any(), new_state :: any()}
+              | {:noreply, new_state :: any()}
+              | {:async, work :: function(), from :: sender(), new_state :: any()}
+              | {:forward, new_state :: any()}
+              | {:drop, new_state :: any()}
+              | {:stop, reason :: any(), new_state :: any()}
+  def handle_handoff_command(fold_req_v1() = fold_req, sender, state) do
+    Logger.debug(">>>>> Handoff V1 <<<<<<")
+    fold_function = fold_req_v1(fold_req, :foldfun)
+    accumulator = fold_req_v1(fold_req, :acc0)
+    handle_handoff_command(fold_req_v2(foldfun: fold_function, acc0: accumulator), sender, state)
+  end
 
-        {:reply, acc_final, state}
-      end
+  def handle_handoff_command(fold_req_v2() = fold_req, sender, state) do
+    Logger.debug("Starting handoff v2")
+    fold_function = fold_req_v2(fold_req, :foldfun)
+    accumulator = fold_req_v2(fold_req, :acc0)
 
-      def handle_handoff_command(request, sender, state) do
-        Logger.debug(">>> Handoff generic request <<<")
-        Logger.debug("[Handoff] Generic request: #{inspect(request)}")
-        handle_command(request, sender, state)
-      end
-
-      def is_empty(state = %{data: data}) do
-        is_empty = map_size(data) == 0
-        {is_empty, state}
-      end
-
-      def terminate(reason, %{partition: partition}) do
-        Logger.debug("terminate #{inspect(partition)}: #{inspect(reason)}")
-        :ok
-      end
-
-      def delete(state) do
-        Logger.debug("deleting the vnode data")
-        {:ok, %{state | data: %{}}}
-      end
-
-      def handle_handoff_data(bin_data, state) do
-        Logger.debug("[handle_handoff_data] bin_data: #{inspect(bin_data)} - #{inspect(state)}")
-        {k, v} = :erlang.binary_to_term(bin_data)
-        new_state = Map.update(state, :data, %{}, fn data -> Map.put(data, k, v) end)
-        {:reply, :ok, new_state}
-      end
-
-      def encode_handoff_item(k, v) do
-        Logger.debug("encode_handoff_item #{k} #{v}")
-        :erlang.term_to_binary({k, v})
-      end
-
-      def handle_coverage(:keys, _key_spaces, {_, req_id, _}, state = %{data: data}) do
-        Logger.debug("Received keys coverage: #{inspect(state)}")
-        keys = Map.keys(data)
-        {:reply, {req_id, keys}, state}
-      end
-
-      def handle_coverage(:values, _key_spaces, {_, req_id, _}, state = %{data: data}) do
-        Logger.debug("Received values coverage: #{inspect(state)}")
-        values = Map.values(data)
-        {:reply, {req_id, values}, state}
-      end
-
-      def handle_coverage(:clear, _key_spaces, {_, req_id, _}, state) do
-        Logger.debug("Received clear coverage: #{inspect(state)} ")
-        new_state = %{state | data: %{}}
-        {:reply, {req_id, []}, new_state}
-      end
-
-      def handle_exit(pid, reason, state) do
-        Logger.error(
-          "Handling exit: self: #{inspect(self())} - pid: #{inspect(pid)} - reason: #{inspect(reason)} - state: #{inspect(state)}"
-        )
-
-        {:noreply, state}
-      end
-
-      def handle_overload_command(_, _, _) do
-        :ok
-      end
-
-      def handle_overload_info(_, _idx) do
-        :ok
-      end
-    end
+    @vnode_module.handle_handoff_command(fold_function, accumulator, sender, state)
   end
 end
