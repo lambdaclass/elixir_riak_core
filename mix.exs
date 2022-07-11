@@ -20,7 +20,7 @@ defmodule Riax.MixProject do
   def application do
     [
       mod: {Riax.Application, []},
-      applications: [:phoenix, :cowboy, :riak_core],
+      applications: [:phoenix, :cowboy, :riak_core, :phoenix_html],
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -50,7 +50,8 @@ defmodule Riax.MixProject do
       {:cuttlefish,
        git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
       {:hut, "~> 1.3", manager: :rebar3, override: true},
-      {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"}
+      {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"},
+      {:nimble_csv, "~> 1.1"}
     ]
   end
 

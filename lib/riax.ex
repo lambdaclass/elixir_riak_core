@@ -2,14 +2,25 @@ defmodule Riax do
   @moduledoc """
   Module to superficially interact with the implemented VNodes, and
   converage commands.
-  As the implemented VNode is mostly a Key-Value store,
+  As the implemented VNode is mostly a Key-Value store (for now)
   this module reflects that.
   """
+
   @doc """
   Store a value tied to a key
   """
   def put(key, value) do
     sync_command(key, {:put, {key, value}})
+  end
+
+  @doc """
+  Store a value tiead to a key, but do not
+  log it.
+
+  Ideal to store fast.
+  """
+  def put(key, value, :no_log) do
+    sync_command(key, {:put, :no_log, {key, value}})
   end
 
   @doc """
@@ -60,7 +71,9 @@ defmodule Riax do
   end
 
   @doc """
-  Execute a command across every available VNode
+  Execute a command across every available VNode.
+  This will start the coverage FSM (implemented in Riax.Coverage.Fsm), via
+  the coverage supervisor, and gather the results from every VNode.
   """
   defp coverage_command(command, timeout \\ 5000) do
     req_id = :erlang.phash2(:erlang.monotonic_time())
@@ -97,10 +110,11 @@ defmodule Riax do
 
   @doc """
   Use the VNode master to send a command
-  to the VNode that receive the key
+  to the VNode that receives the key
   """
   defp sync_command(key, command) do
     {:ok, node} = preferred_node(key)
+
     :riak_core_vnode_master.sync_spawn_command(node, command, Riax.VNode_master)
   end
 
