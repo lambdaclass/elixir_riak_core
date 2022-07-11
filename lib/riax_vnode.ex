@@ -38,15 +38,26 @@ defmodule Riax.VNode do
               | {:async, work :: function(), from :: sender(), new_mod_state :: term()}
               | {:stop, reason :: term(), new_mod_state :: term()}
 
+  @doc """
+  This callback is called when a handoff finishes.
+  """
   @callback handoff_finished(handoff_dest(), state :: any()) ::
               {:ok, new_state :: term()}
+  @doc """
+  This callback is called when a handoff startes.
+  """
   @callback handoff_starting(handoff_dest(), state :: any()) ::
               {boolean(), new_state :: any()}
+  @doc """
+  This callback is used to determine if the
+  VNode's state data structrue is empty.
+  """
   @callback is_empty(state :: term()) ::
               {boolean(), new_state :: term()}
-              | {false, size :: pos_integer(), new_mod_state :: any()}
-  @callback terminate(reason :: any(), mod_state :: any()) ::
-              :ok
+              | {false, size :: pos_integer(), new_state :: any()}
+  @doc """
+  Called when a
+  """
   @callback delete(state :: any()) :: {:ok, new_state :: any()}
 
   @callback handle_handoff_data(binary(), state :: any()) ::
