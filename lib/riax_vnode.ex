@@ -69,6 +69,7 @@ defmodule Riax.VNode do
 
   defdelegate handoff_starting(target_node, state), to: @vnode_module
 
+  defdelegate handoff_cancelled(state), to: @vnode_module
   defdelegate is_empty(state), to: @vnode_module
 
   defdelegate terminate(reason, partition), to: @vnode_module
@@ -86,13 +87,8 @@ defmodule Riax.VNode do
     :erlang.term_to_binary({k, v})
   end
 
-  def handle_overload_command(_, _, _) do
-    :ok
-  end
-
-  def handle_overload_info(_, _idx) do
-    :ok
-  end
+  def handle_overload_command(_, _, _), do: :ok
+  def handle_overload_info(_, _idx), do: :ok
 
   require Record
   # Extract the fold function record definition from
