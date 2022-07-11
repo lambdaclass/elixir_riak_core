@@ -11,18 +11,18 @@ defmodule Riax.VNode do
   end
 
   def handle_command({:ping, v}, _sender, state = %{partition: partition}) do
-    Logger.info("Received ping command!", state)
+    Logger.debug("Received ping command!", state)
     {:reply, {:pong, v + 1, node(), partition}, state}
   end
 
   def handle_command({:put, {k, v}}, _sender, state = %{data: data}) do
-    Logger.info("PUT Key: #{k}, Value: #{v}", state)
+    Logger.debug("PUT Key: #{inspect k}, Value: #{inspect v}", state)
     new_data = Map.put(data, k, v)
     {:reply, :ok, %{state | data: new_data}}
   end
 
   def handle_command({:get, key}, _sender, state = %{data: data}) do
-    Logger.info("GET #{key}", state)
+    Logger.debug("GET #{key}", state)
 
     reply =
       case Map.get(data, key) do
@@ -34,13 +34,13 @@ defmodule Riax.VNode do
   end
 
   def handle_command({:delete, key}, _sender, state = %{data: data}) do
-    Logger.debug("DELETE #{key}", state)
+    Logger.debug("DELETE #{inspect key}", state)
     new_data = Map.delete(data, key)
     {:reply, Map.get(data, key, :not_found), %{state | data: new_data}}
   end
 
   def handle_command(message, _sender, state) do
-    Logger.debug("unhandle command #{message}")
+    Logger.debug("unhandle command #{inspect message}")
     {:noreply, state}
   end
 
@@ -104,7 +104,7 @@ defmodule Riax.VNode do
   end
 
   def terminate(reason, %{partition: partition}) do
-    Logger.debug("terminate #{partition}: #{reason}")
+    Logger.debug("terminate #{inspect partition}: #{inspect reason}")
     :ok
   end
 
@@ -126,24 +126,28 @@ defmodule Riax.VNode do
   end
 
   def handle_coverage(:keys, _key_spaces, {_, req_id, _}, state = %{data: data}) do
-    Logger.info("Received keys coverage: #{state}")
+    Logger.debug("Received keys coverage: #{inspect state}")
     keys = Map.keys(data)
     {:reply, {req_id, keys}, state}
   end
 
   def handle_coverage(:values, _key_spaces, {_, req_id, _}, state = %{data: data}) do
-    Logger.info("Received values coverage: #{state}")
+    Logger.debug("Received values coverage: #{inspect state}")
     values = Map.values(data)
     {:reply, {req_id, values}, state}
   end
 
   def handle_coverage(:clear, _key_spaces, {_, req_id, _}, state) do
-    Logger.info("Receieved clear coverage: #{state} ")
+    Logger.debug("Received clear coverage: #{inspect state} ")
     new_state = %{state | data: %{}}
     {:reply, {req_id, []}, new_state}
   end
 
-  def handle_exit(_pid, _reason, state) do
+  def handle_exit(pid, reason, state) do
+    Logger.error(
+      "Handling exit: self: #{inspect(self())} - pid: #{inspect(pid)} - reason: #{inspect(reason)} - state: #{inspect(state)}"
+    )
+
     {:noreply, state}
   end
 
