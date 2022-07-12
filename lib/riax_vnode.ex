@@ -313,7 +313,7 @@ defmodule Riax.VNode.Impl do
 
   @doc """
   Set up VNode state and data structure. It recieves a list
-  its assigned partitions and should return the VNode's initial state.
+  its assigned partition and should return the VNode's initial state.
   """
   @callback init([partition()]) :: {:ok, initial_state :: any()}
 
