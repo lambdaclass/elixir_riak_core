@@ -51,7 +51,10 @@ defmodule Riax.MixProject do
        git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
       {:hut, "~> 1.3", manager: :rebar3, override: true},
       {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"},
-      {:nimble_csv, "~> 1.1"}
+      {:nimble_csv, "~> 1.1"},
+      {:local_cluster, "~> 1.2", only: [:test]},
+      {:hackney, "~> 1.9"},
+      {:parse_trans, "~> 3.4.1", override: true}
     ]
   end
 
@@ -64,7 +67,8 @@ defmodule Riax.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["esbuild default --minify", "phx.digest"],
+      test: ["test --no-start"]
     ]
   end
 end
