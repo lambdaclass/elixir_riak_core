@@ -14,10 +14,6 @@ jobs:
 
     name: Build and test
     runs-on: ubuntu-latest
-    container:
-      ports:
-        - "8198:8198"
-        - "8199:8199"
 
     steps:
     - uses: actions/checkout@v3
