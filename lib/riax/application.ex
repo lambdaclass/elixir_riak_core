@@ -2,7 +2,6 @@ defmodule Riax.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
-
   use Application
 
   @impl true
@@ -17,7 +16,7 @@ defmodule Riax.Application do
       # Start Riak's supervisor,
       # vnode: the vnode implementation,
       # coverage: the supervisor for the coverage.
-      {Riax.Supervisor, vnode: Riax.VNode, coverage: Riax.Coverage.Sup}
+      Riax.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

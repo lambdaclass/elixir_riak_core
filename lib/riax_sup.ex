@@ -1,25 +1,25 @@
 defmodule Riax.Supervisor do
   use Supervisor
 
-  def start_link(args) do
+  def start_link([]) do
      # riak_core appends _sup to the application name.
-    Supervisor.start_link(__MODULE__, (args), name: :riax_sup)
+    Supervisor.start_link(__MODULE__, [], name: :riax_sup)
   end
 
-  def init(vnode: vnode, coverage: coverage) do
-    :ok = :riak_core.register(vnode_module: vnode)
+  def init([]) do
+    :ok = :riak_core.register(vnode_module: Riax.VNode)
     # Give name to the service
     :ok = :riak_core_node_watcher.service_up(:riax_service, self())
 
     children = [
       %{
         id: Riax.VNode_master_worker,
-        start: {:riak_core_vnode_master, :start_link, [vnode]},
+        start: {:riak_core_vnode_master, :start_link, [Riax.VNode]},
         type: :worker
       },
       %{
         id: Riax.Coverage.Sup,
-        start: {coverage, :start_link, []},
+        start: {Riax.Coverage.Sup, :start_link, []},
         restart: :permanent,
         type: :supervisor,
         shutdown: :infinity
