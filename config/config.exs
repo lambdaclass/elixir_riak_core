@@ -58,4 +58,4 @@ config :riax, RiaxWeb.Endpoint,
   live_view: [signing_salt: "d0pWDhfsxTFfXBvWMjK14lAKelVTQKGS"] #new
 
 config :riak_core,
-  schema_dirs: ['priv']
+  schema_dirs: ["./priv" |> Path.expand |> String.to_charlist]
