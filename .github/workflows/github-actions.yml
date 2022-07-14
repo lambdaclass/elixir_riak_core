@@ -24,6 +24,8 @@ jobs:
         otp-version: '25.0' # Define the OTP version [required]
     - name: Install dependencies
       run: mix deps.get
+    - name: Check with Credo
+      run: mix credo
     - name: Setup environment
       run: |
         epmd -daemon

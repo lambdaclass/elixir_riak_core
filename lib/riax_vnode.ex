@@ -211,7 +211,7 @@ defmodule Riax.VNode.Impl do
   """
   require Logger
   @behaviour :riak_core_vnode
-  @vnode_module Application.fetch_env!(:riax, :vnode)
+  @vnode_module Application.compile_env!(:riax, :vnode)
 
   def start_vnode(partition) do
     :riak_core_vnode_master.get_vnode_pid(partition, __MODULE__)

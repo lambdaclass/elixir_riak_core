@@ -54,7 +54,8 @@ defmodule Riax.MixProject do
       {:nimble_csv, "~> 1.1"},
       {:local_cluster, "~> 1.2", only: [:test]},
       {:hackney, "~> 1.9"},
-      {:parse_trans, "~> 3.4.1", override: true}
+      {:parse_trans, "~> 3.4.1", override: true},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 
