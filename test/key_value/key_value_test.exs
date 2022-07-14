@@ -29,15 +29,14 @@ defmodule Riax.KeyValueTests do
     end
 
     test "Join nodes", %{node1: node1, node2: node2, node3: node3} do
-      :ok =
-        case :rpc.call(node1, Riax, :join, ['manager@127.0.0.1']) do
-          {:error, :not_single_node} -> :ok
-          :ok -> :ok
-          err -> err
-        end
-
-      :ok = :rpc.call(node2, Riax, :join, [node1])
-      :ok = :rpc.call(node3, Riax, :join, [node1])
+      Enum.each([node1, node2, node3], fn node ->
+        :ok =
+          case :rpc.call(node, Riax, :join, ['manager@127.0.0.1']) do
+            {:error, :not_single_node} -> :ok
+            :ok -> :ok
+            err -> err
+          end
+      end)
     end
   end
 
