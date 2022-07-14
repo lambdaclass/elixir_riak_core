@@ -24,13 +24,12 @@ jobs:
         otp-version: '25.0' # Define the OTP version [required]
     - name: Install dependencies
       run: mix deps.get
-    - name: Check with Credo
-      run: mix credo
-    - name: Setup environment
+    - name: Setup environment and credo
       run: |
         epmd -daemon
         mix local.hex --force
         mix local.rebar --force
         mix deps.get
+        mix credo
     - name: Run tests
       run: mix test --trace
