@@ -330,7 +330,6 @@ defmodule Riax.VNode.Impl do
   """
   @callback handle_handoff_command(
               request :: any(),
-              acc :: any(),
               sender :: sender(),
               state :: any()
             ) ::
