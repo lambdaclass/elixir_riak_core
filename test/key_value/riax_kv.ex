@@ -27,7 +27,7 @@ defmodule Riax.VNode.Impl do
 
   @impl true
   def handle_command({:get, key}, _sender, state = %{data: data}) do
-    Logger.debug("GET #{key}", state)
+    Logger.debug("GET #{inspect(key)}", state)
 
     reply =
       case Map.get(data, key) do
