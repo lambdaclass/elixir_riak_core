@@ -1,4 +1,8 @@
 defmodule Riax.Supervisor do
+  @moduledoc """
+  Supervises both the Virtual Node
+  and Coverage Supervisor.
+  """
   use Supervisor
 
   def start_link([]) do

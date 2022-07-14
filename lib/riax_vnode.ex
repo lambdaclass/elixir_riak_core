@@ -417,14 +417,14 @@ defmodule Riax.VNode.Impl do
     Record.extract(:riak_core_fold_req_v2, from_lib: "riak_core/include/riak_core_vnode.hrl")
   )
 
-  def handle_handoff_command(fold_req_v1() = fold_req, sender, state) do
+  def handle_handoff_command(fold_req = fold_req_v1(), sender, state) do
     Logger.debug(">>>>> Handoff V1 <<<<<<")
     fold_function = fold_req_v1(fold_req, :foldfun)
     accumulator = fold_req_v1(fold_req, :acc0)
     handle_handoff_command(fold_req_v2(foldfun: fold_function, acc0: accumulator), sender, state)
   end
 
-  def handle_handoff_command(fold_req_v2() = fold_req, sender, state) do
+  def handle_handoff_command(fold_req = fold_req_v2(), sender, state) do
     Logger.debug("Starting handoff v2")
     fold_function = fold_req_v2(fold_req, :foldfun)
     accumulator = fold_req_v2(fold_req, :acc0)

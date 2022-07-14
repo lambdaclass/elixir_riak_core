@@ -1,4 +1,7 @@
 defmodule Riax.Coverage.Sup do
+  @moduledoc """
+  Supervises and starts the Coverage State Machine.
+  """
   use DynamicSupervisor
 
   def start_link() do
