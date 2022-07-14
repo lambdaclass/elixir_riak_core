@@ -56,3 +56,6 @@ config :riax, RiaxWeb.Endpoint,
   render_errors: [view: RiaxWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: RiaxWeb.PubSub, adapter: Phoenix.PubSub.PG2],
   live_view: [signing_salt: "d0pWDhfsxTFfXBvWMjK14lAKelVTQKGS"] #new
+
+config :riak_core,
+  schema_dirs: ['priv']
