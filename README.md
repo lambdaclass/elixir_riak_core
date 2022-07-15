@@ -102,7 +102,43 @@ can change if a physical node is added to the cluster or goes down.
     :ok
    ``` 
    That's it! Up and running.
+
    ## Multiple nodes:
+   Having multiple Virtual Nodes is a must. We're going to need a config file for 
+   each one, so move our original config.exs to a dev1.exs file and create 
+   new file under config/ called dev2.exs with the following content:
+    ```elixir
+    # config/dev2.exs
+    import Config
+    config :riax, vnode: Riax.VNode.Impl
+
+    config :riak_core,
+    node: 'dev2@127.0.0.1',
+    web_port: 8298,
+    handoff_port: 8299,
+    ring_state_dir: './rings_state/ring_data_dir_2',
+    platform_data_dir: './platform_data/data_2',
+    schema_dirs: ['/deps/riax/priv']
+    ```
+    Now, you can try them locally on 2 separate terminal sessions (tmux, multiple termilas, terminal tabs... whatever you like), first run: 
+    ```
+    MIX_ENV=dev1 iex --name dev1@127.0.0.1 -S mix run
+    ```
+    Then, on the other session, run:
+    ```
+    MIX_ENV=dev2 iex --name dev2@127.0.0.1 -S mix run
+    ```
+    Try to join them, and handoff will start (handoff is the way on which
+    partitions of the key-space are distributed between VNodes.)
+    
+    You could also create a makefile for ease of use:
+    ```makefile
+    node1:
+        MIX_ENV=dev1 iex --name dev1@127.0.0.1 -S mix run
+
+    node2:
+        MIX_ENV=dev2 iex --name dev2@127.0.0.1 -S mix run
+    ```
 
 ## Quick start:
   * Install dependencies with `mix deps.get`
