@@ -1,15 +1,21 @@
 # Riax
-An Elixir wrapper for Riak Core. 
+Riax is an Elixir wrapper for Riak Core. 
 Riak Core is distributed systems framework, written in erlang.
 You can think of it as a building block for distributed and scalable systems.
+If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
+tutorial](https://github.com/lambdaclass/riak_core_tutorial)
 # Riak Core:
-
 ## What is it?
 It is based on the [Dynamo architecture](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf),
 meaning it is easy to scale horizontally and distributes work in a decentralized
 manner. The great thing about Riak it's that it provides this architecture as a
 reusable erlang library, meaning it can be used in any context
 that benefits from a decentralized distribution of work.
+
+## Why Riax? 
+You must be thinking "ok, fine, this is an Erlang lib, I'll use it directly".
+The setup of Riak Core can be tricky, specially from Elixir, this library
+takes care of the gory details for you - we suffered so you don't have to.
 
 ## What's so great about it?
 The key here is that Riak Core provides Consistent Hashing and Virtual Nodes.
@@ -53,7 +59,6 @@ can change if a physical node is added to the cluster or goes down.
 # Setup:
    We recommend to use Elixir 1.13 and OTP 25.
 
-
 ## Single node:
 1. First, add riax as a dependency to your mix.exs
     ```elixir
@@ -64,7 +69,7 @@ can change if a physical node is added to the cluster or goes down.
     end
     ```
 2. Then, you'll need a VNode implementation, [you can grab mine](https://github.com/lambdaclass/elixir_riak_core/blob/main/test/key_value/riax_kv.ex)
-    If you want to. This is an example of a Virtual Node being used as Key-Value
+    if you want to. This is an example of a Virtual Node being used as Key-Value
     store. You can add it under lib/ or any other folder under elixirc_paths.
 3. After that, you'll need a configuration for each Node, here's an example one:
     ```elixir
