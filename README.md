@@ -25,7 +25,11 @@ a Physical Node (i.e. a physical server) and can be easily set up or taken down.
 Plus, the only thing that you have to do using this library is giving them names
 and implement a behaviour, Riak handles the rest for you.
 
-For example, a game server which handles requests from players could partition
+## Use cases:
+The most intuitive and straight-forward use case is a key-value store in memory,
+we've actually [implemented one here](https://github.com/lambdaclass/elixir_riak_core/blob/main/test/key_value/riax_kv.ex) for our tests.
+
+A game server which handles requests from players could partition
 players through said hashing to handle load, and ensure that players requests
 are always handled on the same Virtual Node to ensure data locality. 
 
@@ -38,7 +42,8 @@ map-reduce queries to gather results.
 Another example: Think about serving a dataset which you want quick 
 access to, but It's too big to fit in memory. We could distribute said
 files (or file) between Virtual Nodes, use and identifier (say, like an index)
-hash it and assign it to a Virtual Node. 
+hash it and assign it to a Virtual Node. Riak fits really well here, as it is
+scales easily horizontally.
 This last use case is actually explained below.
 
 ## More about Hashing and VNodes:
@@ -75,10 +80,13 @@ can change if a physical node is added to the cluster or goes down.
     ```elixir
     # config/config.exs
     import Config
+    # This tells riax which of or modules 
+    # implements a VNode.
     config :riax, vnode: Riax.VNode.Impl
 
     config :riak_core,
-    node: 'dev1@127.0.0.1',
+    # Must be an Erlang long name
+    node: 'dev@127.0.0.1',
     web_port: 8198,
     # Handoff is something we discuss
     # furhter in the Riax.VNode doc.
@@ -94,14 +102,14 @@ can change if a physical node is added to the cluster or goes down.
 4. Remember that the iex node name needs to match the one from your config, so
    now you can start your mix project with:
    ```bash
-   iex --name dev1@127.0.0.1 -S mix run
+   iex --name dev@127.0.0.1 -S mix run
     ```
    And then, try running Riax.ring_status/0 in iex, you should see something
    like this:
    ```
-    iex(dev1@127.0.0.1)1> Riax.ring_status                                      
+    iex(dev@127.0.0.1)1> Riax.ring_status                                      
     ==================================== Nodes ====================================
-    Node a: 64 (100.0%) dev1@127.0.0.1
+    Node a: 64 (100.0%) dev@127.0.0.1
     ==================================== Ring =====================================
     aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
     :ok
@@ -110,24 +118,43 @@ can change if a physical node is added to the cluster or goes down.
 
    ## Multiple nodes:
    Having multiple Virtual Nodes is a must. We're going to need a config file for 
-   each one, so move our original config.exs to a dev1.exs file and create 
-   new file under config/ called dev2.exs with the following content:
+   each one, so let's change it, config.exs cane be something like this:
     ```elixir
-    # config/dev2.exs
+    import Config
+    config :riax, vnode: Riax.VNode.Impl
+
+    import_config("#{Mix.env()}.exs")
+    ```
+   
+   Now, let's create 2 files, dev.exs (or add to it, if already exists) and dev2.exs under /config:
+   ```elixir
+   #dev.exs
     import Config
     config :riax, vnode: Riax.VNode.Impl
 
     config :riak_core,
+    node: 'dev@127.0.0.1',
+    web_port: 8198,
+    handoff_port: 8199,
+    ring_state_dir: 'ring_data_dir_1',
+    platform_data_dir: 'data_1',
+    schema_dirs: ['deps/riax/priv/' ]
+```
+    ```elixir
+   #dev2.exs
+    import Config
+
+    config :riak_core,
     node: 'dev2@127.0.0.1',
-    web_port: 8298,
-    handoff_port: 8299,
-    ring_state_dir: './rings_state/ring_data_dir_2',
-    platform_data_dir: './platform_data/data_2',
-    schema_dirs: ['/deps/riax/priv']
+    web_port: 8398,
+    handoff_port: 8399,
+    ring_state_dir: 'ring_data_dir_2',
+    platform_data_dir: 'data_2',
+    schema_dirs: ['deps/riax/priv/' ]
     ```
     Now, you can try them locally on 2 separate terminal sessions (tmux, multiple termilas, terminal tabs... whatever you like), first run: 
     ```
-    MIX_ENV=dev1 iex --name dev1@127.0.0.1 -S mix run
+    MIX_ENV=dev iex --name dev@127.0.0.1 -S mix run
     ```
     Then, on the other session, run:
     ```
@@ -139,47 +166,99 @@ can change if a physical node is added to the cluster or goes down.
     You could also create a makefile for ease of use:
     ```makefile
     node1:
-        MIX_ENV=dev1 iex --name dev1@127.0.0.1 -S mix run
+        MIX_ENV=dev iex --name dev@127.0.0.1 -S mix run
 
     node2:
         MIX_ENV=dev2 iex --name dev2@127.0.0.1 -S mix run
     ```
-
-## Quick start:
-  * Install dependencies with `mix deps.get`
-  * Start the Riak Nodes with `make node1`, `make node2`, `make node3`, this will
-    have to be done on separate terminals, or using something like Tmux.
-  * Now, in one of the terminals you've just opened with `make node{i}` try to
-    join the nodes using `:riak_core.join(node@host)` and use the Riax
-    module as an API connecting to each Node.
-    For example, supposing you're in node1's terminal:
-    ```elixir
-    iex(dev1@127.0.0.1)> :riak_core.join('dev2@127.0.0.1')
-    iex(dev1@127.0.0.1)> :riak_core.join('dev3@127.0.0.1')
-    iex(dev1@127.0.0.1)> Riax.ring_status
+    Now, try calling Riax.join('dev2@127.0.0.1') from terminal 1. Now,
+    Riax.ring_status will change to something like this:
     ``` 
-## Riak Setup:
-  *  PLACEHOLDER: This is where the setup of Riak using the Elixir library
-     would be. This could be either a setup here, o a link to the library.
-     Either way, the tutorial would start with a working Riak key-value.
-     I'm thinking of providing it along with the VNode implementation, as
-     to no repeat the Erlang tutorial.
+iex(dev@127.0.0.1)7> Riax.ring_status
+==================================== Nodes ====================================
+Node a: 2 (  3.1%) dev@127.0.0.1
+Node b: 62 ( 96.9%) dev2@127.0.0.1
+==================================== Ring =====================================
+babb|abbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|
+```
+  Eventually (a minute, give or take) it should reach 50% on each node.
+  That's the handoff working.
 ## Tutorial:
-### Use Case:
-  * Let's consider this use case: 
+## Use Case:
+  * I've mentioned this use case before, but let's go over it again: 
     - We have several, or one relatively big file that we want
-      to provide.
+      to provide (a dataset, for example)
     - The file, or files, are not fit to be stored in memory due to its/their 
       size.
     - We want to avoid disk reading whenever we can, and achieve
       high availability.
-### Solution:
-  * That's what we're going to address in this tutorial, 
+    - We can scale horizontally and divide said file.
+    - This is where Riak comes in.
+## Solution:
+  * We're going to address this use case in this tutorial, 
     with the help of Riak Core.
   * The key thing here is that we can use several Riak Nodes to offer an
     in memory key-value storage. If we need more memory to store what we need,
-    we can add another node to our cluster and Riak will handle the 
+    we can add another node to our cluster and Riak Core will handle the 
     details for us, provided we have an implemented VNode.
+### Creating project.
+- Let's create a new mix project: `mix new my_cluster` for this, and make sure
+  to follow the setup steps from above (if you don't have a config folder, just
+  create it), and use the VNode I mention.
+- Also, add this module under lib/riax_api.ex, which we'll use as an API to communicate with the VNode:
+  ```elixir
+defmodule Riax.API do
+  def put(key, value) do
+    Riax.sync_command(key, {:put, {key, value}})
+  end
+
+  def put(key, value, :no_log) do
+    Riax.sync_command(key, {:put, :no_log, {key, value}})
+  end
+
+  def get(key) do
+    Riax.sync_command(key, {:get, key})
+  end
+
+  def keys() do
+    Riax.coverage_command(:keys)
+  end
+
+  def clear() do
+    Riax.coverage_command(:clear)
+  end
+
+  def values() do
+    Riax.coverage_command(:values)
+  end
+
+  def ring_status() do
+    {:ok, ring} = :riak_core_ring_manager.get_my_ring()
+    :riak_core_ring.pretty_print(ring, [:legend])
+  end
+
+  def ping() do
+    ping(:os.timestamp())
+  end
+
+  def ping(key) do
+    Riax.sync_command(key, {:ping, key})
+  end
+end
+```
+Each function is to communicate with our VNode that acts as a key-value 
+store, note this function:
+```elixir
+      def handle_command({:put, :no_log, {k, v}}, _sender, state = %{data: data}) do
+        new_data = Map.put(data, k, v)
+        {:reply, :ok, %{state | data: new_data}}
+      end
+```
+It's just to store a key-value pair, but it does not log it, as to make it 
+faster.
+
+Also, note the `keys/0` and `values/0`. They're coverage commands, that means
+that they run in every node, each node returns a different answer.
 ### Limiting VM Memory.
   * To simulate a situation where our file is too big to be stored in RAM,
   we're going to use a tweet dataset of around 3-4 GiB, [a CSV taken from Kaggle](https://www.kaggle.com/datasets/gauravduttakiit/bitcoin-tweets-16m-tweets-with-sentiment-tagged?resource=download) (you might need an account to download it, don't worry - it's free) and limit the available memory for our nodes.
@@ -205,44 +284,63 @@ can change if a physical node is added to the cluster or goes down.
     ** (File.Error) could not read file "mbsa.csv.zip": not enough memory
         (elixir 1.13.0) lib/file.ex:355: File.read!/1
     ```
-      Working as intended, we tried to load a 1GB+ file while only having 512MB available.
+      Working as intended: we tried to load a 1GB+ file while only having 512MB available.
 
-  - The unzipped CSV has a size of 4.5 GB, give or take, so we're going to use 3 nodes,
-    with 1500 MB each, let's use this makefile:
+  - The unzipped CSV has a size of 8.5 GB, once stored in memory, 
+  so let's give each node 3GB of memory. This brings up an interesting result,
+  since Riak scales horizontally easily, this kind of use case is a perfect fit
+  for Riak: we can add more nodes to distribute the file easily.
 
 ``` makefile
 node1_limited:
-	MIX_ENV=dev1 iex --erl "+MMsco true +MMscs 1500" --name dev1@127.0.0.1 -S mix run
+	MIX_ENV=dev iex --erl "+MMsco true +MMscs 3000" --name dev@127.0.0.1 -S mix run
 node2_limited:
-	MIX_ENV=dev2 iex --erl "+MMsco true +MMscs 1500" --name dev2@127.0.0.1 -S mix run
+	MIX_ENV=dev2 iex --erl "+MMsco true +MMscs 3000" --name dev2@127.0.0.1 -S mix run
 node3_limited:
-	MIX_ENV=dev3 iex --erl "+MMsco true +MMscs 1500" --name dev3@127.0.0.1 -S mix run
+	MIX_ENV=dev3 iex --erl "+MMsco true +MMscs 3000" --name dev3@127.0.0.1 -S mix run
 ```
+ - You're going to need another config file: config/dev3.exs:
+ ```elixir
+import Config
 
+config :riak_core,
+node: 'dev3@127.0.0.1',
+web_port: 8498,
+handoff_port: 8499,
+ring_state_dir: 'ring_data_dir_3',
+platform_data_dir: 'data_3',
+  schema_dirs: ['deps/riax/priv/' ]
+
+``` 
+- Try running each node and joining them with Riax.join, like in the setup. 
 ### Setting up csv.
 #### Storing:
  - Let's use NimbleCsv (it's maintained by JosŽ Valim so it must be good) to read our file, add  this to your dependencies in mix.exs
 ```elixir
       {:nimble_csv, "~> 1.1"}
 ```
--  We're going to use this functions, personally I'll add them to the Riax API module:
+-  Let's add to the lib/my_cluster.ex the following functions:
 ```elixir
+defmodule CSVSetup do
+  alias NimbleCSV.RFC4180, as: CSV
+
   def distribute_csv(path) do
-    :rpc.multicall(Riax, :setup_local_csv, [path])
+    :rpc.multicall(CSVSetup, :store_csv, [path])
   end
-```
- ```elixir
- def store_csv(csv) do
+
+  def store_csv(csv) do
     curr_node = node()
 
     csv
     |> File.stream!(read_ahead: 100_000)
     |> CSV.parse_stream()
     |> Stream.with_index()
-    |> Stream.each(fn {row, indx} ->
-      case preferred_node_name(indx) do
+    |> Stream.each(fn {[date, text, sentiment], indx} ->
+      case Riax.preferred_node_name(indx) do
         ^curr_node ->
-          put(indx, row, :no_log)
+          # Date, text and sentiment are the 3 columns
+          # that our example CSV of tweets has.
+          Riax.API.put(indx, %{date: date, text: text, sentiment: sentiment}, :no_log)
 
         _ ->
           nil
@@ -250,18 +348,69 @@ node3_limited:
     end)
     |> Stream.run()
   end
+end
 ```
 - `distribute_csv/1` receives a path to a csv file,
   and tells each running Riak Node (the ones joined using  :riak_core.join/1) with the `:rpc` module (more about it [here](https://www.erlang.org/doc/man/rpc.html)) to execute the `store_csv/1` function.
 - `store_csv/1` indexes every row of the CSV and uses
- them as keys for storing each row. So we end up with an index -> row mapping. We only store the index row pair if the index key belongs to the running node partition.
-The reasoning behind this is to simulate a 'real' situation where you have nodes running on different machines. We use `put/3` without logging because we know what we're storing.
-#### VNode addition:
-- To make this work, you're going to need to add
-  this to your VNode implementation:
-```elixir
-      def handle_command({:put, :no_log, {k, v}}, _sender, state = %{data: data}) do
-        new_data = Map.put(data, k, v)
-        {:reply, :ok, %{state | data: new_data}}
-      end
+ them as keys for storing each row. So we end up with an index -> row mapping. We only store the index row pair if the index key belongs to the running node partition. We use `put/3` without logging because we know what we're storing.
+
+## Reading CSV:
+- Now that we have everything in place, lets run 3 VNodes in separate terminals,
+  using the make targets.
+- On dev2 an dev3, run this `Riax.ring_join(dev@127.0.0.1)`.
+  Keep in mind that each node will remember who it has joined, so 
+  you don't have to do this every time you start the nodes.
+- Run `Riax.ring_status` and wait a minute, you'll see that the key-space
+  is evenly distributed between the 3 nodes.
+- Now, on any of the 3 nodes. Remember the csv we downloaded a few steps above?
+  Get its path, and run the following
+```iex
+    iex> path = "/Path/to/mbsa.csv"
+    iex> MyCluster.distribute_csv(path)
 ```
+  Wait a bit, the terminal on which you ran the distribute_csv function will not
+  probably answer any commands until it stops reading the CSV
+  and then, you can try to get any row of the CSV with Riax.get(number).
+  Like this:
+  ```elixir
+    iex(dev@127.0.0.1)17> Riax.API.get(100)
+    %{
+    date: "2019-05-27",
+    sentiment: "Positive",
+    text: "Arkada?lar..Biz,bu milletin aklõ olan kesimine H?TAP ediyoruz.\n\n#DOLAR\n#DolarTL\n#bist\n#bist100 \n#usdtry\n#USDTRY\n#XU100 \n#???????????????? 2012\n#doge #dogeusd\n#btc #btcusd\nYTD"
+    }
+    ```
+## Visualizing Results:
+- Now that we have the data, let's show it. Stop the nodes and add scribe to your
+  deps:
+  ```elixir
+  # mix.exs
+  defp deps do
+    [
+      {:riax, ">= 0.1.0", github: "lambdaclass/elixir_riak_core", branch: "main"},
+      {:scribe, "~> 0.10"}
+    ]
+  end
+```
+- On your MyCluser module, add this function:
+```elixir
+  def print_data(page) do
+    data =
+      Enum.map(
+        (page * 10)..(page * 10 + 10),
+        fn indx ->
+          # Get on which Virtual Node indx is stored
+          node = Riax.preferred_node_name(indx)
+          tweet = Riax.API.get(indx)
+          Map.merge(tweet, %{node: node})
+        end
+      )
+
+    Scribe.print(data)
+  end
+
+```
+- Set up the nodes again and read the CSV.
+- Here, we're printing the CSV rows on batches of 10 elements, try, for example:
+`MyCluster.print_data(10)`
