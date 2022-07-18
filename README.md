@@ -15,7 +15,7 @@ that benefits from a decentralized distribution of work.
 ## Why Riax? 
 You must be thinking "ok, fine, this is an Erlang lib, I'll use it directly".
 The setup of Riak Core can be tricky, specially from Elixir, this library
-takes care of the gory details for you - we suffered so you don't have to.
+takes care of all the gory details for you - we suffered so you don't have to.
 
 ## What's so great about it?
 The key here is that Riak Core provides Consistent Hashing and Virtual Nodes.
