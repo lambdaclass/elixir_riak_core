@@ -34,14 +34,16 @@ defmodule Riax.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:cuttlefish,
-       git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
+      # {exometer_core, {git, "https://github.com/Feuerlabs/exometer_core.git", {tag, "1.6.1"}}},
+      # I had to fork both riak core an its dependency
+      # clique to make it work with Elixir.
       {:hut, "~> 1.3", manager: :rebar3, override: true},
-      {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"},
-      {:nimble_csv, "~> 1.1"},
+      {:riak_core,
+       manager: :rebar3, git: "https://github.com/fkrause98/riak_core", ref: "develop"},
       {:local_cluster, "~> 1.2", only: [:test]},
-      {:hackney, "~> 1.9"},
-      {:parse_trans, "~> 3.4.1", override: true}
+      # {:parse_trans, "~> 3.4.1", manager: :rebar3, override: true},
+      {:exometer_core,
+       git: "https://github.com/Feuerlabs/exometer_core", tag: "1.6.1", override: true}
     ]
   end
 
