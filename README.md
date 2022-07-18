@@ -1,10 +1,31 @@
+**Table of Contents**
+
+- [Riax](#riax)
+- [Riak Core:](#riak-core)
+- [What is it?](#what-is-it)
+- [Why Riax?](#why-riax)
+- [What's so great about it?](#whats-so-great-about-it)
+- [Use cases:](#use-cases)
+- [More about Hashing and VNodes:](#more-about-hashing-and-vnodes)
+- [Setup:](#setup)
+- [Single node:](#single-node)
+- [Multiple nodes:](#multiple-nodes)
+- [Tutorial:](#tutorial)
+- [Use Case:](#use-case)
+- [Solution:](#solution)
+- [Creating project.](#creating-project)
+- [Limiting VM Memory.](#limiting-vm-memory)
+- [Setting up csv.](#setting-up-csv)
+- [Storing:](#storing)
+- [Reading CSV:](#reading-csv)
+- [Visualizing Results:](#visualizing-results)
+
 # Riax
 Riax is an Elixir wrapper for Riak Core. 
 Riak Core is a distributed systems framework, written in Erlang.
 You can think of it as a building block for distributed and scalable systems.
 If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
 tutorial](https://github.com/lambdaclass/riak_core_tutorial)
-1. [Riak Core](#riak-core)
 # Riak Core:
 ## What is it?
 It is based on the [Dynamo architecture](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf),
