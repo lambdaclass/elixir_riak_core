@@ -155,8 +155,8 @@ Now, let's create 2 files, dev.exs (or add to it, if already exists) and dev2.ex
 Now, you can try them locally on 2 separate terminal sessions (tmux, multiple termilas, terminal tabs... whatever you like), first run: 
 ```
     MIX_ENV=dev iex --name dev@127.0.0.1 -S mix run
-    ```
-    Then, on the other session, run:
+```
+Then, on the other session, run:
 ```
     MIX_ENV=dev2 iex --name dev2@127.0.0.1 -S mix run
 ```
