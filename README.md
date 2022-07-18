@@ -355,7 +355,7 @@ and tells each running Riak Node (the ones joined using  :riak_core.join/1) with
 - `store_csv/1` indexes every row of the CSV and uses
 them as keys for storing each row. So we end up with an index -> row mapping. We only store the index row pair if the index key belongs to the running node partition. We use `put/3` without logging because we know what we're storing.
 
-## Reading CSV:
+### Reading CSV:
 - Now that we have everything in place, lets run 3 VNodes in separate terminals,
 using the make targets.
 - On dev2 an dev3, run this `Riax.ring_join(dev@127.0.0.1)`.
