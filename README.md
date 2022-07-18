@@ -201,7 +201,7 @@ with the help of Riak Core.
 in memory key-value storage. If we need more memory to store what we need,
 we can add another node to our cluster and Riak Core will handle the 
 details for us, provided we have an implemented VNode.
-### Creating project.
+#### Creating project.
 - Let's create a new mix project: `mix new my_cluster` for this, and make sure
 to follow the setup steps from above (if you don't have a config folder, just
 create it), and use the VNode I mention.
