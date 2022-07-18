@@ -105,7 +105,7 @@ store. You can add it under lib/ or any other folder under elixirc_paths.
     ```
 And then, try running Riax.ring_status/0 in iex, you should see something
 like this:
-    ```
+    ```bash
     iex(dev@127.0.0.1)1> Riax.ring_status                                      
     ==================================== Nodes ====================================
     Node a: 64 (100.0%) dev@127.0.0.1
