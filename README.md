@@ -1,6 +1,6 @@
 # Riax
 Riax is an Elixir wrapper for Riak Core. 
-Riak Core is distributed systems framework, written in erlang.
+Riak Core is a distributed systems framework, written in Erlang.
 You can think of it as a building block for distributed and scalable systems.
 If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
 tutorial](https://github.com/lambdaclass/riak_core_tutorial)
@@ -315,7 +315,7 @@ platform_data_dir: 'data_3',
 - Try running each node and joining them with Riax.join, like in the setup. 
 ### Setting up csv.
 #### Storing:
-- Let's use NimbleCsv (it's maintained by José Valim so it must be good) to read our file, add  this to your dependencies in mix.exs
+- Let's use NimbleCsv (it's maintained by Jos¬é Valim so it must be good) to read our file, add  this to your dependencies in mix.exs
 ```elixir
       {:nimble_csv, "~> 1.1"}
 ```
@@ -378,7 +378,7 @@ Like this:
     %{
     date: "2019-05-27",
     sentiment: "Positive",
-    text: "Arkada?lar..Biz,bu milletin aklı olan kesimine H?TAP ediyoruz.\n\n#DOLAR\n#DolarTL\n#bist\n#bist100 \n#usdtry\n#USDTRY\n#XU100 \n#???????????????? 2012\n#doge #dogeusd\n#btc #btcusd\nYTD"
+    text: "Arkada?lar..Biz,bu milletin akl√µ olan kesimine H?TAP ediyoruz.\n\n#DOLAR\n#DolarTL\n#bist\n#bist100 \n#usdtry\n#USDTRY\n#XU100 \n#???????????????? 2012\n#doge #dogeusd\n#btc #btcusd\nYTD"
     }
     ```
     ## Visualizing Results:
