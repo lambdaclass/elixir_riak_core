@@ -41,7 +41,7 @@ map-reduce queries to gather results.
 
 Another example: Think about serving a dataset which you want quick 
 access to, but It's too big to fit in memory. We could distribute said
-files (or file) between Virtual Nodes, use and identifier (say, like an index)
+files (or file) between Virtual Nodes, use an identifier (say, like an index)
 hash it and assign it to a Virtual Node. Riak fits really well here, as it is
 scales easily horizontally.
 This last use case is actually explained below.
