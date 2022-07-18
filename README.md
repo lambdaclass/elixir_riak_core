@@ -393,7 +393,7 @@ Like this:
     ]
   end
 ```
-- On your MyCluser module, add this function:
+- On your MyCluster module, add this function:
 ```elixir
 def print_data(page) do
 data =
