@@ -20,7 +20,7 @@ takes care of all the gory details for you - we suffered so you don't have to.
 ## What's so great about it?
 The key here is that Riak Core provides Consistent Hashing and Virtual Nodes.
 Virtual Nodes distribute work between them, and Consistent Hashing lets us
-routes commands to these Virtual Nodes. Note that many Virtual Nodes can run in
+route commands to these Virtual Nodes. Note that many Virtual Nodes can run in
 a Physical Node (i.e. a physical server) and can be easily set up or taken down.
 Plus, the only thing that you have to do using this library is giving them names
 and implement a behaviour, Riak handles the rest for you.
