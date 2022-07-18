@@ -367,8 +367,7 @@ is evenly distributed between the 3 nodes.
 - Now, on any of the 3 nodes. Remember the csv we downloaded a few steps above?
 Get its path, and run the following
 ```elixir
-iex> pat
-h = "/Path/to/mbsa.csv"
+iex> path = "/Path/to/mbsa.csv"
 iex> MyCluster.distribute_csv(path)
 ```
 Wait a bit, the terminal on which you ran the distribute_csv function will not
