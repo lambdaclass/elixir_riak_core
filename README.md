@@ -157,9 +157,9 @@ Now, you can try them locally on 2 separate terminal sessions (tmux, multiple te
     MIX_ENV=dev iex --name dev@127.0.0.1 -S mix run
     ```
     Then, on the other session, run:
-    ```
+```
     MIX_ENV=dev2 iex --name dev2@127.0.0.1 -S mix run
-    ```
+```
 Try to join them, and handoff will start (handoff is the way on which
 partitions of the key-space are distributed between VNodes.)
 
