@@ -9,7 +9,7 @@ tutorial](https://github.com/lambdaclass/riak_core_tutorial)
 It is based on the [Dynamo architecture](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf),
 meaning it is easy to scale horizontally and distributes work in a decentralized
 manner. The great thing about Riak it's that it provides this architecture as a
-reusable erlang library, meaning it can be used in any context
+reusable Erlang library, meaning it can be used in any context
 that benefits from a decentralized distribution of work.
 
 ## Why Riax? 
