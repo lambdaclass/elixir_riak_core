@@ -65,18 +65,18 @@ We recommend to use Elixir 1.13 and OTP 25.
 
 ## Single node:
 1. First, add riax as a dependency to your mix.exs
-    ```elixir
+```elixir
     defp deps do
         [
         {:riax, ">= 0.1.0", github: "lambdaclass/elixir_riak_core", branch: "main"}
         ]
     end
-    ```
+```
 2. Then, you'll need a VNode implementation, [you can grab mine](https://github.com/lambdaclass/elixir_riak_core/blob/main/test/key_value/riax_kv.ex)
 if you want to. This is an example of a Virtual Node being used as Key-Value
 store. You can add it under lib/ or any other folder under elixirc_paths.
 3. After that, you'll need a configuration for each Node, here's an example one:
-    ```elixir
+```elixir
     # config/config.exs
     import Config
     # This tells riax which of or modules 
@@ -97,7 +97,7 @@ store. You can add it under lib/ or any other folder under elixirc_paths.
     # This is a config file for riak core,
     # we provide this one for you.
     schema_dirs: ['/deps/riax/priv']
-    ```
+```
  4. Remember that the iex node name needs to match the one from your config, so
  now you can start your mix project with:
     ```bash
@@ -118,16 +118,16 @@ That's it! Up and running.
 ## Multiple nodes:
 Having multiple Virtual Nodes is a must. We're going to need a config file for 
 each one, so let's change it, config.exs can be something like this:
-    ```elixir
+```elixir
     import Config
     config :riax, vnode: Riax.VNode.Impl
 
     import_config("#{Mix.env()}.exs")
-    ```
+```
     
 Now, let's create 2 files, dev.exs (or add to it, if already exists) and dev2.exs under /config:
 
-    ```elixir
+```elixir
     # dev.exs
     import Config
     config :riax, vnode: Riax.VNode.Impl
@@ -151,9 +151,9 @@ Now, let's create 2 files, dev.exs (or add to it, if already exists) and dev2.ex
     ring_state_dir: 'ring_data_dir_2',
     platform_data_dir: 'data_2',
     schema_dirs: ['deps/riax/priv/' ]
-    ```
+```
 Now, you can try them locally on 2 separate terminal sessions (tmux, multiple termilas, terminal tabs... whatever you like), first run: 
-    ```
+```
     MIX_ENV=dev iex --name dev@127.0.0.1 -S mix run
     ```
     Then, on the other session, run:
@@ -164,16 +164,16 @@ Try to join them, and handoff will start (handoff is the way on which
 partitions of the key-space are distributed between VNodes.)
 
 You could also create a makefile for ease of use:
-    ```makefile
-    node1:
+```makefile
+node1:
         MIX_ENV=dev iex --name dev@127.0.0.1 -S mix run
 
-    node2:
+node2:
         MIX_ENV=dev2 iex --name dev2@127.0.0.1 -S mix run
-    ```
+```
 Now, try calling Riax.join('dev2@127.0.0.1') from terminal 1. Now,
 Riax.ring_status will change to something like this:
-    ``` 
+``` 
 iex(dev@127.0.0.1)7> Riax.ring_status
 ==================================== Nodes ====================================
 Node a: 2 (  3.1%) dev@127.0.0.1
@@ -271,19 +271,19 @@ actually, we just need to use these arguments: `+MMsco true +MMscs X +Musac
 false` where X is an integer - the max accessible memory four our BEAM instance.
 You can read more about this [here](https://www.erlang.org/doc/man/erts_alloc.html) 
 * Let's try starting iex normally and read the zip file I've linked above.
-    ``` elixir
+``` elixir
     iex(1)> {:ok, file} = File.read("mbsa.csv.zip")
         {:ok,
         <<80, 75, 3, 4, 45, 0, 0, 0, 8, 0, 174, 188, 29, 83, 199, 127, 10, 192, 255,
         255, 255, 255, 255, 255, 255, 255, 8, 0, 20, 0, 109, 98, 115, 97, 46, 99,
         115, 118, 1, 0, 16, 0, 172, 145, 99, 186, 0, 0, ...>>}
-    ```
+```
 * Now, let's start iex with a memory limit of 512 MB: `iex --erl "+MMsco true +MMscs 512 +Musac false"` 
-    ``` elixir
+``` elixir
     iex(1)> file = File.read!("mbsa.csv.zip") 
     ** (File.Error) could not read file "mbsa.csv.zip": not enough memory
         (elixir 1.13.0) lib/file.ex:355: File.read!/1
-    ```
+```
 Working as intended: we tried to load a 1GB+ file while only having 512MB available.
 
 - The unzipped CSV has a size of 8.5 GB, once stored in memory, 
@@ -291,7 +291,7 @@ so let's give each node 3GB of memory. This brings up an interesting result,
 since Riak scales horizontally easily, this kind of use case is a perfect fit
 for Riak: we can add more nodes to distribute the file easily.
 
-``` makefile
+```makefile
 node1_limited:
     MIX_ENV=dev iex --erl "+MMsco true +MMscs 3000" --name dev@127.0.0.1 -S mix run
 node2_limited:
@@ -374,17 +374,17 @@ Wait a bit, the terminal on which you ran the distribute_csv function will not
 probably answer any commands until it stops reading the CSV
 and then, you can try to get any row of the CSV with Riax.get(number).
 Like this:
-  ```elixir
+```elixir
   iex(dev@127.0.0.1)17> Riax.API.get(100)
   %{
   date: "2019-05-27",
   sentiment: "Positive",
   text: "Arkada?lar..Biz,bu milletin aklõ olan kesimine H?TAP ediyoruz.\n\n#DOLAR\n#DolarTL\n#bist\n#bist100 \n#usdtry\n#USDTRY\n#XU100 \n#???????????????? 2012\n#doge #dogeusd\n#btc #btcusd\nYTD"
   }
-    ```
+```
 ### Visualizing Results:
 - Now that we have the data, let's show it. Stop the nodes and add scribe to your deps:
-    ```elixir
+```elixir
     # mix.exs
     defp deps do
       [
