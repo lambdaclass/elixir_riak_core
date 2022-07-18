@@ -412,5 +412,5 @@ data =
 
 ```
 - Set up the nodes again and read the CSV.
-- Here, we're printing the CSV rows on batches of 10 elements, try, for example:
+- Here we're printing the CSV rows on batches of 10 elements, try for example:
 `MyCluster.print_data(10)`
