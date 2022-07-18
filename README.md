@@ -38,7 +38,6 @@ routing to ensure jobs from the same batch are always handled by the same node,
 or distribute the jobs across several partitions and then use the distributed
 map-reduce queries to gather results.
 
-
 Another example: Think about serving a dataset which you want quick 
 access to, but It's too big to fit in memory. We could distribute said
 files (or file) between Virtual Nodes, use and identifier (say, like an index)
@@ -118,7 +117,7 @@ We recommend to use Elixir 1.13 and OTP 25.
 
 ## Multiple nodes:
 Having multiple Virtual Nodes is a must. We're going to need a config file for 
-each one, so let's change it, config.exs cane be something like this:
+each one, so let's change it, config.exs can be something like this:
     ```elixir
     import Config
     config :riax, vnode: Riax.VNode.Impl
@@ -126,7 +125,8 @@ each one, so let's change it, config.exs cane be something like this:
     import_config("#{Mix.env()}.exs")
     ```
     
-    Now, let's create 2 files, dev.exs (or add to it, if already exists) and dev2.exs under /config:
+Now, let's create 2 files, dev.exs (or add to it, if already exists) and dev2.exs under /config:
+
     ```elixir
    #dev.exs
     import Config
