@@ -7,7 +7,7 @@ defmodule Riax.MixProject do
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:gettext] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -18,15 +18,15 @@ defmodule Riax.MixProject do
   #
   # Type `mix help compile.app` for more information.
   def application do
-      [
-        mod: {Riax.Application, []},
-        applications: [:phoenix, :cowboy, :riak_core],
-        extra_applications: [:logger, :runtime_tools]
-      ]
+    [
+      mod: {Riax.Application, []},
+      applications: [:riak_core],
+      extra_applications: [:logger, :runtime_tools]
+    ]
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:test), do: ["lib", "test/support", "test/key_value"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -34,24 +34,14 @@ defmodule Riax.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.6.10"},
-      {:phoenix_html, "~> 3.0"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.17.5"},
-      {:floki, ">= 0.30.0", only: :test},
-      {:phoenix_live_dashboard, "~> 0.6"},
-      {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
-      {:swoosh, "~> 1.3"},
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.18"},
-      {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
       {:cuttlefish,
        git: "https://github.com/fkrause98/cuttlefish", manager: :rebar3, override: true},
       {:hut, "~> 1.3", manager: :rebar3, override: true},
-      {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"}
-      # {:rc_example, manager: :rebar3, git: "https://github.com/lambdaclass/riak_core_tutorial", ref: "update-repo-files"}
+      {:riak_core, manager: :rebar3, git: "https://github.com/basho/riak_core", ref: "develop"},
+      {:nimble_csv, "~> 1.1"},
+      {:local_cluster, "~> 1.2", only: [:test]},
+      {:hackney, "~> 1.9"},
+      {:parse_trans, "~> 3.4.1", override: true}
     ]
   end
 
@@ -64,7 +54,7 @@ defmodule Riax.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      test: ["test --no-start"]
     ]
   end
 end
