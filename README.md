@@ -315,7 +315,7 @@ platform_data_dir: 'data_3',
 - Try running each node and joining them with Riax.join, like in the setup. 
 ### Setting up csv.
 #### Storing:
-- Let's use NimbleCsv (it's maintained by Jos Valim so it must be good) to read our file, add  this to your dependencies in mix.exs
+Let's use NimbleCsv (it's maintained by José Valim so it must be good) to read our file, add  this to your dependencies in mix.exs
 ```elixir
 {:nimble_csv, "~> 1.1"}
 ```
