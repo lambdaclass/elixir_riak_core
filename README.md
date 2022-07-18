@@ -1,6 +1,6 @@
 # Riax
 Riax is an Elixir wrapper for Riak Core. 
-Riak Core is a distributed systems framework, written in erlang.
+Riak Core is a distributed systems framework, written in Erlang.
 You can think of it as a building block for distributed and scalable systems.
 If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
 tutorial](https://github.com/lambdaclass/riak_core_tutorial)
@@ -9,18 +9,18 @@ tutorial](https://github.com/lambdaclass/riak_core_tutorial)
 It is based on the [Dynamo architecture](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf),
 meaning it is easy to scale horizontally and distributes work in a decentralized
 manner. The great thing about Riak it's that it provides this architecture as a
-reusable erlang library, meaning it can be used in any context
+reusable Erlang library, meaning it can be used in any context
 that benefits from a decentralized distribution of work.
 
 ## Why Riax? 
 You must be thinking "ok, fine, this is an Erlang lib, I'll use it directly".
 The setup of Riak Core can be tricky, specially from Elixir, this library
-takes care of the gory details for you - we suffered so you don't have to.
+takes care of all the gory details for you - we suffered so you don't have to.
 
 ## What's so great about it?
 The key here is that Riak Core provides Consistent Hashing and Virtual Nodes.
 Virtual Nodes distribute work between them, and Consistent Hashing lets us
-routes commands to these Virtual Nodes. Note that many Virtual Nodes can run in
+route commands to these Virtual Nodes. Note that many Virtual Nodes can run in
 a Physical Node (i.e. a physical server) and can be easily set up or taken down.
 Plus, the only thing that you have to do using this library is giving them names
 and implement a behaviour, Riak handles the rest for you.
@@ -40,7 +40,7 @@ map-reduce queries to gather results.
 
 Another example: Think about serving a dataset which you want quick 
 access to, but It's too big to fit in memory. We could distribute said
-files (or file) between Virtual Nodes, use and identifier (say, like an index)
+files (or file) between Virtual Nodes, use an identifier (say, like an index)
 hash it and assign it to a Virtual Node. Riak fits really well here, as it is
 scales easily horizontally.
 This last use case is actually explained below.
@@ -201,7 +201,7 @@ with the help of Riak Core.
 in memory key-value storage. If we need more memory to store what we need,
 we can add another node to our cluster and Riak Core will handle the 
 details for us, provided we have an implemented VNode.
-### Creating project.
+#### Creating project.
 - Let's create a new mix project: `mix new my_cluster` for this, and make sure
 to follow the setup steps from above (if you don't have a config folder, just
 create it), and use the VNode I mention.
@@ -315,7 +315,7 @@ platform_data_dir: 'data_3',
 - Try running each node and joining them with Riax.join, like in the setup. 
 ### Setting up csv.
 #### Storing:
-- Let's use NimbleCsv (it's maintained by José Valim so it must be good) to read our file, add  this to your dependencies in mix.exs
+- Let's use NimbleCsv (it's maintained by Jos¬é Valim so it must be good) to read our file, add  this to your dependencies in mix.exs
 ```elixir
       {:nimble_csv, "~> 1.1"}
 ```
@@ -355,7 +355,7 @@ and tells each running Riak Node (the ones joined using  :riak_core.join/1) with
 - `store_csv/1` indexes every row of the CSV and uses
 them as keys for storing each row. So we end up with an index -> row mapping. We only store the index row pair if the index key belongs to the running node partition. We use `put/3` without logging because we know what we're storing.
 
-## Reading CSV:
+### Reading CSV:
 - Now that we have everything in place, lets run 3 VNodes in separate terminals,
 using the make targets.
 - On dev2 an dev3, run this `Riax.ring_join(dev@127.0.0.1)`.
@@ -378,7 +378,7 @@ Like this:
     %{
     date: "2019-05-27",
     sentiment: "Positive",
-    text: "Arkada?lar..Biz,bu milletin aklı olan kesimine H?TAP ediyoruz.\n\n#DOLAR\n#DolarTL\n#bist\n#bist100 \n#usdtry\n#USDTRY\n#XU100 \n#???????????????? 2012\n#doge #dogeusd\n#btc #btcusd\nYTD"
+    text: "Arkada?lar..Biz,bu milletin akl√µ olan kesimine H?TAP ediyoruz.\n\n#DOLAR\n#DolarTL\n#bist\n#bist100 \n#usdtry\n#USDTRY\n#XU100 \n#???????????????? 2012\n#doge #dogeusd\n#btc #btcusd\nYTD"
     }
     ```
     ## Visualizing Results:
@@ -393,7 +393,7 @@ Like this:
     ]
   end
 ```
-- On your MyCluser module, add this function:
+- On your MyCluster module, add this function:
 ```elixir
 def print_data(page) do
 data =
@@ -412,5 +412,5 @@ data =
 
 ```
 - Set up the nodes again and read the CSV.
-- Here, we're printing the CSV rows on batches of 10 elements, try, for example:
+- Here we're printing the CSV rows on batches of 10 elements, try for example:
 `MyCluster.print_data(10)`
