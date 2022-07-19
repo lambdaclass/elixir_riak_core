@@ -47,7 +47,8 @@ defmodule Riax.MixProject do
       #   when downloaded from hex.pm, it choose to use rebar which breaks with
       #   new elixir + erlang versions.
       {:riak_core, git: "https://github.com/fkrause98/riak_core", ref: "develop"},
-      {:local_cluster, "~> 1.2", only: [:test]}
+      {:local_cluster, "~> 1.2", only: [:test]},
+      {:ex_doc, "~> 0.14", only: [:dev, :test], runtime: false}
     ]
   end
 
