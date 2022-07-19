@@ -63,7 +63,7 @@ map-reduce queries to gather results.
 Another example: Think about serving a dataset which you want quick 
 access to, but It's too big to fit in memory. We could distribute said
 files (or file) between Virtual Nodes, use an identifier (say, like an index)
-hash it and assign it to a Virtual Node. Riak fits really well here, as it is
+hash it and assign it to a Virtual Node. Riak fits really well here as it
 scales easily horizontally.
 This last use case is actually explained below.
 
@@ -86,7 +86,7 @@ can change if a physical node is added to the cluster or goes down.
 We recommend to use Elixir 1.13 and OTP 25.
 
 ## Single node:
-1. First, add riax as a dependency to your mix.exs
+1. First, add Riax as a dependency to your mix.exs
 ```elixir
     defp deps do
         [
@@ -110,13 +110,13 @@ store. You can add it under lib/ or any other folder under elixirc_paths.
     node: 'dev@127.0.0.1',
     web_port: 8198,
     # Handoff is something we discuss
-    # furhter in the Riax.VNode doc.
+    # further in the Riax.VNode doc.
     handoff_port: 8199,
     # Where to save this node's ring
     # state
     ring_state_dir: 'ring_data_dir_1',
     platform_data_dir: 'data_1',
-    # This is a config file for riak core,
+    # This is a config file for Riak Core,
     # we provide this one for you.
     schema_dirs: ['/deps/riax/priv']
 ```
@@ -205,8 +205,8 @@ babb|abbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|bbbb|
 ```
 Eventually (a minute, give or take) it should reach 50% on each node.
 That's the handoff working.
-## Tutorial:
-## Use Case:
+# Tutorial:
+### Use Case:
 * I've mentioned this use case before, but let's go over it again: 
 - We have several, or one relatively big file that we want
 to provide (a dataset, for example)
@@ -216,7 +216,7 @@ size.
 high availability.
 - We can scale horizontally and divide said file.
 - This is where Riak comes in.
-## Solution:
+## $Solution:
 * We're going to address this use case in this tutorial, 
 with the help of Riak Core.
 * The key thing here is that we can use several Riak Nodes to offer an
