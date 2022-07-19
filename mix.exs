@@ -41,7 +41,7 @@ defmodule Riax.MixProject do
       #     - hut, to make it use rebar3
       #     - parse_trans , to make it use rebar3
       # - For Riak Core, I had to change its rebar.config to use
-      #   some my forks of cuttlefish and exometer_core.
+      #   some of my forks of cuttlefish and exometer_core.
       # - For cuttlefish I only commented a post hook.
       # - For exometer_core I forked hut 2 to force it to use rebar3, as of now,
       #   when downloaded from hex.pm, it choose to use rebar which breaks with
