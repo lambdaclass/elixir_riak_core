@@ -34,16 +34,18 @@ defmodule Riax.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      # {exometer_core, {git, "https://github.com/Feuerlabs/exometer_core.git", {tag, "1.6.1"}}},
-      # I had to fork both riak core an its dependency
-      # clique to make it work with Elixir.
-      {:hut, "~> 1.3", manager: :rebar3, override: true},
-      {:riak_core,
-       manager: :rebar3, git: "https://github.com/fkrause98/riak_core", ref: "develop"},
-      {:local_cluster, "~> 1.2", only: [:test]},
-      # {:parse_trans, "~> 3.4.1", manager: :rebar3, override: true},
-      {:exometer_core,
-       git: "https://github.com/Feuerlabs/exometer_core", tag: "1.6.1", override: true}
+      # I had to fork the following to make this work:
+      # - riak_core and this deps:
+      #     - cuttlefish: https://github.com/fkrause98/cuttlefish/commit/b28c716c39f7c16b9dd680d787b3c8d8c77fca2a
+      #     - exometer: https://github.com/fkrause98/cuttlefish/commit/b28c716c39f7c16b9dd680d787b3c8d8c77fca2a
+      # - For Riak Core, I had to change its rebar.config to use
+      #   some my forks of cuttlefish and exometer_core.
+      # - For cuttlefish I only commented a post hook.
+      # - For exometer_core I forked hut 2 to force it to use rebar3, as of now,
+      #   when downloaded from hex.pm, it choose to use rebar which breaks with
+      #   new elixir + erlang versions.
+      {:riak_core, git: "https://github.com/fkrause98/riak_core", ref: "develop"},
+      {:local_cluster, "~> 1.2", only: [:test]}
     ]
   end
 
