@@ -38,6 +38,8 @@ defmodule Riax.MixProject do
       # - riak_core and this deps:
       #     - cuttlefish: https://github.com/fkrause98/cuttlefish/commit/b28c716c39f7c16b9dd680d787b3c8d8c77fca2a
       #     - exometer: https://github.com/fkrause98/cuttlefish/commit/b28c716c39f7c16b9dd680d787b3c8d8c77fca2a
+      #     - hut, to make it use rebar3
+      #     - parse_trans , to make it use rebar3
       # - For Riak Core, I had to change its rebar.config to use
       #   some my forks of cuttlefish and exometer_core.
       # - For cuttlefish I only commented a post hook.
