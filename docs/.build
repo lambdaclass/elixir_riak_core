@@ -1,8 +1,4 @@
 404.html
-Riax.Coverage.Fsm.html
-Riax.Coverage.Sup.html
-Riax.Supervisor.html
-Riax.VNode.Impl.html
 Riax.VNode.html
 Riax.html
 api-reference.html
@@ -14,7 +10,7 @@ dist/html/fonts/remixicon.svg
 dist/html/fonts/remixicon.ttf
 dist/html/fonts/remixicon.woff
 dist/html/fonts/remixicon.woff2
-dist/search_items-cc95403c68.js
-dist/sidebar_items-4c077f3411.js
+dist/search_items-d25b14caa9.js
+dist/sidebar_items-c98082d4e8.js
 index.html
 search.html
