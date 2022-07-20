@@ -25,7 +25,9 @@ Riax is an Elixir wrapper for Riak Core.
 Riak Core is a distributed systems framework, written in Erlang.
 You can think of it as a building block for distributed and scalable systems.
 If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
-tutorial](https://github.com/lambdaclass/riak_core_tutorial)
+tutorial](https://github.com/lambdaclass/riak_core_tutorial). 
+To learn more, you can check the useful links section in the repo linked above, and check the 
+[docs](https://lambdaclass.github.io/elixir_riak_core/api-reference.html) for more.
 # Riak Core:
 ## What is it?
 It is based on the [Dynamo architecture](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf),
