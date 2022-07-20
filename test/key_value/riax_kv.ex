@@ -1,4 +1,8 @@
 defmodule Riax.VNode.Impl do
+  @moduledoc """
+  Example Implementation of a Virtual Node used as a K-V store,
+  used for testing.
+  """
   require Logger
   @behaviour Riax.VNode
   @impl true
