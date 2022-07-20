@@ -12,7 +12,7 @@ defmodule Riax.MixProject do
       aliases: aliases(),
       deps: deps(),
       docs: [
-        filter_modules: [fn module, _ -> module in [Riax, Riax.VNode] end]
+        filter_modules: fn module, _ -> module in [Riax, Riax.VNode] end
       ]
     ]
   end
@@ -64,7 +64,8 @@ defmodule Riax.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      test: ["test --no-start"]
+      test: ["test --no-start"],
+      docs: ["docs -o docs -f html"]
     ]
   end
 end
