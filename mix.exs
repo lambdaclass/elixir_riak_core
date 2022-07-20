@@ -10,7 +10,10 @@ defmodule Riax.MixProject do
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      docs: [
+        filter_modules: [fn module, _ -> module in [Riax, Riax.VNode] end]
+      ]
     ]
   end
 
