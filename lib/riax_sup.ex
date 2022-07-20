@@ -1,4 +1,8 @@
 defmodule Riax.Supervisor do
+  @moduledoc """
+  Supervisor that spawns the Riak VNode Master and
+  Coverage Supervisor.
+  """
   use Supervisor
 
   def start_link([]) do
