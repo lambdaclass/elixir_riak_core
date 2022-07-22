@@ -1,5 +1,5 @@
-# Tutorial:
-### Use Case:
+# Tutorial
+### Use Case
 * I've mentioned this use case before, but let's go over it again: 
 - We have several, or one relatively big file that we want
 to provide (a dataset, for example)
@@ -9,14 +9,14 @@ size.
 high availability.
 - We can scale horizontally and divide said file.
 - This is where Riak comes in.
-## Solution:
+## Solution
 * We're going to address this use case in this tutorial, 
 with the help of Riak Core.
 * The key thing here is that we can use several Riak Nodes to offer an
 in memory key-value storage. If we need more memory to store what we need,
 we can add another node to our cluster and Riak Core will handle the 
 details for us, provided we have an implemented VNode.
-#### Creating project.
+#### Creating a project
 - Let's create a new mix project: `mix new my_cluster` for this, and make sure
 to follow the setup steps from above (if you don't have a config folder, just
 create it), and use the VNode I mention.
@@ -76,7 +76,7 @@ faster.
 
 Also, note the `keys/0` and `values/0`. They're coverage commands, that means
 that they run in every node, each node returns a different answer.
-### Limiting VM Memory.
+### Limiting VM Memory
 * To simulate a situation where our file is too big to be stored in RAM,
 we're going to use a tweet dataset of around 3-4 GiB, [a CSV taken from Kaggle](https://www.kaggle.com/datasets/gauravduttakiit/bitcoin-tweets-16m-tweets-with-sentiment-tagged?resource=download) (you might need an account to download it, don't worry - it's free) and limit the available memory for our nodes.
 It's a collection of tweets about Bitcoin, we're only interested in 
@@ -128,8 +128,8 @@ platform_data_dir: 'data_3',
 
 ``` 
 - Try running each node and joining them with Riax.join, like in the setup. 
-### Setting up csv.
-#### Storing:
+### Setting up csv
+#### Storing
 Let's use NimbleCsv (it's maintained by José Valim so it must be good) to read our file, add  this to your dependencies in mix.exs
 ```elixir
 {:nimble_csv, "~> 1.1"}
@@ -170,7 +170,7 @@ and tells each running Riak Node (the ones joined using  :riak_core.join/1) with
 - `store_csv/1` indexes every row of the CSV and uses
 them as keys for storing each row. So we end up with an index -> row mapping. We only store the index row pair if the index key belongs to the running node partition. We use `put/3` without logging because we know what we're storing.
 
-### Reading CSV:
+### Reading CSV
 - Now that we have everything in place, lets run 3 VNodes in separate terminals,
 using the make targets.
 - On dev2 an dev3, run this `Riax.ring_join(dev@127.0.0.1)`.
@@ -196,7 +196,7 @@ Like this:
   text: "Arkada?lar..Biz,bu milletin aklõ olan kesimine H?TAP ediyoruz.\n\n#DOLAR\n#DolarTL\n#bist\n#bist100 \n#usdtry\n#USDTRY\n#XU100 \n#???????????????? 2012\n#doge #dogeusd\n#btc #btcusd\nYTD"
   }
 ```
-### Visualizing Results:
+### Visualizing Results
 - Now that we have the data, let's show it. Stop the nodes and add scribe to your deps:
 ```elixir
     # mix.exs

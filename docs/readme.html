@@ -10,7 +10,7 @@
     <title>Riax — riax v0.1.0</title>
     <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
 
-    <script src="dist/sidebar_items-df4dec4d42.js"></script>
+    <script src="dist/sidebar_items-6d68521843.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -62,7 +62,7 @@
   <div class="sidebar-header">
 
     <div class="sidebar-projectDetails">
-      <a href="api-reference.html" class="sidebar-projectName" translate="no">
+      <a href="readme.html" class="sidebar-projectName" translate="no">
 riax
       </a>
       <strong class="sidebar-projectVersion" translate="no">
@@ -98,9 +98,8 @@ riax
 </h1>
 
 <p>Riax is an Elixir wrapper for Riak Core. 
-Riak Core is a distributed systems framework, written in Erlang.
-You can think of it as a building block for distributed and scalable systems.
-Check the 
+Riak Core is a building block for distributed and scalable systems
+in the form of an Erlang Framework.
 To learn more, you can check the useful links section in the repo linked above, and check the 
 <a href="https://lambdaclass.github.io/elixir_riak_core/api-reference.html">docs</a> for more.
 If you want to set it up with Erlang, we also have an <a href="https://github.com/lambdaclass/riak_core_tutorial">up-to-date (OTP 25)
@@ -160,7 +159,7 @@ This last use case is actually explained below.</p><h2 id="more-about-hashing-an
 key. The key hash will be used to decide which node in the cluster should be
 responsible for executing the operation. The range of possible values the key
 hash can take (the keyspace, usually depicted as a ring), is partitioned in
-equally sized buckets, which are assigned to Virtual Vodes.</p><p><img src="ring.png" alt="The Ring"/></p><p>Virtual Nodes share what is called a keyspace.
+equally sized buckets, which are assigned to Virtual Vodes.</p><p><img src="https://raw.githubusercontent.com/lambdaclass/riak_core_tutorial/master/ring.png" alt="The Ring"/></p><p>Virtual Nodes share what is called a keyspace.
 The number of VNodes is fixed at cluster creation and a given hash value will
 always belong to the same partition (i.e. the same VNode). The VNodes in turn
 are evenly distributed across all available physical nodes. Note this
@@ -186,7 +185,7 @@ API Reference
           Next Page →
         </span>
         <span class="title">
-Setup:
+Setup
         </span>
       </a>
 

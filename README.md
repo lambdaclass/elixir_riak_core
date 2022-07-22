@@ -1,14 +1,13 @@
 # Riax ![Build](https://github.com/lambdaclass/elixir_riak_core/actions/workflows/github-actions.yml/badge.svg)
 
 Riax is an Elixir wrapper for Riak Core. 
-Riak Core is a distributed systems framework, written in Erlang.
-You can think of it as a building block for distributed and scalable systems.
-Check the 
+Riak Core is a building block for distributed and scalable systems
+in the form of an Erlang Framework.
 To learn more, you can check the useful links section in the repo linked above, and check the 
 [docs](https://lambdaclass.github.io/elixir_riak_core/api-reference.html) for more.
 If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
 tutorial](https://github.com/lambdaclass/riak_core_tutorial). 
-# Riak Core:
+# Riak Core
 ## What is it?
 It is based on the [Dynamo architecture](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf),
 meaning it is easy to scale horizontally and distributes work in a decentralized
@@ -29,7 +28,7 @@ a Physical Node (i.e. a physical server) and can be easily set up or taken down.
 Plus, the only thing that you have to do using this library is giving them names
 and implement a behaviour, Riak handles the rest for you.
 
-## Use cases:
+## Use cases
 The most intuitive and straight-forward use case is a key-value store in memory,
 we've actually [implemented one here](https://github.com/lambdaclass/elixir_riak_core/blob/main/test/key_value/riax_kv.ex) for our tests.
 
@@ -49,14 +48,14 @@ hash it and assign it to a Virtual Node. Riak fits really well here as it
 scales easily horizontally.
 This last use case is actually explained below.
 
-## More about Hashing and VNodes:
+## More about Hashing and VNodes
 Before performing an operation, a hashing function is applied to some data, a
 key. The key hash will be used to decide which node in the cluster should be
 responsible for executing the operation. The range of possible values the key
 hash can take (the keyspace, usually depicted as a ring), is partitioned in
 equally sized buckets, which are assigned to Virtual Vodes.
 
-![The Ring](ring.png)
+![The Ring](https://raw.githubusercontent.com/lambdaclass/riak_core_tutorial/master/ring.png)
 
 Virtual Nodes share what is called a keyspace.
 The number of VNodes is fixed at cluster creation and a given hash value will
