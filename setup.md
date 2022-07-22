@@ -4,11 +4,11 @@ We recommend to use Elixir 1.13 and OTP 25.
 ## Single node:
 1. First, add Riax as a dependency to your mix.exs
 ```elixir
-    defp deps do
-        [
-        {:riax, ">= 0.1.0", github: "lambdaclass/elixir_riak_core", branch: "main"}
-        ]
-    end
+defp deps do
+  [
+    {:riax, ">= 0.1.0", github: "lambdaclass/elixir_riak_core", branch: "main"}
+  ]
+end
 ```
 (It's not available on hex.pm as every dependency of Riak Core, and Riak itself,
 is hosted on Github. And hex.pm does not allow to upload packages with git dependencies)
@@ -17,26 +17,26 @@ if you want to. This is an example of a Virtual Node being used as Key-Value
 store. You can add it under lib/ or any other folder under elixirc_paths.
 3. After that, you'll need a configuration for each Node, here's an example one:
 ```elixir
-    # config/config.exs
-    import Config
-    # This tells riax which of or modules 
-    # implements a VNode.
-    config :riax, vnode: Riax.VNode.Impl
+# config/config.exs
+import Config
+# This tells riax which of or modules 
+# implements a VNode.
+config :riax, vnode: Riax.VNode.Impl
 
-    config :riak_core,
-    # Must be an Erlang long name
-    node: 'dev@127.0.0.1',
-    web_port: 8198,
-    # Handoff is something we discuss
-    # further in the Riax.VNode doc.
-    handoff_port: 8199,
-    # Where to save this node's ring
-    # state
-    ring_state_dir: 'ring_data_dir_1',
-    platform_data_dir: 'data_1',
-    # This is a config file for Riak Core,
-    # we provide this one for you.
-    schema_dirs: ['/deps/riax/priv']
+config :riak_core,
+  # Must be an Erlang long name
+  node: 'dev@127.0.0.1',
+  web_port: 8198,
+  # Handoff is something we discuss
+  # further in the Riax.VNode doc.
+  handoff_port: 8199,
+  # Where to save this node's ring
+  # state
+  ring_state_dir: 'ring_data_dir_1',
+  platform_data_dir: 'data_1',
+  # This is a config file for Riak Core,
+  # we provide this one for you.
+  schema_dirs: ['/deps/riax/priv']
 ```
  4. Remember that the iex node name needs to match the one from your config, so
  now you can start your mix project with:
@@ -46,12 +46,12 @@ store. You can add it under lib/ or any other folder under elixirc_paths.
 And then, try running Riax.ring_status/0 in iex, you should see something
 like this:
 ```elixir
-    iex(dev@127.0.0.1)1> Riax.ring_status
-    ==================================== Nodes ====================================
-    Node a: 64 (100.0%) dev@127.0.0.1
-    ==================================== Ring =====================================
-    aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
-    :ok
+iex(dev@127.0.0.1)1> Riax.ring_status
+==================================== Nodes ====================================
+Node a: 64 (100.0%) dev@127.0.0.1
+==================================== Ring =====================================
+aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
+:ok
 ``` 
 That's it! Up and running.
 
@@ -68,29 +68,29 @@ each one, so let's change it, config.exs can be something like this:
 Now, let's create 2 files, dev.exs (or add to it, if already exists) and dev2.exs under /config:
 
 ```elixir
-    # dev.exs
-    import Config
-    config :riax, vnode: Riax.VNode.Impl
+# dev.exs
+import Config
+config :riax, vnode: Riax.VNode.Impl
 
-    config :riak_core,
-      node: 'dev@127.0.0.1',
-      web_port: 8198,
-      handoff_port: 8199,
-      ring_state_dir: 'ring_data_dir_1',
-      platform_data_dir: 'data_1',
-      schema_dirs: ['deps/riax/priv/']
+config :riak_core,
+  node: 'dev@127.0.0.1',
+  web_port: 8198,
+  handoff_port: 8199,
+  ring_state_dir: 'ring_data_dir_1',
+  platform_data_dir: 'data_1',
+  schema_dirs: ['deps/riax/priv/']
 ```
 ```elixir
-   #dev2.exs
-    import Config
+# dev2.exs
+import Config
 
-    config :riak_core,
-    node: 'dev2@127.0.0.1',
-    web_port: 8398,
-    handoff_port: 8399,
-    ring_state_dir: 'ring_data_dir_2',
-    platform_data_dir: 'data_2',
-    schema_dirs: ['deps/riax/priv/' ]
+config :riak_core,
+  node: 'dev2@127.0.0.1',
+  web_port: 8398,
+  handoff_port: 8399,
+  ring_state_dir: 'ring_data_dir_2',
+  platform_data_dir: 'data_2',
+  schema_dirs: ['deps/riax/priv/']
 ```
 Now, you can try them locally on 2 separate terminal sessions (tmux, multiple termilas, terminal tabs... whatever you like), first run: 
 ```
