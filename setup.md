@@ -1,7 +1,7 @@
 # Setup
 We tested this with Elixir 1.13 and OTP 25.
 
-## Single node:
+## Single node
 1. First, add Riax as a dependency to your mix.exs
 ```elixir
 defp deps do
@@ -55,7 +55,7 @@ aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
 ``` 
 That's it! Up and running.
 
-## Multiple nodes:
+## Multiple nodes
 Having multiple Virtual Nodes is a must. We're going to need a config file for 
 each one, so let's change it, config.exs can be something like this:
 ```elixir
