@@ -13,7 +13,6 @@ defmodule Riax.MixProject do
       deps: deps(),
       docs: [
         filter_modules: fn module, _ -> module in [Riax, Riax.VNode] end,
-        api_reference: true
       ]
     ]
   end
