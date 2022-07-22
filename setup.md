@@ -111,8 +111,9 @@ node1:
 node2:
         MIX_ENV=dev2 iex --name dev2@127.0.0.1 -S mix run
 ```
-Now, try calling Riax.join('dev2@127.0.0.1') from terminal 1. Now,
-Riax.ring_status will change to something like this:
+Now, try calling `Riax.join('dev2@127.0.0.1')` from terminal 1.
+
+`Riax.ring_status` will change to something like this:
 ``` 
 iex(dev@127.0.0.1)7> Riax.ring_status
 ==================================== Nodes ====================================
