@@ -1,4 +1,4 @@
-# Tutoria:
+# Tutorial:
 ### Use Case:
 * I've mentioned this use case before, but let's go over it again: 
 - We have several, or one relatively big file that we want
