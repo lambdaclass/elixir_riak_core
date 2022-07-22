@@ -10,7 +10,7 @@
     <title>Riax.VNode — riax v0.1.0</title>
     <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
 
-    <script src="dist/sidebar_items-c98082d4e8.js"></script>
+    <script src="dist/sidebar_items-160dab9d99.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -114,148 +114,148 @@ in mind that VNodes are not bound to a particular to a particular physical
 node. They can be relocated to another physical nodes as new nodes are added
 (using Riax.join) or a certain physical node is not available. Adding new
 nodes easily is useful for horizontal scaling.</p><p>To implement this Virtual Node, we provide an easy to use behaviour. Here's an
-example of using a Virtual Node as a Key-Value store.</p><h1>Example</h1><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Riax.VNode.Impl</span><span class="w"> </span><span class="k" data-group-id="5751173611-1">do</span><span class="w">
+example of using a Virtual Node as a Key-Value store.</p><h1>Example</h1><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Riax.VNode.Impl</span><span class="w"> </span><span class="k" data-group-id="4481676304-1">do</span><span class="w">
   </span><span class="kn">require</span><span class="w"> </span><span class="nc">Logger</span><span class="w">
   </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Riax.VNode</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="5751173611-2">(</span><span class="p" data-group-id="5751173611-3">[</span><span class="n">partition</span><span class="p" data-group-id="5751173611-3">]</span><span class="p" data-group-id="5751173611-2">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-4">do</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-6">%{</span><span class="ss">partition</span><span class="p">:</span><span class="w"> </span><span class="n">partition</span><span class="p">,</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5751173611-7">%{</span><span class="p" data-group-id="5751173611-7">}</span><span class="p" data-group-id="5751173611-6">}</span><span class="p" data-group-id="5751173611-5">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-4">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="4481676304-2">(</span><span class="p" data-group-id="4481676304-3">[</span><span class="n">partition</span><span class="p" data-group-id="4481676304-3">]</span><span class="p" data-group-id="4481676304-2">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-4">do</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-6">%{</span><span class="ss">partition</span><span class="p">:</span><span class="w"> </span><span class="n">partition</span><span class="p">,</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4481676304-7">%{</span><span class="p" data-group-id="4481676304-7">}</span><span class="p" data-group-id="4481676304-6">}</span><span class="p" data-group-id="4481676304-5">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-4">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="5751173611-8">(</span><span class="p" data-group-id="5751173611-9">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-9">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-10">%{</span><span class="ss">partition</span><span class="p">:</span><span class="w"> </span><span class="n">partition</span><span class="p" data-group-id="5751173611-10">}</span><span class="p" data-group-id="5751173611-8">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-11">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-12">(</span><span class="s">&quot;Received ping command!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-12">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-13">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-14">{</span><span class="ss">:pong</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">node</span><span class="p" data-group-id="5751173611-15">(</span><span class="p" data-group-id="5751173611-15">)</span><span class="p">,</span><span class="w"> </span><span class="n">partition</span><span class="p" data-group-id="5751173611-14">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-13">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-11">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="4481676304-8">(</span><span class="p" data-group-id="4481676304-9">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-9">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-10">%{</span><span class="ss">partition</span><span class="p">:</span><span class="w"> </span><span class="n">partition</span><span class="p" data-group-id="4481676304-10">}</span><span class="p" data-group-id="4481676304-8">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-11">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-12">(</span><span class="s">&quot;Received ping command!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-12">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-13">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-14">{</span><span class="ss">:pong</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">node</span><span class="p" data-group-id="4481676304-15">(</span><span class="p" data-group-id="4481676304-15">)</span><span class="p">,</span><span class="w"> </span><span class="n">partition</span><span class="p" data-group-id="4481676304-14">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-13">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-11">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="5751173611-16">(</span><span class="p" data-group-id="5751173611-17">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="ss">:no_log</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-18">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-18">}</span><span class="p" data-group-id="5751173611-17">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-19">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5751173611-19">}</span><span class="p" data-group-id="5751173611-16">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-20">do</span><span class="w">
-      </span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">put</span><span class="p" data-group-id="5751173611-21">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-21">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-22">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-23">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">new_data</span><span class="p" data-group-id="5751173611-23">}</span><span class="p" data-group-id="5751173611-22">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-20">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="4481676304-16">(</span><span class="p" data-group-id="4481676304-17">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="ss">:no_log</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-18">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-18">}</span><span class="p" data-group-id="4481676304-17">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-19">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4481676304-19">}</span><span class="p" data-group-id="4481676304-16">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-20">do</span><span class="w">
+      </span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">put</span><span class="p" data-group-id="4481676304-21">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-21">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-22">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-23">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">new_data</span><span class="p" data-group-id="4481676304-23">}</span><span class="p" data-group-id="4481676304-22">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-20">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="5751173611-24">(</span><span class="p" data-group-id="5751173611-25">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-26">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-26">}</span><span class="p" data-group-id="5751173611-25">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-27">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5751173611-27">}</span><span class="p" data-group-id="5751173611-24">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-28">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-29">(</span><span class="s">&quot;PUT Key: </span><span class="si" data-group-id="5751173611-30">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-31">(</span><span class="n">k</span><span class="p" data-group-id="5751173611-31">)</span><span class="si" data-group-id="5751173611-30">}</span><span class="s">, Value: </span><span class="si" data-group-id="5751173611-32">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-33">(</span><span class="n">v</span><span class="p" data-group-id="5751173611-33">)</span><span class="si" data-group-id="5751173611-32">}</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-29">)</span><span class="w">
-      </span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">put</span><span class="p" data-group-id="5751173611-34">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-34">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-35">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-36">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">new_data</span><span class="p" data-group-id="5751173611-36">}</span><span class="p" data-group-id="5751173611-35">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-28">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="4481676304-24">(</span><span class="p" data-group-id="4481676304-25">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-26">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-26">}</span><span class="p" data-group-id="4481676304-25">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-27">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4481676304-27">}</span><span class="p" data-group-id="4481676304-24">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-28">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-29">(</span><span class="s">&quot;PUT Key: </span><span class="si" data-group-id="4481676304-30">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-31">(</span><span class="n">k</span><span class="p" data-group-id="4481676304-31">)</span><span class="si" data-group-id="4481676304-30">}</span><span class="s">, Value: </span><span class="si" data-group-id="4481676304-32">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-33">(</span><span class="n">v</span><span class="p" data-group-id="4481676304-33">)</span><span class="si" data-group-id="4481676304-32">}</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-29">)</span><span class="w">
+      </span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">put</span><span class="p" data-group-id="4481676304-34">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-34">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-35">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-36">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">new_data</span><span class="p" data-group-id="4481676304-36">}</span><span class="p" data-group-id="4481676304-35">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-28">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="5751173611-37">(</span><span class="p" data-group-id="5751173611-38">{</span><span class="ss">:get</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="5751173611-38">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-39">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5751173611-39">}</span><span class="p" data-group-id="5751173611-37">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-40">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-41">(</span><span class="s">&quot;GET </span><span class="si" data-group-id="5751173611-42">#{</span><span class="n">key</span><span class="si" data-group-id="5751173611-42">}</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-41">)</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="4481676304-37">(</span><span class="p" data-group-id="4481676304-38">{</span><span class="ss">:get</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="4481676304-38">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-39">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4481676304-39">}</span><span class="p" data-group-id="4481676304-37">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-40">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-41">(</span><span class="s">&quot;GET </span><span class="si" data-group-id="4481676304-42">#{</span><span class="n">key</span><span class="si" data-group-id="4481676304-42">}</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-41">)</span><span class="w">
 
       </span><span class="n">reply</span><span class="w"> </span><span class="o">=</span><span class="w">
-      </span><span class="k">case</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5751173611-43">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="5751173611-43">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-44">do</span><span class="w">
+      </span><span class="k">case</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="4481676304-43">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="4481676304-43">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-44">do</span><span class="w">
           </span><span class="no">nil</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="ss">:not_found</span><span class="w">
           </span><span class="n">value</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">value</span><span class="w">
-      </span><span class="k" data-group-id="5751173611-44">end</span><span class="w">
+      </span><span class="k" data-group-id="4481676304-44">end</span><span class="w">
 
-      </span><span class="p" data-group-id="5751173611-45">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="n">reply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-45">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-40">end</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-45">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="n">reply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-45">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-40">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="5751173611-46">(</span><span class="p" data-group-id="5751173611-47">{</span><span class="ss">:delete</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="5751173611-47">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-48">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5751173611-48">}</span><span class="p" data-group-id="5751173611-46">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-49">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-50">(</span><span class="s">&quot;DELETE </span><span class="si" data-group-id="5751173611-51">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-52">(</span><span class="n">key</span><span class="p" data-group-id="5751173611-52">)</span><span class="si" data-group-id="5751173611-51">}</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-50">)</span><span class="w">
-      </span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="5751173611-53">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="5751173611-53">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-54">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5751173611-55">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="ss">:not_found</span><span class="p" data-group-id="5751173611-55">)</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-56">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">new_data</span><span class="p" data-group-id="5751173611-56">}</span><span class="p" data-group-id="5751173611-54">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-49">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="4481676304-46">(</span><span class="p" data-group-id="4481676304-47">{</span><span class="ss">:delete</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="4481676304-47">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-48">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4481676304-48">}</span><span class="p" data-group-id="4481676304-46">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-49">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-50">(</span><span class="s">&quot;DELETE </span><span class="si" data-group-id="4481676304-51">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-52">(</span><span class="n">key</span><span class="p" data-group-id="4481676304-52">)</span><span class="si" data-group-id="4481676304-51">}</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-50">)</span><span class="w">
+      </span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="4481676304-53">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="4481676304-53">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-54">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="4481676304-55">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="ss">:not_found</span><span class="p" data-group-id="4481676304-55">)</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-56">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">new_data</span><span class="p" data-group-id="4481676304-56">}</span><span class="p" data-group-id="4481676304-54">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-49">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="5751173611-57">(</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-57">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-58">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-59">(</span><span class="s">&quot;unhandle command </span><span class="si" data-group-id="5751173611-60">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-61">(</span><span class="n">message</span><span class="p" data-group-id="5751173611-61">)</span><span class="si" data-group-id="5751173611-60">}</span><span class="s">&quot;</span><span class="p" data-group-id="5751173611-59">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-62">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-62">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-58">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="4481676304-57">(</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-57">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-58">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-59">(</span><span class="s">&quot;unhandle command </span><span class="si" data-group-id="4481676304-60">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-61">(</span><span class="n">message</span><span class="p" data-group-id="4481676304-61">)</span><span class="si" data-group-id="4481676304-60">}</span><span class="s">&quot;</span><span class="p" data-group-id="4481676304-59">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-62">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-62">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-58">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handoff_starting</span><span class="p" data-group-id="5751173611-63">(</span><span class="n">target_node</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-64">%{</span><span class="ss">partition</span><span class="p">:</span><span class="w"> </span><span class="c">_partition</span><span class="p" data-group-id="5751173611-64">}</span><span class="p" data-group-id="5751173611-63">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-65">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-66">(</span><span class="w">
-      </span><span class="s">&quot;Handoff starting with target: </span><span class="si" data-group-id="5751173611-67">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-68">(</span><span class="n">target_node</span><span class="p" data-group-id="5751173611-68">)</span><span class="si" data-group-id="5751173611-67">}</span><span class="s"> - State: </span><span class="si" data-group-id="5751173611-69">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-70">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-70">)</span><span class="si" data-group-id="5751173611-69">}</span><span class="s">&quot;</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-66">)</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handoff_starting</span><span class="p" data-group-id="4481676304-63">(</span><span class="n">target_node</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-64">%{</span><span class="ss">partition</span><span class="p">:</span><span class="w"> </span><span class="c">_partition</span><span class="p" data-group-id="4481676304-64">}</span><span class="p" data-group-id="4481676304-63">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-65">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-66">(</span><span class="w">
+      </span><span class="s">&quot;Handoff starting with target: </span><span class="si" data-group-id="4481676304-67">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-68">(</span><span class="n">target_node</span><span class="p" data-group-id="4481676304-68">)</span><span class="si" data-group-id="4481676304-67">}</span><span class="s"> - State: </span><span class="si" data-group-id="4481676304-69">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-70">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-70">)</span><span class="si" data-group-id="4481676304-69">}</span><span class="s">&quot;</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-66">)</span><span class="w">
 
-      </span><span class="p" data-group-id="5751173611-71">{</span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-71">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-65">end</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-71">{</span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-71">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-65">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handoff_finished</span><span class="p" data-group-id="5751173611-72">(</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-73">%{</span><span class="ss">partition</span><span class="p">:</span><span class="w"> </span><span class="n">partition</span><span class="p" data-group-id="5751173611-73">}</span><span class="p" data-group-id="5751173611-72">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-74">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-75">(</span><span class="w">
-      </span><span class="s">&quot;Handoff finished with target: </span><span class="si" data-group-id="5751173611-76">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-77">(</span><span class="n">dest</span><span class="p" data-group-id="5751173611-77">)</span><span class="si" data-group-id="5751173611-76">}</span><span class="s">, partition: </span><span class="si" data-group-id="5751173611-78">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-79">(</span><span class="n">partition</span><span class="p" data-group-id="5751173611-79">)</span><span class="si" data-group-id="5751173611-78">}</span><span class="s">&quot;</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-75">)</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handoff_finished</span><span class="p" data-group-id="4481676304-72">(</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-73">%{</span><span class="ss">partition</span><span class="p">:</span><span class="w"> </span><span class="n">partition</span><span class="p" data-group-id="4481676304-73">}</span><span class="p" data-group-id="4481676304-72">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-74">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-75">(</span><span class="w">
+      </span><span class="s">&quot;Handoff finished with target: </span><span class="si" data-group-id="4481676304-76">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-77">(</span><span class="n">dest</span><span class="p" data-group-id="4481676304-77">)</span><span class="si" data-group-id="4481676304-76">}</span><span class="s">, partition: </span><span class="si" data-group-id="4481676304-78">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-79">(</span><span class="n">partition</span><span class="p" data-group-id="4481676304-79">)</span><span class="si" data-group-id="4481676304-78">}</span><span class="s">&quot;</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-75">)</span><span class="w">
 
-      </span><span class="p" data-group-id="5751173611-80">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-80">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-74">end</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-80">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-80">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-74">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_handoff_fold</span><span class="p" data-group-id="5751173611-81">(</span><span class="n">fold_function</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-81">)</span><span class="w">
-      </span><span class="ow">when</span><span class="w"> </span><span class="n">is_function</span><span class="p" data-group-id="5751173611-82">(</span><span class="n">fold_function</span><span class="p" data-group-id="5751173611-82">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-83">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-84">(</span><span class="s">&quot;&gt;&gt;&gt;&gt;&gt; Handoff V2 &lt;&lt;&lt;&lt;&lt;&lt;&quot;</span><span class="p" data-group-id="5751173611-84">)</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_handoff_fold</span><span class="p" data-group-id="4481676304-81">(</span><span class="n">fold_function</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-81">)</span><span class="w">
+      </span><span class="ow">when</span><span class="w"> </span><span class="n">is_function</span><span class="p" data-group-id="4481676304-82">(</span><span class="n">fold_function</span><span class="p" data-group-id="4481676304-82">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-83">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-84">(</span><span class="s">&quot;&gt;&gt;&gt;&gt;&gt; Handoff V2 &lt;&lt;&lt;&lt;&lt;&lt;&quot;</span><span class="p" data-group-id="4481676304-84">)</span><span class="w">
 
       </span><span class="n">acc</span><span class="w"> </span><span class="o">=</span><span class="w">
       </span><span class="n">state</span><span class="o">.</span><span class="n">data</span><span class="w">
-      </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">reduce</span><span class="p" data-group-id="5751173611-85">(</span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="5751173611-86">fn</span><span class="w"> </span><span class="p" data-group-id="5751173611-87">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-87">}</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-          </span><span class="n">fold_function</span><span class="o">.</span><span class="p" data-group-id="5751173611-88">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="p" data-group-id="5751173611-88">)</span><span class="w">
-      </span><span class="k" data-group-id="5751173611-86">end</span><span class="p" data-group-id="5751173611-85">)</span><span class="w">
+      </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">reduce</span><span class="p" data-group-id="4481676304-85">(</span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="4481676304-86">fn</span><span class="w"> </span><span class="p" data-group-id="4481676304-87">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-87">}</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+          </span><span class="n">fold_function</span><span class="o">.</span><span class="p" data-group-id="4481676304-88">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="p" data-group-id="4481676304-88">)</span><span class="w">
+      </span><span class="k" data-group-id="4481676304-86">end</span><span class="p" data-group-id="4481676304-85">)</span><span class="w">
 
-      </span><span class="p" data-group-id="5751173611-89">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-89">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-83">end</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-89">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-89">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-83">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_handoff_command</span><span class="p" data-group-id="5751173611-90">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-90">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-91">do</span><span class="w">
-      </span><span class="n">handle_command</span><span class="p" data-group-id="5751173611-92">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-92">)</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-91">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_handoff_command</span><span class="p" data-group-id="4481676304-90">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-90">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-91">do</span><span class="w">
+      </span><span class="n">handle_command</span><span class="p" data-group-id="4481676304-92">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-92">)</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-91">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">is_empty</span><span class="p" data-group-id="5751173611-93">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-93">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-94">do</span><span class="w">
-      </span><span class="n">is_empty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map_size</span><span class="p" data-group-id="5751173611-95">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-95">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-96">{</span><span class="n">is_empty</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-96">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-94">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">is_empty</span><span class="p" data-group-id="4481676304-93">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-93">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-94">do</span><span class="w">
+      </span><span class="n">is_empty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map_size</span><span class="p" data-group-id="4481676304-95">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-95">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-96">{</span><span class="n">is_empty</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-96">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-94">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">delete</span><span class="p" data-group-id="5751173611-97">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-97">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-98">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-99">(</span><span class="s">&quot;Deleting the vnode data&quot;</span><span class="p" data-group-id="5751173611-99">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-100">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-101">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5751173611-102">%{</span><span class="p" data-group-id="5751173611-102">}</span><span class="p" data-group-id="5751173611-101">}</span><span class="p" data-group-id="5751173611-100">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-98">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">delete</span><span class="p" data-group-id="4481676304-97">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-97">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-98">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-99">(</span><span class="s">&quot;Deleting the vnode data&quot;</span><span class="p" data-group-id="4481676304-99">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-100">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-101">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4481676304-102">%{</span><span class="p" data-group-id="4481676304-102">}</span><span class="p" data-group-id="4481676304-101">}</span><span class="p" data-group-id="4481676304-100">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-98">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">encode_handoff_item</span><span class="p" data-group-id="5751173611-103">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-103">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-104">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-105">(</span><span class="s">&quot;Encode handoff item: </span><span class="si" data-group-id="5751173611-106">#{</span><span class="n">k</span><span class="si" data-group-id="5751173611-106">}</span><span class="s"> </span><span class="si" data-group-id="5751173611-107">#{</span><span class="n">v</span><span class="si" data-group-id="5751173611-107">}</span><span class="s">&quot;</span><span class="p" data-group-id="5751173611-105">)</span><span class="w">
-      </span><span class="nc">:erlang</span><span class="o">.</span><span class="n">term_to_binary</span><span class="p" data-group-id="5751173611-108">(</span><span class="p" data-group-id="5751173611-109">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-109">}</span><span class="p" data-group-id="5751173611-108">)</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-104">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">encode_handoff_item</span><span class="p" data-group-id="4481676304-103">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-103">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-104">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-105">(</span><span class="s">&quot;Encode handoff item: </span><span class="si" data-group-id="4481676304-106">#{</span><span class="n">k</span><span class="si" data-group-id="4481676304-106">}</span><span class="s"> </span><span class="si" data-group-id="4481676304-107">#{</span><span class="n">v</span><span class="si" data-group-id="4481676304-107">}</span><span class="s">&quot;</span><span class="p" data-group-id="4481676304-105">)</span><span class="w">
+      </span><span class="nc">:erlang</span><span class="o">.</span><span class="n">term_to_binary</span><span class="p" data-group-id="4481676304-108">(</span><span class="p" data-group-id="4481676304-109">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-109">}</span><span class="p" data-group-id="4481676304-108">)</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-104">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_handoff_data</span><span class="p" data-group-id="5751173611-110">(</span><span class="n">bin_data</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-110">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-111">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-112">(</span><span class="s">&quot;Handle handoff data - bin_data: </span><span class="si" data-group-id="5751173611-113">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-114">(</span><span class="n">bin_data</span><span class="p" data-group-id="5751173611-114">)</span><span class="si" data-group-id="5751173611-113">}</span><span class="s"> - </span><span class="si" data-group-id="5751173611-115">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-116">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-116">)</span><span class="si" data-group-id="5751173611-115">}</span><span class="s">&quot;</span><span class="p" data-group-id="5751173611-112">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-117">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-117">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:erlang</span><span class="o">.</span><span class="n">binary_to_term</span><span class="p" data-group-id="5751173611-118">(</span><span class="n">bin_data</span><span class="p" data-group-id="5751173611-118">)</span><span class="w">
-      </span><span class="n">new_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">update</span><span class="p" data-group-id="5751173611-119">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="ss">:data</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-120">%{</span><span class="p" data-group-id="5751173611-120">}</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="5751173611-121">fn</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">put</span><span class="p" data-group-id="5751173611-122">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="5751173611-122">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-121">end</span><span class="p" data-group-id="5751173611-119">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-123">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">new_state</span><span class="p" data-group-id="5751173611-123">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-111">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_handoff_data</span><span class="p" data-group-id="4481676304-110">(</span><span class="n">bin_data</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-110">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-111">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-112">(</span><span class="s">&quot;Handle handoff data - bin_data: </span><span class="si" data-group-id="4481676304-113">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-114">(</span><span class="n">bin_data</span><span class="p" data-group-id="4481676304-114">)</span><span class="si" data-group-id="4481676304-113">}</span><span class="s"> - </span><span class="si" data-group-id="4481676304-115">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-116">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-116">)</span><span class="si" data-group-id="4481676304-115">}</span><span class="s">&quot;</span><span class="p" data-group-id="4481676304-112">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-117">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-117">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:erlang</span><span class="o">.</span><span class="n">binary_to_term</span><span class="p" data-group-id="4481676304-118">(</span><span class="n">bin_data</span><span class="p" data-group-id="4481676304-118">)</span><span class="w">
+      </span><span class="n">new_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">update</span><span class="p" data-group-id="4481676304-119">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="ss">:data</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-120">%{</span><span class="p" data-group-id="4481676304-120">}</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="4481676304-121">fn</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">put</span><span class="p" data-group-id="4481676304-122">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4481676304-122">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-121">end</span><span class="p" data-group-id="4481676304-119">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-123">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">new_state</span><span class="p" data-group-id="4481676304-123">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-111">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_coverage</span><span class="p" data-group-id="5751173611-124">(</span><span class="ss">:keys</span><span class="p">,</span><span class="w"> </span><span class="c">_key_spaces</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-125">{</span><span class="bp">_</span><span class="p">,</span><span class="w"> </span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5751173611-125">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-126">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5751173611-126">}</span><span class="p" data-group-id="5751173611-124">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-127">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-128">(</span><span class="s">&quot;Received keys coverage: </span><span class="si" data-group-id="5751173611-129">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-130">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-130">)</span><span class="si" data-group-id="5751173611-129">}</span><span class="s">&quot;</span><span class="p" data-group-id="5751173611-128">)</span><span class="w">
-      </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">keys</span><span class="p" data-group-id="5751173611-131">(</span><span class="n">data</span><span class="p" data-group-id="5751173611-131">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-132">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-133">{</span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="n">keys</span><span class="p" data-group-id="5751173611-133">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-132">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-127">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_coverage</span><span class="p" data-group-id="4481676304-124">(</span><span class="ss">:keys</span><span class="p">,</span><span class="w"> </span><span class="c">_key_spaces</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-125">{</span><span class="bp">_</span><span class="p">,</span><span class="w"> </span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4481676304-125">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-126">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4481676304-126">}</span><span class="p" data-group-id="4481676304-124">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-127">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-128">(</span><span class="s">&quot;Received keys coverage: </span><span class="si" data-group-id="4481676304-129">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-130">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-130">)</span><span class="si" data-group-id="4481676304-129">}</span><span class="s">&quot;</span><span class="p" data-group-id="4481676304-128">)</span><span class="w">
+      </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">keys</span><span class="p" data-group-id="4481676304-131">(</span><span class="n">data</span><span class="p" data-group-id="4481676304-131">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-132">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-133">{</span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="n">keys</span><span class="p" data-group-id="4481676304-133">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-132">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-127">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_coverage</span><span class="p" data-group-id="5751173611-134">(</span><span class="ss">:values</span><span class="p">,</span><span class="w"> </span><span class="c">_key_spaces</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-135">{</span><span class="bp">_</span><span class="p">,</span><span class="w"> </span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5751173611-135">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-136">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5751173611-136">}</span><span class="p" data-group-id="5751173611-134">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-137">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-138">(</span><span class="s">&quot;Received values coverage: </span><span class="si" data-group-id="5751173611-139">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-140">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-140">)</span><span class="si" data-group-id="5751173611-139">}</span><span class="s">&quot;</span><span class="p" data-group-id="5751173611-138">)</span><span class="w">
-      </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">values</span><span class="p" data-group-id="5751173611-141">(</span><span class="n">data</span><span class="p" data-group-id="5751173611-141">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-142">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-143">{</span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="p" data-group-id="5751173611-143">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-142">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-137">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_coverage</span><span class="p" data-group-id="4481676304-134">(</span><span class="ss">:values</span><span class="p">,</span><span class="w"> </span><span class="c">_key_spaces</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-135">{</span><span class="bp">_</span><span class="p">,</span><span class="w"> </span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4481676304-135">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-136">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4481676304-136">}</span><span class="p" data-group-id="4481676304-134">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-137">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-138">(</span><span class="s">&quot;Received values coverage: </span><span class="si" data-group-id="4481676304-139">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-140">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-140">)</span><span class="si" data-group-id="4481676304-139">}</span><span class="s">&quot;</span><span class="p" data-group-id="4481676304-138">)</span><span class="w">
+      </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">values</span><span class="p" data-group-id="4481676304-141">(</span><span class="n">data</span><span class="p" data-group-id="4481676304-141">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-142">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-143">{</span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="p" data-group-id="4481676304-143">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-142">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-137">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_coverage</span><span class="p" data-group-id="5751173611-144">(</span><span class="ss">:clear</span><span class="p">,</span><span class="w"> </span><span class="c">_key_spaces</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-145">{</span><span class="bp">_</span><span class="p">,</span><span class="w"> </span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5751173611-145">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-144">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-146">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="5751173611-147">(</span><span class="s">&quot;Received clear coverage: </span><span class="si" data-group-id="5751173611-148">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-149">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-149">)</span><span class="si" data-group-id="5751173611-148">}</span><span class="s"> &quot;</span><span class="p" data-group-id="5751173611-147">)</span><span class="w">
-      </span><span class="n">new_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5751173611-150">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5751173611-151">%{</span><span class="p" data-group-id="5751173611-151">}</span><span class="p" data-group-id="5751173611-150">}</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-152">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-153">{</span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5751173611-154">[</span><span class="p" data-group-id="5751173611-154">]</span><span class="p" data-group-id="5751173611-153">}</span><span class="p">,</span><span class="w"> </span><span class="n">new_state</span><span class="p" data-group-id="5751173611-152">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-146">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_coverage</span><span class="p" data-group-id="4481676304-144">(</span><span class="ss">:clear</span><span class="p">,</span><span class="w"> </span><span class="c">_key_spaces</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-145">{</span><span class="bp">_</span><span class="p">,</span><span class="w"> </span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4481676304-145">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-144">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-146">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="4481676304-147">(</span><span class="s">&quot;Received clear coverage: </span><span class="si" data-group-id="4481676304-148">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-149">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-149">)</span><span class="si" data-group-id="4481676304-148">}</span><span class="s"> &quot;</span><span class="p" data-group-id="4481676304-147">)</span><span class="w">
+      </span><span class="n">new_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4481676304-150">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4481676304-151">%{</span><span class="p" data-group-id="4481676304-151">}</span><span class="p" data-group-id="4481676304-150">}</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-152">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-153">{</span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4481676304-154">[</span><span class="p" data-group-id="4481676304-154">]</span><span class="p" data-group-id="4481676304-153">}</span><span class="p">,</span><span class="w"> </span><span class="n">new_state</span><span class="p" data-group-id="4481676304-152">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-146">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_exit</span><span class="p" data-group-id="5751173611-155">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-155">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-156">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">error</span><span class="p" data-group-id="5751173611-157">(</span><span class="w">
-      </span><span class="s">&quot;Handling exit: self: </span><span class="si" data-group-id="5751173611-158">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-159">(</span><span class="n">self</span><span class="p" data-group-id="5751173611-160">(</span><span class="p" data-group-id="5751173611-160">)</span><span class="p" data-group-id="5751173611-159">)</span><span class="si" data-group-id="5751173611-158">}</span><span class="s"> - pid: </span><span class="si" data-group-id="5751173611-161">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-162">(</span><span class="n">pid</span><span class="p" data-group-id="5751173611-162">)</span><span class="si" data-group-id="5751173611-161">}</span><span class="s"> - reason: </span><span class="si" data-group-id="5751173611-163">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-164">(</span><span class="n">reason</span><span class="p" data-group-id="5751173611-164">)</span><span class="si" data-group-id="5751173611-163">}</span><span class="s"> - state: </span><span class="si" data-group-id="5751173611-165">#{</span><span class="n">inspect</span><span class="p" data-group-id="5751173611-166">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-166">)</span><span class="si" data-group-id="5751173611-165">}</span><span class="s">&quot;</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-157">)</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_exit</span><span class="p" data-group-id="4481676304-155">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-155">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-156">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">error</span><span class="p" data-group-id="4481676304-157">(</span><span class="w">
+      </span><span class="s">&quot;Handling exit: self: </span><span class="si" data-group-id="4481676304-158">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-159">(</span><span class="n">self</span><span class="p" data-group-id="4481676304-160">(</span><span class="p" data-group-id="4481676304-160">)</span><span class="p" data-group-id="4481676304-159">)</span><span class="si" data-group-id="4481676304-158">}</span><span class="s"> - pid: </span><span class="si" data-group-id="4481676304-161">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-162">(</span><span class="n">pid</span><span class="p" data-group-id="4481676304-162">)</span><span class="si" data-group-id="4481676304-161">}</span><span class="s"> - reason: </span><span class="si" data-group-id="4481676304-163">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-164">(</span><span class="n">reason</span><span class="p" data-group-id="4481676304-164">)</span><span class="si" data-group-id="4481676304-163">}</span><span class="s"> - state: </span><span class="si" data-group-id="4481676304-165">#{</span><span class="n">inspect</span><span class="p" data-group-id="4481676304-166">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-166">)</span><span class="si" data-group-id="4481676304-165">}</span><span class="s">&quot;</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-157">)</span><span class="w">
 
-      </span><span class="p" data-group-id="5751173611-167">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-167">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-156">end</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-167">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-167">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-156">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handoff_cancelled</span><span class="p" data-group-id="5751173611-168">(</span><span class="n">state</span><span class="p" data-group-id="5751173611-168">)</span><span class="w"> </span><span class="k" data-group-id="5751173611-169">do</span><span class="w">
-      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">error</span><span class="p" data-group-id="5751173611-170">(</span><span class="s">&quot;Handoff cancelled with state: </span><span class="si" data-group-id="5751173611-171">#{</span><span class="n">state</span><span class="si" data-group-id="5751173611-171">}</span><span class="s">&quot;</span><span class="p" data-group-id="5751173611-170">)</span><span class="w">
-      </span><span class="p" data-group-id="5751173611-172">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5751173611-172">}</span><span class="w">
-  </span><span class="k" data-group-id="5751173611-169">end</span><span class="w">
-</span><span class="k" data-group-id="5751173611-1">end</span></code></pre><p>If our setup is working, we can call it using the Riax module</p><p>Example:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="n">iex</span><span class="p" data-group-id="8412420546-1">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="8412420546-1">)</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8412420546-2">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="8412420546-2">}</span><span class="w">
-      </span><span class="mi">17</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mf">35.559</span><span class="w"> </span><span class="p" data-group-id="8412420546-3">[</span><span class="n">debug</span><span class="p" data-group-id="8412420546-3">]</span><span class="w"> </span><span class="nc">Received</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="n">command!</span><span class="w">
-      </span><span class="p" data-group-id="8412420546-4">{</span><span class="ss">:pong</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev1@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">822094670998632891489572718402909198556462055424</span><span class="p" data-group-id="8412420546-4">}</span><span class="w">
-  </span><span class="n">iex</span><span class="p" data-group-id="8412420546-5">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="8412420546-5">)</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="8412420546-6">(</span><span class="ss">:some_identifier</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8412420546-7">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8412420546-8">{</span><span class="ss">:my_key</span><span class="p">,</span><span class="w"> </span><span class="ss">:my_value</span><span class="p" data-group-id="8412420546-8">}</span><span class="p" data-group-id="8412420546-7">}</span><span class="p" data-group-id="8412420546-6">)</span><span class="w">
-      </span><span class="mi">17</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">57.727</span><span class="w"> </span><span class="p" data-group-id="8412420546-9">[</span><span class="n">debug</span><span class="p" data-group-id="8412420546-9">]</span><span class="w"> </span><span class="nc">PUT</span><span class="w"> </span><span class="ss">Key</span><span class="p">:</span><span class="w"> </span><span class="ss">:my_key</span><span class="p">,</span><span class="w"> </span><span class="ss">Value</span><span class="p">:</span><span class="w"> </span><span class="ss">:my_value</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handoff_cancelled</span><span class="p" data-group-id="4481676304-168">(</span><span class="n">state</span><span class="p" data-group-id="4481676304-168">)</span><span class="w"> </span><span class="k" data-group-id="4481676304-169">do</span><span class="w">
+      </span><span class="nc">Logger</span><span class="o">.</span><span class="n">error</span><span class="p" data-group-id="4481676304-170">(</span><span class="s">&quot;Handoff cancelled with state: </span><span class="si" data-group-id="4481676304-171">#{</span><span class="n">state</span><span class="si" data-group-id="4481676304-171">}</span><span class="s">&quot;</span><span class="p" data-group-id="4481676304-170">)</span><span class="w">
+      </span><span class="p" data-group-id="4481676304-172">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4481676304-172">}</span><span class="w">
+  </span><span class="k" data-group-id="4481676304-169">end</span><span class="w">
+</span><span class="k" data-group-id="4481676304-1">end</span></code></pre><p>If our setup is working, we can call it using the Riax module</p><p>Example:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="n">iex</span><span class="p" data-group-id="6528753814-1">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="6528753814-1">)</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6528753814-2">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="6528753814-2">}</span><span class="w">
+      </span><span class="mi">17</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mf">35.559</span><span class="w"> </span><span class="p" data-group-id="6528753814-3">[</span><span class="n">debug</span><span class="p" data-group-id="6528753814-3">]</span><span class="w"> </span><span class="nc">Received</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="n">command!</span><span class="w">
+      </span><span class="p" data-group-id="6528753814-4">{</span><span class="ss">:pong</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev1@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">822094670998632891489572718402909198556462055424</span><span class="p" data-group-id="6528753814-4">}</span><span class="w">
+  </span><span class="n">iex</span><span class="p" data-group-id="6528753814-5">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="6528753814-5">)</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="6528753814-6">(</span><span class="ss">:some_identifier</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6528753814-7">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6528753814-8">{</span><span class="ss">:my_key</span><span class="p">,</span><span class="w"> </span><span class="ss">:my_value</span><span class="p" data-group-id="6528753814-8">}</span><span class="p" data-group-id="6528753814-7">}</span><span class="p" data-group-id="6528753814-6">)</span><span class="w">
+      </span><span class="mi">17</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">57.727</span><span class="w"> </span><span class="p" data-group-id="6528753814-9">[</span><span class="n">debug</span><span class="p" data-group-id="6528753814-9">]</span><span class="w"> </span><span class="nc">PUT</span><span class="w"> </span><span class="ss">Key</span><span class="p">:</span><span class="w"> </span><span class="ss">:my_key</span><span class="p">,</span><span class="w"> </span><span class="ss">Value</span><span class="p">:</span><span class="w"> </span><span class="ss">:my_value</span><span class="w">
       </span><span class="ss">:ok</span><span class="w">
-  </span><span class="n">iex</span><span class="p" data-group-id="8412420546-10">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="8412420546-10">)</span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="8412420546-11">(</span><span class="ss">:some_identifier</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8412420546-12">{</span><span class="ss">:get</span><span class="p">,</span><span class="w"> </span><span class="ss">:my_key</span><span class="p" data-group-id="8412420546-12">}</span><span class="p" data-group-id="8412420546-11">)</span><span class="w">
-      </span><span class="mi">17</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mf">11.336</span><span class="w"> </span><span class="p" data-group-id="8412420546-13">[</span><span class="n">debug</span><span class="p" data-group-id="8412420546-13">]</span><span class="w"> </span><span class="nc">GET</span><span class="w"> </span><span class="n">my_key</span><span class="w">
+  </span><span class="n">iex</span><span class="p" data-group-id="6528753814-10">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="6528753814-10">)</span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="6528753814-11">(</span><span class="ss">:some_identifier</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6528753814-12">{</span><span class="ss">:get</span><span class="p">,</span><span class="w"> </span><span class="ss">:my_key</span><span class="p" data-group-id="6528753814-12">}</span><span class="p" data-group-id="6528753814-11">)</span><span class="w">
+      </span><span class="mi">17</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mf">11.336</span><span class="w"> </span><span class="p" data-group-id="6528753814-13">[</span><span class="n">debug</span><span class="p" data-group-id="6528753814-13">]</span><span class="w"> </span><span class="nc">GET</span><span class="w"> </span><span class="n">my_key</span><span class="w">
       </span><span class="ss">:my_value</span><span class="w">
-  </span><span class="n">iex</span><span class="p" data-group-id="8412420546-14">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="8412420546-14">)</span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">preferred_node</span><span class="p" data-group-id="8412420546-15">(</span><span class="ss">:some_identifier</span><span class="p" data-group-id="8412420546-15">)</span><span class="w">
-      </span><span class="p" data-group-id="8412420546-16">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8412420546-17">{</span><span class="mi">639406966332270026714112114313373821099470487552</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev1@127.0.0.1&quot;</span><span class="p" data-group-id="8412420546-17">}</span><span class="p" data-group-id="8412420546-16">}</span></code></pre><p> This tells us the key <code class="inline">:my_key</code> and value <code class="inline">:my_value</code> pair
+  </span><span class="n">iex</span><span class="p" data-group-id="6528753814-14">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="6528753814-14">)</span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">preferred_node</span><span class="p" data-group-id="6528753814-15">(</span><span class="ss">:some_identifier</span><span class="p" data-group-id="6528753814-15">)</span><span class="w">
+      </span><span class="p" data-group-id="6528753814-16">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6528753814-17">{</span><span class="mi">639406966332270026714112114313373821099470487552</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev1@127.0.0.1&quot;</span><span class="p" data-group-id="6528753814-17">}</span><span class="p" data-group-id="6528753814-16">}</span></code></pre><p> This tells us the key <code class="inline">:my_key</code> and value <code class="inline">:my_value</code> pair
  ended up in the Virtual Node <code class="inline">:&quot;dev1@127.0.0.1&quot;</code></p><h1>Handoff :</h1><p>  Ownership of a partition (that is, key distribution between nodes) may be
   transferred from one virtual node to another in a different node when nodes
   join (via <a href="Riax.html#join/1"><code class="inline">Riax.join/1</code></a>) or are removed from the cluster, and under certain
@@ -269,15 +269,15 @@ example of using a Virtual Node as a Key-Value store.</p><h1>Example</h1><pre><c
   data is transferred to accomplish that is what we call a handoff. Transfer
   of ownership may also occur when adding or removing physical nodes to the
   cluster.</p><h1>Handoff process:</h1><p>  First of all, keep in mind that when the handoff is in progress,
-  a VNode will handle its requests via <a href="#handle_handoff_command/3"><code class="inline">handle_handoff_command/3</code></a>,
+  a VNode will handle its requests via <code class="inline">handle_handoff_command/3</code>,
   it can drop the request, forward it or handle it.
-  When the handoff starts it works like this:</p><ol><li><p>The callback <a href="#handoff_starting/2"><code class="inline">handoff_starting/2</code></a> is called. If it returns a <code class="inline">{:false, state}</code> tuple, the handoff is cancelled. Else, it calls <a href="#is_empty/1"><code class="inline">is_empty/1</code></a> to
-check if the VNode has something to hand off.</p></li><li><p>If <a href="#is_empty/1"><code class="inline">is_empty/1</code></a> it returns a <code class="inline">:false</code> tuple, the handoff continues</p></li><li><p><code class="inline">handle_handoff_fold/3</code> is called with a folding function and an
+  When the handoff starts it works like this:</p><ol><li><p>The callback <code class="inline">handoff_starting/2</code> is called. If it returns a <code class="inline">{:false, state}</code> tuple, the handoff is cancelled. Else, it calls <code class="inline">is_empty/1</code> to
+check if the VNode has something to hand off.</p></li><li><p>If <code class="inline">is_empty/1</code> it returns a <code class="inline">:false</code> tuple, the handoff continues</p></li><li><p><code class="inline">handle_handoff_fold/3</code> is called with a folding function and an
 accumulator as parameters. The provided accumulator works just fine with
 the Enum module. The given fold_function turns the VNode's state into
 key-value pairs (see the example) and, before sending them to its
-corresponding Virtual Node, calls encode_handoff_item/2 to encode them.</p></li><li><p>Said encoding will be then decoded by <a href="#handle_handoff_data/2"><code class="inline">handle_handoff_data/2</code></a> in the receiving
-Virtual Node. When all the key-values are sent, <a href="#handoff_finished/2"><code class="inline">handoff_finished/2</code></a> is called.</p></li></ol>
+corresponding Virtual Node, calls encode_handoff_item/2 to encode them.</p></li><li><p>Said encoding will be then decoded by <code class="inline">handle_handoff_data/2</code> in the receiving
+Virtual Node. When all the key-values are sent, <code class="inline">handoff_finished/2</code> is called.</p></li></ol>
   </section>
 
 
@@ -416,7 +416,7 @@ and allows the module using the behaviour to take appropiate action.</p></div>
 
         </div>
 
-          <div class="summary-synopsis"><p>Like <a href="#handle_handoff_command/3"><code class="inline">handle_handoff_command/3</code></a> but this function takes care of handling
+          <div class="summary-synopsis"><p>Like <code class="inline">handle_handoff_command/3</code> but this function takes care of handling
 requests during a handoff.</p></div>
 
       </div>
@@ -444,7 +444,7 @@ decode it and do something with it, this is done by this callback.</p></div>
         </div>
 
           <div class="summary-synopsis"><p>This function has the job of converting the VNode state into a key-value pair.
-These key-value pairs will be then encoded by the <a href="#encode_handoff_item/2"><code class="inline">encode_handoff_item/2</code></a>
+These key-value pairs will be then encoded by the <code class="inline">encode_handoff_item/2</code>
 callback.</p></div>
 
       </div>
@@ -512,26 +512,6 @@ VNode's state data structure is empty.</p></div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#delete/1" translate="no">delete(state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:delete/1"><code class="inline">:riak_core_vnode.delete/1</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#encode_handoff_item/2" translate="no">encode_handoff_item(k, v)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:encode_handoff_item/2"><code class="inline">:riak_core_vnode.encode_handoff_item/2</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
           <a href="#fold_req_v1/1" translate="no">fold_req_v1(args \\ [])</a>
 
         </div>
@@ -564,135 +544,9 @@ VNode's state data structure is empty.</p></div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#handle_command/3" translate="no">handle_command(request, sender, state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_command/3"><code class="inline">:riak_core_vnode.handle_command/3</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handle_coverage/4" translate="no">handle_coverage(command, keyspaces, sender, state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_coverage/4"><code class="inline">:riak_core_vnode.handle_coverage/4</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handle_exit/3" translate="no">handle_exit(pid, reason, state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_exit/3"><code class="inline">:riak_core_vnode.handle_exit/3</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handle_handoff_command/3" translate="no">handle_handoff_command(fold_req, sender, state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_handoff_command/3"><code class="inline">:riak_core_vnode.handle_handoff_command/3</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handle_handoff_data/2" translate="no">handle_handoff_data(bin_data, state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_handoff_data/2"><code class="inline">:riak_core_vnode.handle_handoff_data/2</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handle_overload_command/3" translate="no">handle_overload_command(_, _, _)</a>
-
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handle_overload_info/2" translate="no">handle_overload_info(_, idx)</a>
-
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handoff_cancelled/1" translate="no">handoff_cancelled(state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handoff_cancelled/1"><code class="inline">:riak_core_vnode.handoff_cancelled/1</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handoff_finished/2" translate="no">handoff_finished(dest, state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handoff_finished/2"><code class="inline">:riak_core_vnode.handoff_finished/2</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#handoff_starting/2" translate="no">handoff_starting(target_node, state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handoff_starting/2"><code class="inline">:riak_core_vnode.handoff_starting/2</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#init/1" translate="no">init(partitions)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:init/1"><code class="inline">:riak_core_vnode.init/1</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#is_empty/1" translate="no">is_empty(state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:is_empty/1"><code class="inline">:riak_core_vnode.is_empty/1</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
           <a href="#start_vnode/1" translate="no">start_vnode(partition)</a>
 
         </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#terminate/2" translate="no">terminate(reason, partition)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:terminate/2"><code class="inline">:riak_core_vnode.terminate/2</code></a>.</p></div>
 
       </div>
 
@@ -1037,7 +891,7 @@ and allows the module using the behaviour to take appropiate action.</p>
 
       </div>
 
-<p>Like <a href="#handle_handoff_command/3"><code class="inline">handle_handoff_command/3</code></a> but this function takes care of handling
+<p>Like <code class="inline">handle_handoff_command/3</code> but this function takes care of handling
 requests during a handoff.</p><h1>Return</h1><p>This callback can also eturn a tuple that has as
 its first element :<code class="inline">reply,</code> <code class="inline">:noreply</code>, :<code class="inline">forward</code>, <code class="inline">:drop</code> or <code class="inline">:stop</code> tuple.
 If the function returns <code class="inline">:foward</code> it forwards the request to another VNode,
@@ -1106,7 +960,7 @@ decode it and do something with it, this is done by this callback.</p>
       </div>
 
 <p>This function has the job of converting the VNode state into a key-value pair.
-These key-value pairs will be then encoded by the <a href="#encode_handoff_item/2"><code class="inline">encode_handoff_item/2</code></a>
+These key-value pairs will be then encoded by the <code class="inline">encode_handoff_item/2</code>
 callback.</p><h2 id="c:handle_handoff_fold/4-parameters" class="section-heading">
   <a href="#c:handle_handoff_fold/4-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">parameters</p>
@@ -1257,40 +1111,6 @@ VNode's state data structure is empty.</p>
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="delete/1">
-
-  <div class="detail-header">
-    <a href="#delete/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">delete(state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:delete/1"><code class="inline">:riak_core_vnode.delete/1</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="encode_handoff_item/2">
-
-  <div class="detail-header">
-    <a href="#encode_handoff_item/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">encode_handoff_item(k, v)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:encode_handoff_item/2"><code class="inline">:riak_core_vnode.encode_handoff_item/2</code></a>.</p>
-  </section>
-</section>
 <section class="detail" id="fold_req_v1/1">
 
     <span id="fold_req_v1/0"></span>
@@ -1371,210 +1191,6 @@ Functions
 
   </section>
 </section>
-<section class="detail" id="handle_command/3">
-
-  <div class="detail-header">
-    <a href="#handle_command/3" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handle_command(request, sender, state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_command/3"><code class="inline">:riak_core_vnode.handle_command/3</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="handle_coverage/4">
-
-  <div class="detail-header">
-    <a href="#handle_coverage/4" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handle_coverage(command, keyspaces, sender, state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_coverage/4"><code class="inline">:riak_core_vnode.handle_coverage/4</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="handle_exit/3">
-
-  <div class="detail-header">
-    <a href="#handle_exit/3" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handle_exit(pid, reason, state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_exit/3"><code class="inline">:riak_core_vnode.handle_exit/3</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="handle_handoff_command/3">
-
-  <div class="detail-header">
-    <a href="#handle_handoff_command/3" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handle_handoff_command(fold_req, sender, state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_handoff_command/3"><code class="inline">:riak_core_vnode.handle_handoff_command/3</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="handle_handoff_data/2">
-
-  <div class="detail-header">
-    <a href="#handle_handoff_data/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handle_handoff_data(bin_data, state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handle_handoff_data/2"><code class="inline">:riak_core_vnode.handle_handoff_data/2</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="handle_overload_command/3">
-
-  <div class="detail-header">
-    <a href="#handle_overload_command/3" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handle_overload_command(_, _, _)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="handle_overload_info/2">
-
-  <div class="detail-header">
-    <a href="#handle_overload_info/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handle_overload_info(_, idx)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="handoff_cancelled/1">
-
-  <div class="detail-header">
-    <a href="#handoff_cancelled/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handoff_cancelled(state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handoff_cancelled/1"><code class="inline">:riak_core_vnode.handoff_cancelled/1</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="handoff_finished/2">
-
-  <div class="detail-header">
-    <a href="#handoff_finished/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handoff_finished(dest, state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handoff_finished/2"><code class="inline">:riak_core_vnode.handoff_finished/2</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="handoff_starting/2">
-
-  <div class="detail-header">
-    <a href="#handoff_starting/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">handoff_starting(target_node, state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:handoff_starting/2"><code class="inline">:riak_core_vnode.handoff_starting/2</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="init/1">
-
-  <div class="detail-header">
-    <a href="#init/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">init(partitions)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:init/1"><code class="inline">:riak_core_vnode.init/1</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="is_empty/1">
-
-  <div class="detail-header">
-    <a href="#is_empty/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">is_empty(state)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:is_empty/1"><code class="inline">:riak_core_vnode.is_empty/1</code></a>.</p>
-  </section>
-</section>
 <section class="detail" id="start_vnode/1">
 
   <div class="detail-header">
@@ -1590,23 +1206,6 @@ Functions
   <section class="docstring">
 
 
-  </section>
-</section>
-<section class="detail" id="terminate/2">
-
-  <div class="detail-header">
-    <a href="#terminate/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">terminate(reason, partition)</h1>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/riak_core/riak_kv-3.0.9+build.2069.refb56593a/riak_core_vnode.html#c:terminate/2"><code class="inline">:riak_core_vnode.terminate/2</code></a>.</p>
   </section>
 </section>
 
