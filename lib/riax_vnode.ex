@@ -370,6 +370,7 @@ defmodule Riax.VNode.Impl do
               | {:stop, reason :: any(), new_state :: any()}
 
   # Delegate this functions to the library user,
+  @doc false
   defdelegate init(partitions), to: @vnode_module
 
   defdelegate encode_handoff_item(k, v), to: @vnode_module
