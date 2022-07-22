@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.4">
+    <meta name="project" content="riax v0.1.0">
+
+    <title>Setup: — riax v0.1.0</title>
+    <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
+
+    <script src="dist/sidebar_items-df4dec4d42.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-bd1cb213813bf4825aa2.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName" translate="no">
+riax
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+  <span>Setup:</span>
+</h1>
+
+<p>We recommend to use Elixir 1.13 and OTP 25.</p><h2 id="single-node" class="section-heading">
+  <a href="#single-node" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">single-node</p>
+  </a>
+  Single node:
+</h2>
+<ol><li>First, add Riax as a dependency to your mix.exs<pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="kd">defp</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="3069252315-1">do</span><span class="w">
+        </span><span class="p" data-group-id="3069252315-2">[</span><span class="w">
+        </span><span class="p" data-group-id="3069252315-3">{</span><span class="ss">:riax</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&gt;= 0.1.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lambdaclass/elixir_riak_core&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">branch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="p" data-group-id="3069252315-3">}</span><span class="w">
+        </span><span class="p" data-group-id="3069252315-2">]</span><span class="w">
+    </span><span class="k" data-group-id="3069252315-1">end</span></code></pre>(It's not available on hex.pm as every dependency of Riak Core, and Riak itself,
+is hosted on Github. And hex.pm does not allow to upload packages with git dependencies)</li><li>Then, you'll need a VNode implementation, <a href="https://github.com/lambdaclass/elixir_riak_core/blob/main/test/key_value/riax_kv.ex">you can grab mine</a>
+if you want to. This is an example of a Virtual Node being used as Key-Value
+store. You can add it under lib/ or any other folder under elixirc_paths.</li><li>After that, you'll need a configuration for each Node, here's an example one:<pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="c1"># config/config.exs</span><span class="w">
+    </span><span class="kn">import</span><span class="w"> </span><span class="nc">Config</span><span class="w">
+    </span><span class="c1"># This tells riax which of or modules </span><span class="w">
+    </span><span class="c1"># implements a VNode.</span><span class="w">
+    </span><span class="n">config</span><span class="w"> </span><span class="ss">:riax</span><span class="p">,</span><span class="w"> </span><span class="ss">vnode</span><span class="p">:</span><span class="w"> </span><span class="nc">Riax.VNode.Impl</span><span class="w">
+
+    </span><span class="n">config</span><span class="w"> </span><span class="ss">:riak_core</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># Must be an Erlang long name</span><span class="w">
+    </span><span class="ss">node</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;dev@127.0.0.1&#39;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">web_port</span><span class="p">:</span><span class="w"> </span><span class="mi">8198</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># Handoff is something we discuss</span><span class="w">
+    </span><span class="c1"># further in the Riax.VNode doc.</span><span class="w">
+    </span><span class="ss">handoff_port</span><span class="p">:</span><span class="w"> </span><span class="mi">8199</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># Where to save this node&#39;s ring</span><span class="w">
+    </span><span class="c1"># state</span><span class="w">
+    </span><span class="ss">ring_state_dir</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;ring_data_dir_1&#39;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">platform_data_dir</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;data_1&#39;</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># This is a config file for Riak Core,</span><span class="w">
+    </span><span class="c1"># we provide this one for you.</span><span class="w">
+    </span><span class="ss">schema_dirs</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2546791358-1">[</span><span class="sc">&#39;/deps/riax/priv&#39;</span><span class="p" data-group-id="2546791358-1">]</span></code></pre></li><li>Remember that the iex node name needs to match the one from your config, so
+now you can start your mix project with:<pre><code class="makeup bash" translate="no"><span class="">    iex --name dev@127.0.0.1 -S mix run
+</span><span class="">    ```
+</span><span class="">And then, try running Riax.ring_status/0 in iex, you should see something
+</span><span class="">like this:
+</span></code></pre>    iex(dev@127.0.0.1)1&gt; Riax.ring_status
+    ==================================== Nodes ====================================
+    Node a: 64 (100.0%) dev@127.0.0.1
+    ==================================== Ring =====================================
+    aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
+    :ok<pre><code class="makeup elixir" translate="no"><span class="nc">That</span><span class="err">&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">it!</span><span class="w"> </span><span class="nc">Up</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">running</span><span class="o">.</span></code></pre></li></ol><h2 id="multiple-nodes" class="section-heading">
+  <a href="#multiple-nodes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">multiple-nodes</p>
+  </a>
+  Multiple nodes:
+</h2>
+<p>Having multiple Virtual Nodes is a must. We're going to need a config file for 
+each one, so let's change it, config.exs can be something like this:</p><pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="kn">import</span><span class="w"> </span><span class="nc">Config</span><span class="w">
+    </span><span class="n">config</span><span class="w"> </span><span class="ss">:riax</span><span class="p">,</span><span class="w"> </span><span class="ss">vnode</span><span class="p">:</span><span class="w"> </span><span class="nc">Riax.VNode.Impl</span><span class="w">
+
+    </span><span class="n">import_config</span><span class="p" data-group-id="9218758552-1">(</span><span class="s">&quot;</span><span class="si" data-group-id="9218758552-2">#{</span><span class="nc">Mix</span><span class="o">.</span><span class="n">env</span><span class="p" data-group-id="9218758552-3">(</span><span class="p" data-group-id="9218758552-3">)</span><span class="si" data-group-id="9218758552-2">}</span><span class="s">.exs&quot;</span><span class="p" data-group-id="9218758552-1">)</span></code></pre><p>Now, let's create 2 files, dev.exs (or add to it, if already exists) and dev2.exs under /config:</p><pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="c1"># dev.exs</span><span class="w">
+    </span><span class="kn">import</span><span class="w"> </span><span class="nc">Config</span><span class="w">
+    </span><span class="n">config</span><span class="w"> </span><span class="ss">:riax</span><span class="p">,</span><span class="w"> </span><span class="ss">vnode</span><span class="p">:</span><span class="w"> </span><span class="nc">Riax.VNode.Impl</span><span class="w">
+
+    </span><span class="n">config</span><span class="w"> </span><span class="ss">:riak_core</span><span class="p">,</span><span class="w">
+      </span><span class="ss">node</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;dev@127.0.0.1&#39;</span><span class="p">,</span><span class="w">
+      </span><span class="ss">web_port</span><span class="p">:</span><span class="w"> </span><span class="mi">8198</span><span class="p">,</span><span class="w">
+      </span><span class="ss">handoff_port</span><span class="p">:</span><span class="w"> </span><span class="mi">8199</span><span class="p">,</span><span class="w">
+      </span><span class="ss">ring_state_dir</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;ring_data_dir_1&#39;</span><span class="p">,</span><span class="w">
+      </span><span class="ss">platform_data_dir</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;data_1&#39;</span><span class="p">,</span><span class="w">
+      </span><span class="ss">schema_dirs</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8847014408-1">[</span><span class="sc">&#39;deps/riax/priv/&#39;</span><span class="p" data-group-id="8847014408-1">]</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="w">   </span><span class="c1">#dev2.exs</span><span class="w">
+    </span><span class="kn">import</span><span class="w"> </span><span class="nc">Config</span><span class="w">
+
+    </span><span class="n">config</span><span class="w"> </span><span class="ss">:riak_core</span><span class="p">,</span><span class="w">
+    </span><span class="ss">node</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;dev2@127.0.0.1&#39;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">web_port</span><span class="p">:</span><span class="w"> </span><span class="mi">8398</span><span class="p">,</span><span class="w">
+    </span><span class="ss">handoff_port</span><span class="p">:</span><span class="w"> </span><span class="mi">8399</span><span class="p">,</span><span class="w">
+    </span><span class="ss">ring_state_dir</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;ring_data_dir_2&#39;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">platform_data_dir</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;data_2&#39;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">schema_dirs</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8574346094-1">[</span><span class="sc">&#39;deps/riax/priv/&#39;</span><span class="w"> </span><span class="p" data-group-id="8574346094-1">]</span></code></pre><p>Now, you can try them locally on 2 separate terminal sessions (tmux, multiple termilas, terminal tabs... whatever you like), first run: </p><pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="nc">MIX_ENV</span><span class="o">=</span><span class="n">dev</span><span class="w"> </span><span class="n">iex</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">dev</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w"> </span><span class="o">-</span><span class="nc">S</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">run</span></code></pre><p>Then, on the other session, run:</p><pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="nc">MIX_ENV</span><span class="o">=</span><span class="n">dev2</span><span class="w"> </span><span class="n">iex</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w"> </span><span class="o">-</span><span class="nc">S</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">run</span></code></pre><p>Try to join them, and handoff will start (handoff is the way on which
+partitions of the key-space are distributed between VNodes.)</p><p>You could also create a makefile for ease of use:</p><pre><code class="makefile">node1:
+        MIX_ENV=dev iex --name dev@127.0.0.1 -S mix run
+
+node2:
+        MIX_ENV=dev2 iex --name dev2@127.0.0.1 -S mix run</code></pre><p>Now, try calling Riax.join('dev2@127.0.0.1') from terminal 1. Now,
+Riax.ring_status will change to something like this:</p><pre><code class="makeup elixir" translate="no"><span class="n">iex</span><span class="p" data-group-id="2661078832-1">(</span><span class="n">dev</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="2661078832-1">)</span><span class="mi">7</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">ring_status</span><span class="w">
+</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Nodes</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w">
+</span><span class="nc">Node</span><span class="w"> </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p" data-group-id="2661078832-2">(</span><span class="w">  </span><span class="mf">3.1</span><span class="p">%</span><span class="p" data-group-id="2661078832-2">)</span><span class="w"> </span><span class="n">dev</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+</span><span class="nc">Node</span><span class="w"> </span><span class="ss">b</span><span class="p">:</span><span class="w"> </span><span class="mi">62</span><span class="w"> </span><span class="p" data-group-id="2661078832-3">(</span><span class="w"> </span><span class="mf">96.9</span><span class="p">%</span><span class="p" data-group-id="2661078832-3">)</span><span class="w"> </span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Ring</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">=</span><span class="w">
+</span><span class="n">babb</span><span class="o">|</span><span class="n">abbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span><span class="n">bbbb</span><span class="o">|</span></code></pre><p>Eventually (a minute, give or take) it should reach 50% on each node.
+That's the handoff working.</p>
+<div class="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="readme.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Riax
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="tutorial.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Tutorial:
+        </span>
+      </a>
+
+  </div>
+</div>
+
+      <footer class="footer">
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

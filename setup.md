@@ -1,4 +1,4 @@
-# Setup:
+# Setup
 We recommend to use Elixir 1.13 and OTP 25.
 
 ## Single node:

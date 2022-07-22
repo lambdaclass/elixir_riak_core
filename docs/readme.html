@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.4">
+    <meta name="project" content="riax v0.1.0">
+
+    <title>Riax — riax v0.1.0</title>
+    <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
+
+    <script src="dist/sidebar_items-df4dec4d42.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-bd1cb213813bf4825aa2.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName" translate="no">
+riax
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+  <span>Riax <img src="https://github.com/lambdaclass/elixir_riak_core/actions/workflows/github-actions.yml/badge.svg" alt="Build"/></span>
+</h1>
+
+<p>Riax is an Elixir wrapper for Riak Core. 
+Riak Core is a distributed systems framework, written in Erlang.
+You can think of it as a building block for distributed and scalable systems.
+Check the 
+To learn more, you can check the useful links section in the repo linked above, and check the 
+<a href="https://lambdaclass.github.io/elixir_riak_core/api-reference.html">docs</a> for more.
+If you want to set it up with Erlang, we also have an <a href="https://github.com/lambdaclass/riak_core_tutorial">up-to-date (OTP 25)
+tutorial</a>. </p><h1>Riak Core:</h1><h2 id="what-is-it" class="section-heading">
+  <a href="#what-is-it" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">what-is-it</p>
+  </a>
+  What is it?
+</h2>
+<p>It is based on the <a href="https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo architecture</a>,
+meaning it is easy to scale horizontally and distributes work in a decentralized
+manner. The great thing about Riak it's that it provides this architecture as a
+reusable Erlang library, meaning it can be used in any context
+that benefits from a decentralized distribution of work.</p><h2 id="why-riax" class="section-heading">
+  <a href="#why-riax" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">why-riax</p>
+  </a>
+  Why Riax?
+</h2>
+<p>You must be thinking &quot;ok, fine, this is an Erlang lib, I'll use it directly&quot;.
+The setup of Riak Core can be tricky, specially from Elixir, this library
+takes care of all the gory details for you - we suffered so you don't have to.</p><h2 id="what-s-so-great-about-it" class="section-heading">
+  <a href="#what-s-so-great-about-it" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">what-s-so-great-about-it</p>
+  </a>
+  What's so great about it?
+</h2>
+<p>The key here is that Riak Core provides Consistent Hashing and Virtual Nodes.
+Virtual Nodes distribute work between them, and Consistent Hashing lets us
+route commands to these Virtual Nodes. Note that many Virtual Nodes can run in
+a Physical Node (i.e. a physical server) and can be easily set up or taken down.
+Plus, the only thing that you have to do using this library is giving them names
+and implement a behaviour, Riak handles the rest for you.</p><h2 id="use-cases" class="section-heading">
+  <a href="#use-cases" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">use-cases</p>
+  </a>
+  Use cases:
+</h2>
+<p>The most intuitive and straight-forward use case is a key-value store in memory,
+we've actually <a href="https://github.com/lambdaclass/elixir_riak_core/blob/main/test/key_value/riax_kv.ex">implemented one here</a> for our tests.</p><p>A game server which handles requests from players could partition
+players through said hashing to handle load, and ensure that players requests
+are always handled on the same Virtual Node to ensure data locality. </p><p>A distributed batch job handling system could also use consistent hashing and
+routing to ensure jobs from the same batch are always handled by the same node,
+or distribute the jobs across several partitions and then use the distributed
+map-reduce queries to gather results.</p><p>Another example: Think about serving a dataset which you want quick 
+access to, but It's too big to fit in memory. We could distribute said
+files (or file) between Virtual Nodes, use an identifier (say, like an index)
+hash it and assign it to a Virtual Node. Riak fits really well here as it
+scales easily horizontally.
+This last use case is actually explained below.</p><h2 id="more-about-hashing-and-vnodes" class="section-heading">
+  <a href="#more-about-hashing-and-vnodes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">more-about-hashing-and-vnodes</p>
+  </a>
+  More about Hashing and VNodes:
+</h2>
+<p>Before performing an operation, a hashing function is applied to some data, a
+key. The key hash will be used to decide which node in the cluster should be
+responsible for executing the operation. The range of possible values the key
+hash can take (the keyspace, usually depicted as a ring), is partitioned in
+equally sized buckets, which are assigned to Virtual Vodes.</p><p><img src="ring.png" alt="The Ring"/></p><p>Virtual Nodes share what is called a keyspace.
+The number of VNodes is fixed at cluster creation and a given hash value will
+always belong to the same partition (i.e. the same VNode). The VNodes in turn
+are evenly distributed across all available physical nodes. Note this
+distribution isn't fixed as the keyspace partitioning is: the VNode distribution
+can change if a physical node is added to the cluster or goes down.</p>
+<div class="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="api-reference.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+API Reference
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="setup.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Setup:
+        </span>
+      </a>
+
+  </div>
+</div>
+
+      <footer class="footer">
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
