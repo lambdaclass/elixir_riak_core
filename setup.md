@@ -1,5 +1,5 @@
 # Setup
-We recommend to use Elixir 1.13 and OTP 25.
+We tested this with Elixir 1.13 and OTP 25.
 
 ## Single node:
 1. First, add Riax as a dependency to your mix.exs
