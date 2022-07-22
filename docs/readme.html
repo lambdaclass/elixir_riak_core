@@ -10,7 +10,7 @@
     <title>Riax — riax v0.1.0</title>
     <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
 
-    <script src="dist/sidebar_items-6d68521843.js"></script>
+    <script src="dist/sidebar_items-50185e166f.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -103,7 +103,7 @@ in the form of an Erlang Framework.
 To learn more, you can check the useful links section in the repo linked above, and check the 
 <a href="https://lambdaclass.github.io/elixir_riak_core/api-reference.html">docs</a> for more.
 If you want to set it up with Erlang, we also have an <a href="https://github.com/lambdaclass/riak_core_tutorial">up-to-date (OTP 25)
-tutorial</a>. </p><h1>Riak Core:</h1><h2 id="what-is-it" class="section-heading">
+tutorial</a>. </p><h1>Riak Core</h1><h2 id="what-is-it" class="section-heading">
   <a href="#what-is-it" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">what-is-it</p>
   </a>
@@ -136,7 +136,7 @@ and implement a behaviour, Riak handles the rest for you.</p><h2 id="use-cases" 
   <a href="#use-cases" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">use-cases</p>
   </a>
-  Use cases:
+  Use cases
 </h2>
 <p>The most intuitive and straight-forward use case is a key-value store in memory,
 we've actually <a href="https://github.com/lambdaclass/elixir_riak_core/blob/main/test/key_value/riax_kv.ex">implemented one here</a> for our tests.</p><p>A game server which handles requests from players could partition
@@ -153,7 +153,7 @@ This last use case is actually explained below.</p><h2 id="more-about-hashing-an
   <a href="#more-about-hashing-and-vnodes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">more-about-hashing-and-vnodes</p>
   </a>
-  More about Hashing and VNodes:
+  More about Hashing and VNodes
 </h2>
 <p>Before performing an operation, a hashing function is applied to some data, a
 key. The key hash will be used to decide which node in the cluster should be
@@ -164,7 +164,24 @@ The number of VNodes is fixed at cluster creation and a given hash value will
 always belong to the same partition (i.e. the same VNode). The VNodes in turn
 are evenly distributed across all available physical nodes. Note this
 distribution isn't fixed as the keyspace partitioning is: the VNode distribution
-can change if a physical node is added to the cluster or goes down.</p>
+can change if a physical node is added to the cluster or goes down.</p><h2 id="useful-links" class="section-heading">
+  <a href="#useful-links" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">useful-links</p>
+  </a>
+  Useful links
+</h2>
+<ul><li><a href="http://basho.com/posts/business/introducing-riak-core/">Introducing Riak Core</a></li><li><a href="https://github.com/basho/riak_core/wiki">Riak Core Wiki</a></li><li><a href="http://www.erlang-factory.com/upload/presentations/294/MasterlessDistributedComputingwithRiakCore-RKlophaus.pdf">Masterless Distributed Computing with Riak Core</a></li><li>Ryan Zezeski's &quot;working&quot; blog:
+<a href="https://github.com/rzezeski/try-try-try/tree/master/2011/riak-core-first-multinode">First, multinode</a> and
+<a href="https://github.com/rzezeski/try-try-try/tree/master/2011/riak-core-the-vnode">The vnode</a></li><li><a href="https://marianoguerra.github.io/little-riak-core-book/">Little Riak Core Book</a></li><li>riak_core in Elixir:
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-1-41354c1f26c3">Part I</a>,
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-2-88bdec73f368">Part II</a>,
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-3-8bac36632be0">Part III</a>,
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-4-728512ece224">Part IV</a> and
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-5-86cd9d2c6b92">Part V</a></li><li><a href="http://efcasado.github.io/riak-core_intro">A Gentle Introduction to Riak Core</a></li><li>Understanding Riak Core:
+<a href="http://basho.com/posts/technical/understanding-riak_core-handoff/">Handoff</a>,
+<a href="http://basho.com/posts/technical/understanding-riak_core-building-handoff/">Building Handoff</a>
+and
+<a href="http://basho.com/posts/technical/understanding-riak_core-visitfun/">The visit fun</a></li><li><a href="https://github.com/mrallen1/udon_ng">udon_ng</a> example application.</li></ul>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 

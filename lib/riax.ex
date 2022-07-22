@@ -1,7 +1,10 @@
 defmodule Riax do
   @moduledoc """
-  Module to interact with the VNode module
-  given in the config.
+  This module provides the set of functions to communicate
+  with your VNode implementation. To implement a VNode, check
+  the `Riax.VNode` module documentation.
+  For an example on how to setup and use Riax, check the
+  tutorial section.
   """
 
   @doc """

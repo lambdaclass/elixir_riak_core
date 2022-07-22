@@ -8,6 +8,7 @@ To learn more, you can check the useful links section in the repo linked above, 
 If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
 tutorial](https://github.com/lambdaclass/riak_core_tutorial). 
 # Riak Core
+
 ## What is it?
 It is based on the [Dynamo architecture](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf),
 meaning it is easy to scale horizontally and distributes work in a decentralized
@@ -63,3 +64,25 @@ always belong to the same partition (i.e. the same VNode). The VNodes in turn
 are evenly distributed across all available physical nodes. Note this
 distribution isn't fixed as the keyspace partitioning is: the VNode distribution
 can change if a physical node is added to the cluster or goes down.
+
+## Useful links
+* [Introducing Riak Core](http://basho.com/posts/business/introducing-riak-core/)
+* [Riak Core Wiki](https://github.com/basho/riak_core/wiki)
+* [Masterless Distributed Computing with Riak Core](http://www.erlang-factory.com/upload/presentations/294/MasterlessDistributedComputingwithRiakCore-RKlophaus.pdf)
+* Ryan Zezeski's "working" blog:
+  [First, multinode](https://github.com/rzezeski/try-try-try/tree/master/2011/riak-core-first-multinode) and
+  [The vnode](https://github.com/rzezeski/try-try-try/tree/master/2011/riak-core-the-vnode)
+* [Little Riak Core Book](https://marianoguerra.github.io/little-riak-core-book/)
+* riak_core in Elixir:
+  [Part I](https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-1-41354c1f26c3),
+  [Part II](https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-2-88bdec73f368),
+  [Part III](https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-3-8bac36632be0),
+  [Part IV](https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-4-728512ece224) and
+  [Part V](https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-5-86cd9d2c6b92)
+* [A Gentle Introduction to Riak Core](http://efcasado.github.io/riak-core_intro)
+* Understanding Riak Core:
+  [Handoff](http://basho.com/posts/technical/understanding-riak_core-handoff/),
+  [Building Handoff](http://basho.com/posts/technical/understanding-riak_core-building-handoff/)
+  and
+  [The visit fun](http://basho.com/posts/technical/understanding-riak_core-visitfun/)
+* [udon_ng](https://github.com/mrallen1/udon_ng) example application.
