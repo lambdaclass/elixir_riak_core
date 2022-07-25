@@ -1,6 +1,6 @@
 # Riax ![Build](https://github.com/lambdaclass/elixir_riak_core/actions/workflows/github-actions.yml/badge.svg)
 
-Riax is an Elixir wrapper for Riak Core. 
+Riax is an Elixir wrapper for [Riak Core](https://github.com/basho/riak_core). 
 Riak Core is a building block for distributed and scalable systems
 in the form of an Erlang Framework.
 To learn more, you can check the useful links section in the repo linked above, and check the 
