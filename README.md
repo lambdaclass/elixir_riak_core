@@ -12,8 +12,28 @@ To learn more about Riax, check [the setup](https://lambdaclass.github.io/elixir
 [docs](https://lambdaclass.github.io/elixir_riak_core/readme.html) for more.
 
 
+
 If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
 tutorial](https://github.com/lambdaclass/riak_core_tutorial). 
+## Use example:
+
+```elixir
+iex(dev1@127.0.0.1)1> #### Check the Ring Status
+iex(dev1@127.0.0.1)2> Riax.ring_status
+==================================== Nodes ====================================
+Node a: 64 (100.0%) dev1@127.0.0.1
+==================================== Ring =====================================
+aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
+:ok
+iex(dev1@127.0.0.1)3> #### Join an already running Node
+iex(dev1@127.0.0.1)4> Riax.join('dev2@127.0.0.1')
+13:51:21.258 [debug] Handoff starting with target: {:hinted, {913438523331814323877303020447676887284957839360, :"dev2@127.0.0.1"}}
+iex(dev1@127.0.0.1)5> #### Send a command to a VNode
+iex(dev1@127.0.0.1)6> Riax.sync_command(1, "riax", {:ping, 1})
+    13:13:08.004 [debug] Received ping command!
+    {:pong, 2, :"dev1@127.0.0.1", 822094670998632891489572718402909198556462055424}
+```
+
 ## Riak Core
 
 ## What is it?
