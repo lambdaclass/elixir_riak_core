@@ -213,6 +213,7 @@ defmodule Riax.VNode.Impl do
   @behaviour :riak_core_vnode
   @vnode_module Application.fetch_env!(:riax, :vnode)
 
+  @doc false
   def start_vnode(partition) do
     :riak_core_vnode_master.get_vnode_pid(partition, __MODULE__)
   end
