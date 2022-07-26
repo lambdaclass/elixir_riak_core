@@ -34,6 +34,18 @@ iex(dev1@127.0.0.1)6> Riax.sync_command(1, "riax", {:ping, 1})
     {:pong, 2, :"dev1@127.0.0.1", 822094670998632891489572718402909198556462055424}
 ```
 
+## Installation:
+
+Add Riax to your dependencies:
+```elixir
+defp deps do
+  [
+    {:riax, ">= 0.1.0", github: "lambdaclass/elixir_riak_core", branch: "main"}
+  ]
+end
+```
+And follow [the setup](https://lambdaclass.github.io/elixir_riak_core/setup.html)
+
 ## Riak Core
 
 ## What is it?
