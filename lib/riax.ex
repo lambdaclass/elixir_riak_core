@@ -201,9 +201,7 @@ defmodule Riax do
     end
   end
 
-  @doc """
-  Hash a key inside the given bucket name
-  """
+  # Hash a key inside the given bucket name
   defp hash_key(key, bucket) when is_binary(bucket) do
     :riak_core_util.chash_key({bucket, :erlang.term_to_binary(key)})
   end
