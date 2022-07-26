@@ -40,12 +40,11 @@ config :riak_core,
 ```
  4. Remember that the iex node name needs to match the one from your config, so
  now you can start your mix project with:
-    ```bash
-    iex --name dev@127.0.0.1 -S mix run
-    ```
+```bash
+iex --name dev@127.0.0.1 -S mix run
+```
 And then, try running Riax.ring_status/0 in iex, you should see something
 like this:
-
 ```elixir
 iex(dev@127.0.0.1)1> Riax.ring_status
 ==================================== Nodes ====================================
@@ -54,7 +53,6 @@ Node a: 64 (100.0%) dev@127.0.0.1
 aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|aaaa|
 :ok
 ``` 
-
 That's it! Up and running.
 
 ## Multiple nodes
