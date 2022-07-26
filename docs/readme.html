@@ -10,7 +10,7 @@
     <title>Riax — riax v0.1.0</title>
     <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
 
-    <script src="dist/sidebar_items-50185e166f.js"></script>
+    <script src="dist/sidebar_items-8b76e2ae4c.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -97,13 +97,36 @@ riax
   <span>Riax <img src="https://github.com/lambdaclass/elixir_riak_core/actions/workflows/github-actions.yml/badge.svg" alt="Build"/></span>
 </h1>
 
-<p>Riax is an Elixir wrapper for Riak Core. 
+<p>Riax is an Elixir wrapper for <a href="https://github.com/basho/riak_core">Riak Core</a>. 
 Riak Core is a building block for distributed and scalable systems
-in the form of an Erlang Framework.
-To learn more, you can check the useful links section in the repo linked above, and check the 
-<a href="https://lambdaclass.github.io/elixir_riak_core/api-reference.html">docs</a> for more.
-If you want to set it up with Erlang, we also have an <a href="https://github.com/lambdaclass/riak_core_tutorial">up-to-date (OTP 25)
-tutorial</a>. </p><h1>Riak Core</h1><h2 id="what-is-it" class="section-heading">
+in the form of an Erlang Framework.</p><p>To learn more about Riak you can check the  <a href="#riak-core">Riak Core</a> and <a href="#useful-links">useful links section</a> sections.</p><p>To learn more about Riax, check <a href="https://lambdaclass.github.io/elixir_riak_core/setup.html">the setup</a>, <a href="https://lambdaclass.github.io/elixir_riak_core/tutorial.html">the tutorial</a> or <a href="https://lambdaclass.github.io/elixir_riak_core/api-reference.html">the API Reference</a>.
+<a href="https://lambdaclass.github.io/elixir_riak_core/readme.html">docs</a> for more.</p><p>If you want to set it up with Erlang, we also have an <a href="https://github.com/lambdaclass/riak_core_tutorial">up-to-date (OTP 25)
+tutorial</a>. </p><h2 id="use-example" class="section-heading">
+  <a href="#use-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">use-example</p>
+  </a>
+  Use example:
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="n">iex</span><span class="p" data-group-id="4025293255-1">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="4025293255-1">)</span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="c1">#### Check the Ring Status</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="4025293255-2">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="4025293255-2">)</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">ring_status</span><span class="w">
+</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Nodes</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w">
+</span><span class="nc">Node</span><span class="w"> </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span><span class="p" data-group-id="4025293255-3">(</span><span class="mf">100.0</span><span class="p">%</span><span class="p" data-group-id="4025293255-3">)</span><span class="w"> </span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Ring</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">=</span><span class="w">
+</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="w">
+</span><span class="ss">:ok</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="4025293255-4">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="4025293255-4">)</span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="c1">#### Join an already running Node</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="4025293255-5">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="4025293255-5">)</span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">join</span><span class="p" data-group-id="4025293255-6">(</span><span class="sc">&#39;dev2@127.0.0.1&#39;</span><span class="p" data-group-id="4025293255-6">)</span><span class="w">
+</span><span class="mi">13</span><span class="p">:</span><span class="mi">51</span><span class="p">:</span><span class="mf">21.258</span><span class="w"> </span><span class="p" data-group-id="4025293255-7">[</span><span class="n">debug</span><span class="p" data-group-id="4025293255-7">]</span><span class="w"> </span><span class="nc">Handoff</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="ss">target</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4025293255-8">{</span><span class="ss">:hinted</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4025293255-9">{</span><span class="mi">913438523331814323877303020447676887284957839360</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev2@127.0.0.1&quot;</span><span class="p" data-group-id="4025293255-9">}</span><span class="p" data-group-id="4025293255-8">}</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="4025293255-10">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="4025293255-10">)</span><span class="mi">5</span><span class="o">&gt;</span><span class="w"> </span><span class="c1">#### Send a command to a VNode</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="4025293255-11">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="4025293255-11">)</span><span class="mi">6</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="4025293255-12">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;riax&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4025293255-13">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="4025293255-13">}</span><span class="p" data-group-id="4025293255-12">)</span><span class="w">
+    </span><span class="mi">13</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mf">08.004</span><span class="w"> </span><span class="p" data-group-id="4025293255-14">[</span><span class="n">debug</span><span class="p" data-group-id="4025293255-14">]</span><span class="w"> </span><span class="nc">Received</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="n">command!</span><span class="w">
+    </span><span class="p" data-group-id="4025293255-15">{</span><span class="ss">:pong</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev1@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">822094670998632891489572718402909198556462055424</span><span class="p" data-group-id="4025293255-15">}</span></code></pre><h2 id="riak-core" class="section-heading">
+  <a href="#riak-core" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">riak-core</p>
+  </a>
+  Riak Core
+</h2>
+<h2 id="what-is-it" class="section-heading">
   <a href="#what-is-it" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">what-is-it</p>
   </a>
@@ -164,7 +187,8 @@ The number of VNodes is fixed at cluster creation and a given hash value will
 always belong to the same partition (i.e. the same VNode). The VNodes in turn
 are evenly distributed across all available physical nodes. Note this
 distribution isn't fixed as the keyspace partitioning is: the VNode distribution
-can change if a physical node is added to the cluster or goes down.</p><h2 id="useful-links" class="section-heading">
+can change if a physical node is added to the cluster or goes down.</p><p>After this, be sure to check <a href="https://lambdaclass.github.io/elixir_riak_core/tutorial.html">the tutorial</a>
+to see this in action</p><h2 id="useful-links" class="section-heading">
   <a href="#useful-links" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">useful-links</p>
   </a>
