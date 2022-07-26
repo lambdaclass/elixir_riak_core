@@ -418,12 +418,14 @@ defmodule Riax.VNode.Impl do
   require Record
   # Extract the fold function record definition from
   # the hrl file.
+  @doc false
   Record.defrecord(
     :fold_req_v1,
     :riak_core_fold_req_v1,
     Record.extract(:riak_core_fold_req_v1, from_lib: "riak_core/include/riak_core_vnode.hrl")
   )
 
+  @doc false
   Record.defrecord(
     :fold_req_v2,
     :riak_core_fold_req_v2,
