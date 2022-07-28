@@ -216,7 +216,7 @@ size.
 high availability.
 - We can scale horizontally and divide said file.
 - This is where Riak comes in.
-## $Solution:
+## Solution:
 * We're going to address this use case in this tutorial, 
 with the help of Riak Core.
 * The key thing here is that we can use several Riak Nodes to offer an
