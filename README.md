@@ -98,8 +98,6 @@ are evenly distributed across all available physical nodes. Note this
 distribution isn't fixed as the keyspace partitioning is: the VNode distribution
 can change if a physical node is added to the cluster or goes down.
 
-
-
 After this, be sure to check [the tutorial](https://lambdaclass.github.io/elixir_riak_core/tutorial.html)
 to see this in action
 ## Useful links
