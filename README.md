@@ -9,7 +9,7 @@ To learn more about Riax, check [the setup](https://lambdaclass.github.io/elixir
 
 If you want to set it up with Erlang, we also have an [up-to-date (OTP 25)
 tutorial](https://github.com/lambdaclass/riak_core_tutorial). 
-## Use example:
+## Use example
 
 ```elixir
 iex(dev1@127.0.0.1)1> #### Check the Ring Status
@@ -28,7 +28,7 @@ iex(dev1@127.0.0.1)6> Riax.sync_command(1, "riax", {:ping, 1})
     {:pong, 2, :"dev1@127.0.0.1", 822094670998632891489572718402909198556462055424}
 ```
 
-## Installation:
+## Installation
 
 Add Riax to your dependencies:
 ```elixir
