@@ -213,6 +213,7 @@ defmodule Riax.VNode.Impl do
   @behaviour :riak_core_vnode
   @vnode_module Application.fetch_env!(:riax, :vnode)
 
+  @doc false
   def start_vnode(partition) do
     :riak_core_vnode_master.get_vnode_pid(partition, __MODULE__)
   end
@@ -370,52 +371,69 @@ defmodule Riax.VNode.Impl do
               | {:stop, reason :: any(), new_state :: any()}
 
   # Delegate this functions to the library user,
+  @doc false
   defdelegate init(partitions), to: @vnode_module
 
+  @doc false
   defdelegate encode_handoff_item(k, v), to: @vnode_module
 
+  @doc false
   defdelegate handle_command(request, sender, state), to: @vnode_module
 
+  @doc false
   defdelegate handoff_finished(dest, state), to: @vnode_module
 
+  @doc false
   defdelegate handoff_starting(target_node, state), to: @vnode_module
 
+  @doc false
   defdelegate handoff_cancelled(state), to: @vnode_module
 
+  @doc false
   defdelegate is_empty(state), to: @vnode_module
 
+  @doc false
   defdelegate handle_handoff_data(bin_data, state), to: @vnode_module
 
+  @doc false
   defdelegate handle_coverage(command, keyspaces, sender, state), to: @vnode_module
 
+  @doc false
   defdelegate handle_exit(pid, reason, state), to: @vnode_module
 
+  @doc false
   defdelegate delete(state), to: @vnode_module
 
+  @doc false
   def terminate(reason, partition) do
     Logger.debug("terminate #{inspect(partition)}: #{inspect(reason)}")
     :ok
   end
 
+  @doc false
   def handle_overload_command(_, _, _), do: :ok
 
+  @doc false
   def handle_overload_info(_, _idx), do: :ok
 
   require Record
   # Extract the fold function record definition from
   # the hrl file.
+  @doc false
   Record.defrecord(
     :fold_req_v1,
     :riak_core_fold_req_v1,
     Record.extract(:riak_core_fold_req_v1, from_lib: "riak_core/include/riak_core_vnode.hrl")
   )
 
+  @doc false
   Record.defrecord(
     :fold_req_v2,
     :riak_core_fold_req_v2,
     Record.extract(:riak_core_fold_req_v2, from_lib: "riak_core/include/riak_core_vnode.hrl")
   )
 
+  @doc false
   def handle_handoff_command(fold_req_v1() = fold_req, sender, state) do
     Logger.debug(">>>>> Handoff V1 <<<<<<")
     fold_function = fold_req_v1(fold_req, :foldfun)
@@ -423,6 +441,7 @@ defmodule Riax.VNode.Impl do
     handle_handoff_command(fold_req_v2(foldfun: fold_function, acc0: accumulator), sender, state)
   end
 
+  @doc false
   def handle_handoff_command(fold_req_v2() = fold_req, sender, state) do
     Logger.debug("Starting handoff v2")
     fold_function = fold_req_v2(fold_req, :foldfun)
@@ -431,6 +450,7 @@ defmodule Riax.VNode.Impl do
     @vnode_module.handle_handoff_fold(fold_function, accumulator, sender, state)
   end
 
+  @doc false
   def handle_handoff_command(request, sender, state) do
     @vnode_module.handle_handoff_command(request, sender, state)
   end

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.4">
+    <meta name="project" content="riax v0.1.0">
+
+    <title>Riax — riax v0.1.0</title>
+    <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
+
+    <script src="dist/sidebar_items-d126a64e9f.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-bd1cb213813bf4825aa2.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="readme.html" class="sidebar-projectName" translate="no">
+riax
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+  <span>Riax <img src="https://github.com/lambdaclass/elixir_riak_core/actions/workflows/github-actions.yml/badge.svg" alt="Build"/></span>
+</h1>
+
+<p>Riax is an Elixir wrapper for <a href="https://github.com/basho/riak_core">Riak Core</a>. 
+Riak Core is a building block for distributed and scalable systems
+in the form of an Erlang Framework.</p><p>To learn more about Riak you can check the  <a href="#riak-core">Riak Core</a> and <a href="#useful-links">useful links section</a> sections.
+To learn more about Riax, check <a href="https://lambdaclass.github.io/elixir_riak_core/setup.html">the setup</a>, <a href="https://lambdaclass.github.io/elixir_riak_core/tutorial.html">the tutorial</a> or <a href="https://lambdaclass.github.io/elixir_riak_core/api-reference.html">the API Reference</a>.</p><p>If you want to set it up with Erlang, we also have an <a href="https://github.com/lambdaclass/riak_core_tutorial">up-to-date (OTP 25)
+tutorial</a>. </p><h2 id="use-example" class="section-heading">
+  <a href="#use-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">use-example</p>
+  </a>
+  Use example
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="n">iex</span><span class="p" data-group-id="3256129014-1">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="3256129014-1">)</span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="c1">#### Check the Ring Status</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="3256129014-2">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="3256129014-2">)</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">ring_status</span><span class="w">
+</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Nodes</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w">
+</span><span class="nc">Node</span><span class="w"> </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span><span class="p" data-group-id="3256129014-3">(</span><span class="mf">100.0</span><span class="p">%</span><span class="p" data-group-id="3256129014-3">)</span><span class="w"> </span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Ring</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">=</span><span class="w">
+</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="w">
+</span><span class="ss">:ok</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="3256129014-4">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="3256129014-4">)</span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="c1">#### Join an already running Node</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="3256129014-5">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="3256129014-5">)</span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">join</span><span class="p" data-group-id="3256129014-6">(</span><span class="sc">&#39;dev2@127.0.0.1&#39;</span><span class="p" data-group-id="3256129014-6">)</span><span class="w">
+</span><span class="mi">13</span><span class="p">:</span><span class="mi">51</span><span class="p">:</span><span class="mf">21.258</span><span class="w"> </span><span class="p" data-group-id="3256129014-7">[</span><span class="n">debug</span><span class="p" data-group-id="3256129014-7">]</span><span class="w"> </span><span class="nc">Handoff</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="ss">target</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3256129014-8">{</span><span class="ss">:hinted</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3256129014-9">{</span><span class="mi">913438523331814323877303020447676887284957839360</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev2@127.0.0.1&quot;</span><span class="p" data-group-id="3256129014-9">}</span><span class="p" data-group-id="3256129014-8">}</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="3256129014-10">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="3256129014-10">)</span><span class="mi">5</span><span class="o">&gt;</span><span class="w"> </span><span class="c1">#### Send a command to a VNode</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="3256129014-11">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="3256129014-11">)</span><span class="mi">6</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="3256129014-12">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;riax&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3256129014-13">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="3256129014-13">}</span><span class="p" data-group-id="3256129014-12">)</span><span class="w">
+    </span><span class="mi">13</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mf">08.004</span><span class="w"> </span><span class="p" data-group-id="3256129014-14">[</span><span class="n">debug</span><span class="p" data-group-id="3256129014-14">]</span><span class="w"> </span><span class="nc">Received</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="n">command!</span><span class="w">
+    </span><span class="p" data-group-id="3256129014-15">{</span><span class="ss">:pong</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev1@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">822094670998632891489572718402909198556462055424</span><span class="p" data-group-id="3256129014-15">}</span></code></pre><h2 id="installation" class="section-heading">
+  <a href="#installation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">installation</p>
+  </a>
+  Installation
+</h2>
+<p>Add Riax to your dependencies:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defp</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="2628632816-1">do</span><span class="w">
+  </span><span class="p" data-group-id="2628632816-2">[</span><span class="w">
+    </span><span class="p" data-group-id="2628632816-3">{</span><span class="ss">:riax</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&gt;= 0.1.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lambdaclass/elixir_riak_core&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">branch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="p" data-group-id="2628632816-3">}</span><span class="w">
+  </span><span class="p" data-group-id="2628632816-2">]</span><span class="w">
+</span><span class="k" data-group-id="2628632816-1">end</span></code></pre><p>And follow <a href="https://lambdaclass.github.io/elixir_riak_core/setup.html">the setup</a></p><h2 id="riak-core" class="section-heading">
+  <a href="#riak-core" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">riak-core</p>
+  </a>
+  Riak Core
+</h2>
+<h2 id="what-is-it" class="section-heading">
+  <a href="#what-is-it" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">what-is-it</p>
+  </a>
+  What is it?
+</h2>
+<p>It is based on the <a href="https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo architecture</a>,
+meaning it is easy to scale horizontally and distributes work in a decentralized
+manner. The great thing about Riak it's that it provides this architecture as a
+reusable Erlang library, meaning it can be used in any context
+that benefits from a decentralized distribution of work.</p><h2 id="why-riax" class="section-heading">
+  <a href="#why-riax" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">why-riax</p>
+  </a>
+  Why Riax?
+</h2>
+<p>You must be thinking &quot;ok, fine, this is an Erlang lib, I'll use it directly&quot;.
+The setup of Riak Core can be tricky, specially from Elixir, this library
+takes care of all the gory details for you - we suffered so you don't have to.</p><h2 id="what-s-so-great-about-it" class="section-heading">
+  <a href="#what-s-so-great-about-it" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">what-s-so-great-about-it</p>
+  </a>
+  What's so great about it?
+</h2>
+<p>The key here is that Riak Core provides Consistent Hashing and Virtual Nodes.
+Virtual Nodes distribute work between them, and Consistent Hashing lets us
+route commands to these Virtual Nodes. Note that many Virtual Nodes can run in
+a Physical Node (i.e. a physical server) and can be easily set up or taken down.
+Plus, the only thing that you have to do using this library is giving them names
+and implement a behaviour, Riak handles the rest for you.</p><h2 id="use-cases" class="section-heading">
+  <a href="#use-cases" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">use-cases</p>
+  </a>
+  Use cases
+</h2>
+<p>The most intuitive and straight-forward use case is a key-value store in memory,
+we've actually <a href="https://github.com/lambdaclass/elixir_riak_core/blob/main/test/key_value/riax_kv.ex">implemented one here</a> for our tests.</p><p>A game server which handles requests from players could partition
+players through said hashing to handle load, and ensure that players requests
+are always handled on the same Virtual Node to ensure data locality. </p><p>A distributed batch job handling system could also use consistent hashing and
+routing to ensure jobs from the same batch are always handled by the same node,
+or distribute the jobs across several partitions and then use the distributed
+map-reduce queries to gather results.</p><p>Another example: Think about serving a dataset which you want quick 
+access to, but It's too big to fit in memory. We could distribute said
+files (or file) between Virtual Nodes, use an identifier (say, like an index)
+hash it and assign it to a Virtual Node. Riak fits really well here as it
+scales easily horizontally.
+This last use case is actually explained below.</p><h2 id="more-about-hashing-and-vnodes" class="section-heading">
+  <a href="#more-about-hashing-and-vnodes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">more-about-hashing-and-vnodes</p>
+  </a>
+  More about Hashing and VNodes
+</h2>
+<p>Before performing an operation, a hashing function is applied to some data, a
+key. The key hash will be used to decide which node in the cluster should be
+responsible for executing the operation. The range of possible values the key
+hash can take (the keyspace, usually depicted as a ring), is partitioned in
+equally sized buckets, which are assigned to Virtual Vodes.</p><p><img src="https://raw.githubusercontent.com/lambdaclass/riak_core_tutorial/master/ring.png" alt="The Ring"/></p><p>Virtual Nodes share what is called a keyspace.
+The number of VNodes is fixed at cluster creation and a given hash value will
+always belong to the same partition (i.e. the same VNode). The VNodes in turn
+are evenly distributed across all available physical nodes. Note this
+distribution isn't fixed as the keyspace partitioning is: the VNode distribution
+can change if a physical node is added to the cluster or goes down.</p><p>After this, be sure to check <a href="https://lambdaclass.github.io/elixir_riak_core/tutorial.html">the tutorial</a>
+to see this in action</p><h2 id="useful-links" class="section-heading">
+  <a href="#useful-links" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">useful-links</p>
+  </a>
+  Useful links
+</h2>
+<ul><li><a href="http://basho.com/posts/business/introducing-riak-core/">Introducing Riak Core</a></li><li><a href="https://github.com/basho/riak_core/wiki">Riak Core Wiki</a></li><li><a href="http://www.erlang-factory.com/upload/presentations/294/MasterlessDistributedComputingwithRiakCore-RKlophaus.pdf">Masterless Distributed Computing with Riak Core</a></li><li>Ryan Zezeski's &quot;working&quot; blog:
+<a href="https://github.com/rzezeski/try-try-try/tree/master/2011/riak-core-first-multinode">First, multinode</a> and
+<a href="https://github.com/rzezeski/try-try-try/tree/master/2011/riak-core-the-vnode">The vnode</a></li><li><a href="https://marianoguerra.github.io/little-riak-core-book/">Little Riak Core Book</a></li><li>riak_core in Elixir:
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-1-41354c1f26c3">Part I</a>,
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-2-88bdec73f368">Part II</a>,
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-3-8bac36632be0">Part III</a>,
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-4-728512ece224">Part IV</a> and
+<a href="https://medium.com/@GPad/create-a-riak-core-application-in-elixir-part-5-86cd9d2c6b92">Part V</a></li><li><a href="http://efcasado.github.io/riak-core_intro">A Gentle Introduction to Riak Core</a></li><li>Understanding Riak Core:
+<a href="http://basho.com/posts/technical/understanding-riak_core-handoff/">Handoff</a>,
+<a href="http://basho.com/posts/technical/understanding-riak_core-building-handoff/">Building Handoff</a>
+and
+<a href="http://basho.com/posts/technical/understanding-riak_core-visitfun/">The visit fun</a></li><li><a href="https://github.com/mrallen1/udon_ng">udon_ng</a> example application.</li></ul>
+<div class="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="api-reference.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+API Reference
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="setup.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Setup
+        </span>
+      </a>
+
+  </div>
+</div>
+
+      <footer class="footer">
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

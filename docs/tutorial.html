@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.4">
+    <meta name="project" content="riax v0.1.0">
+
+    <title>Tutorial — riax v0.1.0</title>
+    <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
+
+    <script src="dist/sidebar_items-d126a64e9f.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-bd1cb213813bf4825aa2.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="readme.html" class="sidebar-projectName" translate="no">
+riax
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+  <span>Tutorial</span>
+</h1>
+
+<h3 id="use-case" class="section-heading">
+  <a href="#use-case" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">use-case</p>
+  </a>
+  Use Case
+</h3>
+<ul><li>I've mentioned this use case before, but let's go over it again: </li></ul><ul><li>We have several, or one relatively big file that we want
+to provide (a dataset, for example)</li><li>The file, or files, are not fit to be stored in memory due to its/their 
+size.</li><li>We want to avoid disk reading whenever we can, and achieve
+high availability.</li><li>We can scale horizontally and divide said file.</li><li>This is where Riak comes in.</li></ul><h2 id="solution" class="section-heading">
+  <a href="#solution" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">solution</p>
+  </a>
+  Solution
+</h2>
+<ul><li>We're going to address this use case in this tutorial, 
+with the help of Riak Core.</li><li>The key thing here is that we can use several Riak Nodes to offer an
+in memory key-value storage. If we need more memory to store what we need,
+we can add another node to our cluster and Riak Core will handle the 
+details for us, provided we have an implemented VNode.</li></ul><h4>Creating a project</h4><ul><li>Let's create a new mix project: <code class="inline">mix new my_cluster</code> for this, and make sure
+to follow the setup steps from above (if you don't have a config folder, just
+create it), and use the VNode I mention.</li><li>Also, add this module under lib/riax_api.ex, which we'll use as an API to communicate with the VNode:<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Riax.API</span><span class="w"> </span><span class="k" data-group-id="5323979687-1">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">put</span><span class="p" data-group-id="5323979687-2">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="5323979687-2">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-3">do</span><span class="w">
+    </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="5323979687-4">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5323979687-5">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5323979687-6">{</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="5323979687-6">}</span><span class="p" data-group-id="5323979687-5">}</span><span class="p" data-group-id="5323979687-4">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-3">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">put</span><span class="p" data-group-id="5323979687-7">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="ss">:no_log</span><span class="p" data-group-id="5323979687-7">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-8">do</span><span class="w">
+    </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="5323979687-9">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5323979687-10">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="ss">:no_log</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5323979687-11">{</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p" data-group-id="5323979687-11">}</span><span class="p" data-group-id="5323979687-10">}</span><span class="p" data-group-id="5323979687-9">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-8">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">get</span><span class="p" data-group-id="5323979687-12">(</span><span class="n">key</span><span class="p" data-group-id="5323979687-12">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-13">do</span><span class="w">
+    </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="5323979687-14">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5323979687-15">{</span><span class="ss">:get</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="5323979687-15">}</span><span class="p" data-group-id="5323979687-14">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-13">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">keys</span><span class="p" data-group-id="5323979687-16">(</span><span class="p" data-group-id="5323979687-16">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-17">do</span><span class="w">
+    </span><span class="nc">Riax</span><span class="o">.</span><span class="n">coverage_command</span><span class="p" data-group-id="5323979687-18">(</span><span class="ss">:keys</span><span class="p" data-group-id="5323979687-18">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-17">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">clear</span><span class="p" data-group-id="5323979687-19">(</span><span class="p" data-group-id="5323979687-19">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-20">do</span><span class="w">
+    </span><span class="nc">Riax</span><span class="o">.</span><span class="n">coverage_command</span><span class="p" data-group-id="5323979687-21">(</span><span class="ss">:clear</span><span class="p" data-group-id="5323979687-21">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-20">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">values</span><span class="p" data-group-id="5323979687-22">(</span><span class="p" data-group-id="5323979687-22">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-23">do</span><span class="w">
+    </span><span class="nc">Riax</span><span class="o">.</span><span class="n">coverage_command</span><span class="p" data-group-id="5323979687-24">(</span><span class="ss">:values</span><span class="p" data-group-id="5323979687-24">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-23">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">ring_status</span><span class="p" data-group-id="5323979687-25">(</span><span class="p" data-group-id="5323979687-25">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-26">do</span><span class="w">
+    </span><span class="p" data-group-id="5323979687-27">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">ring</span><span class="p" data-group-id="5323979687-27">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:riak_core_ring_manager</span><span class="o">.</span><span class="n">get_my_ring</span><span class="p" data-group-id="5323979687-28">(</span><span class="p" data-group-id="5323979687-28">)</span><span class="w">
+    </span><span class="nc">:riak_core_ring</span><span class="o">.</span><span class="n">pretty_print</span><span class="p" data-group-id="5323979687-29">(</span><span class="n">ring</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5323979687-30">[</span><span class="ss">:legend</span><span class="p" data-group-id="5323979687-30">]</span><span class="p" data-group-id="5323979687-29">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-26">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">ping</span><span class="p" data-group-id="5323979687-31">(</span><span class="p" data-group-id="5323979687-31">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-32">do</span><span class="w">
+    </span><span class="n">ping</span><span class="p" data-group-id="5323979687-33">(</span><span class="nc">:os</span><span class="o">.</span><span class="n">timestamp</span><span class="p" data-group-id="5323979687-34">(</span><span class="p" data-group-id="5323979687-34">)</span><span class="p" data-group-id="5323979687-33">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-32">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">ping</span><span class="p" data-group-id="5323979687-35">(</span><span class="n">key</span><span class="p" data-group-id="5323979687-35">)</span><span class="w"> </span><span class="k" data-group-id="5323979687-36">do</span><span class="w">
+    </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="5323979687-37">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5323979687-38">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="5323979687-38">}</span><span class="p" data-group-id="5323979687-37">)</span><span class="w">
+  </span><span class="k" data-group-id="5323979687-36">end</span><span class="w">
+</span><span class="k" data-group-id="5323979687-1">end</span></code></pre></li></ul><p>Each function is to communicate with our VNode that acts as a key-value 
+store, note this function:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="4408802364-1">(</span><span class="p" data-group-id="4408802364-2">{</span><span class="ss">:put</span><span class="p">,</span><span class="w"> </span><span class="ss">:no_log</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4408802364-3">{</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4408802364-3">}</span><span class="p" data-group-id="4408802364-2">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4408802364-4">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4408802364-4">}</span><span class="p" data-group-id="4408802364-1">)</span><span class="w"> </span><span class="k" data-group-id="4408802364-5">do</span><span class="w">
+  </span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">put</span><span class="p" data-group-id="4408802364-6">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="4408802364-6">)</span><span class="w">
+  </span><span class="p" data-group-id="4408802364-7">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4408802364-8">%{</span><span class="n">state</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">new_data</span><span class="p" data-group-id="4408802364-8">}</span><span class="p" data-group-id="4408802364-7">}</span><span class="w">
+</span><span class="k" data-group-id="4408802364-5">end</span></code></pre><p>It's just to store a key-value pair, but it does not log it, as to make it 
+faster.</p><p>Also, note the <code class="inline">keys/0</code> and <code class="inline">values/0</code>. They're coverage commands, that means
+that they run in every node, each node returns a different answer.</p><h3 id="limiting-vm-memory" class="section-heading">
+  <a href="#limiting-vm-memory" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">limiting-vm-memory</p>
+  </a>
+  Limiting VM Memory
+</h3>
+<ul><li>To simulate a situation where our file is too big to be stored in RAM,
+we're going to use a tweet dataset of around 3-4 GiB, <a href="https://www.kaggle.com/datasets/gauravduttakiit/bitcoin-tweets-16m-tweets-with-sentiment-tagged?resource=download">a CSV taken from Kaggle</a> (you might need an account to download it, don't worry - it's free) and limit the available memory for our nodes.
+It's a collection of tweets about Bitcoin, we're only interested in 
+its size not its content, so it's useful.</li><li>Limiting available memory for a given BEAM instance it's quite easy,
+actually, we just need to use these arguments: <code class="inline">+MMsco true +MMscs X +Musac false</code> where X is an integer - the max accessible memory four our BEAM instance.
+You can read more about this <a href="https://www.erlang.org/doc/man/erts_alloc.html">here</a> </li><li>Let's try starting iex normally and read the zip file I've linked above.<pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="gp unselectable">iex(1)&gt; </span><span class="p" data-group-id="4901838570-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p" data-group-id="4901838570-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">File</span><span class="o">.</span><span class="n">read</span><span class="p" data-group-id="4901838570-2">(</span><span class="s">&quot;mbsa.csv.zip&quot;</span><span class="p" data-group-id="4901838570-2">)</span><span class="w">
+        </span><span class="p" data-group-id="4901838570-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+        </span><span class="p" data-group-id="4901838570-4">&lt;&lt;</span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">75</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">174</span><span class="p">,</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w"> </span><span class="mi">83</span><span class="p">,</span><span class="w"> </span><span class="mi">199</span><span class="p">,</span><span class="w"> </span><span class="mi">127</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">192</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w">
+        </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">109</span><span class="p">,</span><span class="w"> </span><span class="mi">98</span><span class="p">,</span><span class="w"> </span><span class="mi">115</span><span class="p">,</span><span class="w"> </span><span class="mi">97</span><span class="p">,</span><span class="w"> </span><span class="mi">46</span><span class="p">,</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span><span class="w">
+        </span><span class="mi">115</span><span class="p">,</span><span class="w"> </span><span class="mi">118</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">172</span><span class="p">,</span><span class="w"> </span><span class="mi">145</span><span class="p">,</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span><span class="w"> </span><span class="mi">186</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="4901838570-4">&gt;&gt;</span><span class="p" data-group-id="4901838570-3">}</span></code></pre></li><li>Now, let's start iex with a memory limit of 512 MB: <code class="inline">iex --erl &quot;+MMsco true +MMscs 512 +Musac false&quot;</code> <pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="gp unselectable">iex(1)&gt; </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">File</span><span class="o">.</span><span class="n">read!</span><span class="p" data-group-id="5881101860-1">(</span><span class="s">&quot;mbsa.csv.zip&quot;</span><span class="p" data-group-id="5881101860-1">)</span><span class="w"> 
+    </span><span class="o">*</span><span class="o">*</span><span class="w"> </span><span class="p" data-group-id="5881101860-2">(</span><span class="nc">File.Error</span><span class="p" data-group-id="5881101860-2">)</span><span class="w"> </span><span class="n">could</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="ss">&quot;mbsa.csv.zip&quot;</span><span class="p">:</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">enough</span><span class="w"> </span><span class="n">memory</span><span class="w">
+        </span><span class="p" data-group-id="5881101860-3">(</span><span class="n">elixir</span><span class="w"> </span><span class="mf">1.13</span><span class="o">.</span><span class="mi">0</span><span class="p" data-group-id="5881101860-3">)</span><span class="w"> </span><span class="n">lib</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">ex</span><span class="p">:</span><span class="mi">355</span><span class="p">:</span><span class="w"> </span><span class="nc">File</span><span class="o">.</span><span class="n">read!</span><span class="o">/</span><span class="mi">1</span></code></pre>Working as intended: we tried to load a 1GB+ file while only having 512MB available.</li></ul><ul><li>The unzipped CSV has a size of 8.5 GB, once stored in memory, 
+so let's give each node 3GB of memory. This brings up an interesting result,
+since Riak scales horizontally easily, this kind of use case is a perfect fit
+for Riak: we can add more nodes to distribute the file easily.</li></ul><pre><code class="makefile">node1_limited:
+    MIX_ENV=dev iex --erl &quot;+MMsco true +MMscs 3000&quot; --name dev@127.0.0.1 -S mix run
+node2_limited:
+    MIX_ENV=dev2 iex --erl &quot;+MMsco true +MMscs 3000&quot; --name dev2@127.0.0.1 -S mix run
+node3_limited:
+    MIX_ENV=dev3 iex --erl &quot;+MMsco true +MMscs 3000&quot; --name dev3@127.0.0.1 -S mix run</code></pre><ul><li>You're going to need another config file: config/dev3.exs:<pre><code class="makeup elixir" translate="no"><span class="kn">import</span><span class="w"> </span><span class="nc">Config</span><span class="w">
+
+</span><span class="n">config</span><span class="w"> </span><span class="ss">:riak_core</span><span class="p">,</span><span class="w">
+</span><span class="ss">node</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;dev3@127.0.0.1&#39;</span><span class="p">,</span><span class="w">
+</span><span class="ss">web_port</span><span class="p">:</span><span class="w"> </span><span class="mi">8498</span><span class="p">,</span><span class="w">
+</span><span class="ss">handoff_port</span><span class="p">:</span><span class="w"> </span><span class="mi">8499</span><span class="p">,</span><span class="w">
+</span><span class="ss">ring_state_dir</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;ring_data_dir_3&#39;</span><span class="p">,</span><span class="w">
+</span><span class="ss">platform_data_dir</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;data_3&#39;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">schema_dirs</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7900592762-1">[</span><span class="sc">&#39;deps/riax/priv/&#39;</span><span class="w"> </span><span class="p" data-group-id="7900592762-1">]</span><span class="w">
+</span></code></pre></li><li>Try running each node and joining them with Riax.join, like in the setup. </li></ul><h3 id="setting-up-csv" class="section-heading">
+  <a href="#setting-up-csv" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">setting-up-csv</p>
+  </a>
+  Setting up csv
+</h3>
+<h4>Storing</h4><p>Let's use NimbleCsv (it's maintained by José Valim so it must be good) to read our file, add  this to your dependencies in mix.exs</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2461456731-1">{</span><span class="ss">:nimble_csv</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.1&quot;</span><span class="p" data-group-id="2461456731-1">}</span></code></pre><ul><li> Let's add to the lib/my_cluster.ex the following functions:<pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">CSVSetup</span><span class="w"> </span><span class="k" data-group-id="9338235149-1">do</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">NimbleCSV.RFC4180</span><span class="p">,</span><span class="w"> </span><span class="ss">as</span><span class="p">:</span><span class="w"> </span><span class="nc">CSV</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">distribute_csv</span><span class="p" data-group-id="9338235149-2">(</span><span class="n">path</span><span class="p" data-group-id="9338235149-2">)</span><span class="w"> </span><span class="k" data-group-id="9338235149-3">do</span><span class="w">
+    </span><span class="nc">:rpc</span><span class="o">.</span><span class="n">multicall</span><span class="p" data-group-id="9338235149-4">(</span><span class="nc">CSVSetup</span><span class="p">,</span><span class="w"> </span><span class="ss">:store_csv</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9338235149-5">[</span><span class="n">path</span><span class="p" data-group-id="9338235149-5">]</span><span class="p" data-group-id="9338235149-4">)</span><span class="w">
+  </span><span class="k" data-group-id="9338235149-3">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">store_csv</span><span class="p" data-group-id="9338235149-6">(</span><span class="n">csv</span><span class="p" data-group-id="9338235149-6">)</span><span class="w"> </span><span class="k" data-group-id="9338235149-7">do</span><span class="w">
+    </span><span class="n">curr_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node</span><span class="p" data-group-id="9338235149-8">(</span><span class="p" data-group-id="9338235149-8">)</span><span class="w">
+
+    </span><span class="n">csv</span><span class="w">
+    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">File</span><span class="o">.</span><span class="n">stream!</span><span class="p" data-group-id="9338235149-9">(</span><span class="ss">read_ahead</span><span class="p">:</span><span class="w"> </span><span class="mi">100_000</span><span class="p" data-group-id="9338235149-9">)</span><span class="w">
+    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">CSV</span><span class="o">.</span><span class="n">parse_stream</span><span class="p" data-group-id="9338235149-10">(</span><span class="p" data-group-id="9338235149-10">)</span><span class="w">
+    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">with_index</span><span class="p" data-group-id="9338235149-11">(</span><span class="p" data-group-id="9338235149-11">)</span><span class="w">
+    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">each</span><span class="p" data-group-id="9338235149-12">(</span><span class="k" data-group-id="9338235149-13">fn</span><span class="w"> </span><span class="p" data-group-id="9338235149-14">{</span><span class="p" data-group-id="9338235149-15">[</span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">sentiment</span><span class="p" data-group-id="9338235149-15">]</span><span class="p">,</span><span class="w"> </span><span class="n">indx</span><span class="p" data-group-id="9338235149-14">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="k">case</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">preferred_node_name</span><span class="p" data-group-id="9338235149-16">(</span><span class="n">indx</span><span class="p" data-group-id="9338235149-16">)</span><span class="w"> </span><span class="k" data-group-id="9338235149-17">do</span><span class="w">
+        </span><span class="o">^</span><span class="n">curr_node</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+          </span><span class="c1"># Date, text and sentiment are the 3 columns</span><span class="w">
+          </span><span class="c1"># that our example CSV of tweets has.</span><span class="w">
+          </span><span class="nc">Riax.API</span><span class="o">.</span><span class="n">put</span><span class="p" data-group-id="9338235149-18">(</span><span class="n">indx</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9338235149-19">%{</span><span class="ss">date</span><span class="p">:</span><span class="w"> </span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="ss">sentiment</span><span class="p">:</span><span class="w"> </span><span class="n">sentiment</span><span class="p" data-group-id="9338235149-19">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:no_log</span><span class="p" data-group-id="9338235149-18">)</span><span class="w">
+
+        </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+          </span><span class="no">nil</span><span class="w">
+      </span><span class="k" data-group-id="9338235149-17">end</span><span class="w">
+    </span><span class="k" data-group-id="9338235149-13">end</span><span class="p" data-group-id="9338235149-12">)</span><span class="w">
+    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="9338235149-20">(</span><span class="p" data-group-id="9338235149-20">)</span><span class="w">
+  </span><span class="k" data-group-id="9338235149-7">end</span><span class="w">
+</span><span class="k" data-group-id="9338235149-1">end</span></code></pre></li><li><code class="inline">distribute_csv/1</code> receives a path to a csv file,
+and tells each running Riak Node (the ones joined using  :riak_core.join/1) with the <code class="inline">:rpc</code> module (more about it <a href="https://www.erlang.org/doc/man/rpc.html">here</a>) to execute the <code class="inline">store_csv/1</code> function.</li><li><code class="inline">store_csv/1</code> indexes every row of the CSV and uses
+them as keys for storing each row. So we end up with an index -&gt; row mapping. We only store the index row pair if the index key belongs to the running node partition. We use <code class="inline">put/3</code> without logging because we know what we're storing.</li></ul><h3 id="reading-csv" class="section-heading">
+  <a href="#reading-csv" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">reading-csv</p>
+  </a>
+  Reading CSV
+</h3>
+<ul><li>Now that we have everything in place, lets run 3 VNodes in separate terminals,
+using the make targets.</li><li>On dev2 an dev3, run this <code class="inline">Riax.ring_join(dev@127.0.0.1)</code>.
+Keep in mind that each node will remember who it has joined, so 
+you don't have to do this every time you start the nodes.</li><li>Run <code class="inline">Riax.ring_status</code> and wait a minute, you'll see that the key-space
+is evenly distributed between the 3 nodes.</li><li>Now, on any of the 3 nodes. Remember the csv we downloaded a few steps above?
+Get its path, and run the following<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/Path/to/mbsa.csv&quot;</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">MyCluster</span><span class="o">.</span><span class="n">distribute_csv</span><span class="p" data-group-id="1416956013-1">(</span><span class="n">path</span><span class="p" data-group-id="1416956013-1">)</span></code></pre>Wait a bit, the terminal on which you ran the distribute_csv function will not
+probably answer any commands until it stops reading the CSV
+and then, you can try to get any row of the CSV with Riax.get(number).
+Like this:<pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="n">iex</span><span class="p" data-group-id="7978314509-1">(</span><span class="n">dev</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="7978314509-1">)</span><span class="mi">17</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax.API</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7978314509-2">(</span><span class="mi">100</span><span class="p" data-group-id="7978314509-2">)</span><span class="w">
+  </span><span class="p" data-group-id="7978314509-3">%{</span><span class="w">
+  </span><span class="ss">date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2019-05-27&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">sentiment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Positive&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Arkada?lar..Biz,bu milletin aklõ olan kesimine H?TAP ediyoruz.</span><span class="se">\n</span><span class="se">\n</span><span class="s">#DOLAR</span><span class="se">\n</span><span class="s">#DolarTL</span><span class="se">\n</span><span class="s">#bist</span><span class="se">\n</span><span class="s">#bist100 </span><span class="se">\n</span><span class="s">#usdtry</span><span class="se">\n</span><span class="s">#USDTRY</span><span class="se">\n</span><span class="s">#XU100 </span><span class="se">\n</span><span class="s">#???????????????? 2012</span><span class="se">\n</span><span class="s">#doge #dogeusd</span><span class="se">\n</span><span class="s">#btc #btcusd</span><span class="se">\n</span><span class="s">YTD&quot;</span><span class="w">
+  </span><span class="p" data-group-id="7978314509-3">}</span></code></pre></li></ul><h3 id="visualizing-results" class="section-heading">
+  <a href="#visualizing-results" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">visualizing-results</p>
+  </a>
+  Visualizing Results
+</h3>
+<ul><li>Now that we have the data, let's show it. Stop the nodes and add scribe to your deps:<pre><code class="makeup elixir" translate="no"><span class="w">    </span><span class="c1"># mix.exs</span><span class="w">
+    </span><span class="kd">defp</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="4835610768-1">do</span><span class="w">
+      </span><span class="p" data-group-id="4835610768-2">[</span><span class="w">
+        </span><span class="p" data-group-id="4835610768-3">{</span><span class="ss">:riax</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&gt;= 0.1.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lambdaclass/elixir_riak_core&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">branch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="p" data-group-id="4835610768-3">}</span><span class="p">,</span><span class="w">
+        </span><span class="p" data-group-id="4835610768-4">{</span><span class="ss">:scribe</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.10&quot;</span><span class="p" data-group-id="4835610768-4">}</span><span class="w">
+      </span><span class="p" data-group-id="4835610768-2">]</span><span class="w">
+    </span><span class="k" data-group-id="4835610768-1">end</span></code></pre></li><li>On your MyCluster module, add this function:<pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">print_data</span><span class="p" data-group-id="7924148638-1">(</span><span class="n">page</span><span class="p" data-group-id="7924148638-1">)</span><span class="w"> </span><span class="k" data-group-id="7924148638-2">do</span><span class="w">
+  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w">
+    </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="7924148638-3">(</span><span class="w">
+      </span><span class="p" data-group-id="7924148638-4">(</span><span class="n">page</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="7924148638-4">)</span><span class="o">..</span><span class="p" data-group-id="7924148638-5">(</span><span class="n">page</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="7924148638-5">)</span><span class="p">,</span><span class="w">
+      </span><span class="k" data-group-id="7924148638-6">fn</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="c1"># Get on which Virtual Node indx is stored</span><span class="w">
+        </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">preferred_node_name</span><span class="p" data-group-id="7924148638-7">(</span><span class="n">indx</span><span class="p" data-group-id="7924148638-7">)</span><span class="w">
+        </span><span class="n">tweet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Riax.API</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7924148638-8">(</span><span class="n">indx</span><span class="p" data-group-id="7924148638-8">)</span><span class="w">
+        </span><span class="nc">Map</span><span class="o">.</span><span class="n">merge</span><span class="p" data-group-id="7924148638-9">(</span><span class="n">tweet</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7924148638-10">%{</span><span class="ss">node</span><span class="p">:</span><span class="w"> </span><span class="n">node</span><span class="p" data-group-id="7924148638-10">}</span><span class="p" data-group-id="7924148638-9">)</span><span class="w">
+      </span><span class="k" data-group-id="7924148638-6">end</span><span class="w">
+    </span><span class="p" data-group-id="7924148638-3">)</span><span class="w">
+
+  </span><span class="nc">Scribe</span><span class="o">.</span><span class="n">print</span><span class="p" data-group-id="7924148638-11">(</span><span class="n">data</span><span class="p" data-group-id="7924148638-11">)</span><span class="w">
+</span><span class="k" data-group-id="7924148638-2">end</span></code></pre></li><li>Set up the nodes again and read the CSV.</li><li>Here we're printing the CSV rows on batches of 10 elements, try for example:
+<code class="inline">MyCluster.print_data(10)</code></li></ul>
+<div class="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="setup.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Setup
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+  </div>
+</div>
+
+      <footer class="footer">
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

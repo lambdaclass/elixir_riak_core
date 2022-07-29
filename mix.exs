@@ -10,7 +10,12 @@ defmodule Riax.MixProject do
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      docs: [
+        filter_modules: fn module, _ -> module in [Riax, Riax.VNode] end,
+        main: "readme",
+        extras: ["README.md", "setup.md", "tutorial.md"]
+      ]
     ]
   end
 
@@ -61,7 +66,8 @@ defmodule Riax.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      test: ["test --no-start"]
+      test: ["test --no-start"],
+      docs: ["docs -o docs -f html"]
     ]
   end
 end

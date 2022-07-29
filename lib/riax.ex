@@ -1,7 +1,10 @@
 defmodule Riax do
   @moduledoc """
-  Module to interact with the VNode module given
-  to the Riax.Supervisor module
+  This module provides the set of functions to communicate
+  with your VNode implementation. To implement a VNode, check
+  the `Riax.VNode` module documentation.
+  For an example on how to setup and use Riax, check the
+  tutorial section.
   """
 
   @doc """
@@ -198,9 +201,7 @@ defmodule Riax do
     end
   end
 
-  @doc """
-  Hash a key inside the given bucket name
-  """
+  # Hash a key inside the given bucket name
   defp hash_key(key, bucket) when is_binary(bucket) do
     :riak_core_util.chash_key({bucket, :erlang.term_to_binary(key)})
   end

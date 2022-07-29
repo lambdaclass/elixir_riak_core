@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.4">
+    <meta name="project" content="riax v0.1.0">
+
+    <title>Riax — riax v0.1.0</title>
+    <link rel="stylesheet" href="dist/elixir-b6f1ed5df9b1d42a7309.css" />
+
+    <script src="dist/sidebar_items-d126a64e9f.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-bd1cb213813bf4825aa2.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="readme.html" class="sidebar-projectName" translate="no">
+riax
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+  <span translate="no">Riax</span> 
+  <small class="app-vsn" translate="no">(riax v0.1.0)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
+<p>This module provides the set of functions to communicate
+with your VNode implementation. To implement a VNode, check
+the <a href="Riax.VNode.html"><code class="inline">Riax.VNode</code></a> module documentation.
+For an example on how to setup and use Riax, check the
+tutorial section.</p>
+  </section>
+
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#async_command/3" translate="no">async_command(key, bucket \\ &quot;riax&quot;, command)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Same as sync_command/3 but does not block the Master VNode's process.
+  That is, it lets the Master VNode handle multiple requests concurrently.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#cast_command/3" translate="no">cast_command(key, bucket \\ &quot;riax&quot;, command)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Works like sync_command/3, but does not generate a response
+  from the VNode that handles the request.
+  In that way, it's similar to how GenServer.cast/2 works.
+  Following sync_comand/3's example, its usage would be like this</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#coverage_command/2" translate="no">coverage_command(command, timeout \\ 5000)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Execute a command across every available VNode.
+This will start the coverage FSM (implemented in <a href="Riax.Coverage.Fsm.html"><code class="inline">Riax.Coverage.Fsm</code></a>), via
+the coverage supervisor, and gather the results from every VNode.
+Be careful, coverage commands can be quite expensive.
+The results are gathered as a list of 3 tuple elements: {partition, node, data}</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#join/1" translate="no">join(node)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Join the running node with the given argument node.
+This will automatically trigger the handoff - the nodes
+will start distributing partitions (and therefore, keys)
+between them. See the ring_status/0 example.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#preferred_node/2" translate="no">preferred_node(key, bucket \\ &quot;riax&quot;)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>This is actually the head of the Active Preference List:
+a list of the available VNodes to handle a given request.
+We always use the first available one.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#preferred_node_name/2" translate="no">preferred_node_name(key, bucket \\ &quot;riax&quot;)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Like <a href="#preferred_node/2"><code class="inline">preferred_node/2</code></a>, but returns only
+the node's name.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#ring_status/0" translate="no">ring_status()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Prints the <a href="https://github.com/basho/riak_core/wiki#ring">ring status</a>.
+The ring is, basically, a representation of the partitioned keys over nodes.
+Here's a <a href="https://github.com/lambdaclass/riak_core_tutorial/blob/master/ring.png">visual representation</a>
+of said ring</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#sync_command/3" translate="no">sync_command(key, bucket \\ &quot;riax&quot;, command)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Use the VNode master to send a <em>synchronous</em> command
+to the VNode that receives the key.
+Keep in mind this <em>blocks</em> the Master VNode's process,
+and will not be able multiple requests concurrently.</p></div>
+
+      </div>
+
+  </div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Functions
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="async_command/3">
+
+    <span id="async_command/2"></span>
+
+  <div class="detail-header">
+    <a href="#async_command/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">async_command(key, bucket \\ &quot;riax&quot;, command)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>  Same as sync_command/3 but does not block the Master VNode's process.
+  That is, it lets the Master VNode handle multiple requests concurrently.</p>
+  </section>
+</section>
+<section class="detail" id="cast_command/3">
+
+    <span id="cast_command/2"></span>
+
+  <div class="detail-header">
+    <a href="#cast_command/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">cast_command(key, bucket \\ &quot;riax&quot;, command)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>  Works like sync_command/3, but does not generate a response
+  from the VNode that handles the request.
+  In that way, it's similar to how GenServer.cast/2 works.
+  Following sync_comand/3's example, its usage would be like this:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="n">iex</span><span class="p" data-group-id="0374399552-1">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="0374399552-1">)</span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">cast_command</span><span class="p" data-group-id="0374399552-2">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;riax&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0374399552-3">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0374399552-3">}</span><span class="p" data-group-id="0374399552-2">)</span><span class="w">
+  </span><span class="ss">:ok</span><span class="w">
+  </span><span class="mi">13</span><span class="p">:</span><span class="mi">36</span><span class="p">:</span><span class="mf">19.742</span><span class="w"> </span><span class="p" data-group-id="0374399552-4">[</span><span class="n">debug</span><span class="p" data-group-id="0374399552-4">]</span><span class="w"> </span><span class="nc">Received</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="n">command!</span></code></pre><p>  As you can see, the VNode does handle the request and logs it, but
+  we only get an :ok as return value, like GenServer.cast/2.</p>
+  </section>
+</section>
+<section class="detail" id="coverage_command/2">
+
+    <span id="coverage_command/1"></span>
+
+  <div class="detail-header">
+    <a href="#coverage_command/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">coverage_command(command, timeout \\ 5000)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Execute a command across every available VNode.
+This will start the coverage FSM (implemented in <a href="Riax.Coverage.Fsm.html"><code class="inline">Riax.Coverage.Fsm</code></a>), via
+the coverage supervisor, and gather the results from every VNode.
+Be careful, coverage commands can be quite expensive.
+The results are gathered as a list of 3 tuple elements: {partition, node, data}</p><h2 id="coverage_command/2-parameters" class="section-heading">
+  <a href="#coverage_command/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">parameters</p>
+  </a>
+  Parameters:
+</h2>
+<ul><li>command: Command for the VNode, should match the first argument of a<pre><code class="makeup elixir" translate="no"><span class="w">     </span><span class="err">`</span><span class="n">handle_coverage</span><span class="o">/</span><span class="mi">4</span><span class="err">`</span><span class="w"> </span><span class="n">definition</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="nc">VNode</span><span class="o">.</span></code></pre></li><li>timeout: timeout in microseconds, 5000 by default.</li></ul><h2 id="coverage_command/2-example" class="section-heading">
+  <a href="#coverage_command/2-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
+  Example:
+</h2>
+<p>Let's say we want to call this function:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">handle_coverage</span><span class="p" data-group-id="5521818692-1">(</span><span class="ss">:keys</span><span class="p">,</span><span class="w"> </span><span class="c">_key_spaces</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5521818692-2">{</span><span class="bp">_</span><span class="p">,</span><span class="w"> </span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5521818692-2">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5521818692-3">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5521818692-3">}</span><span class="p" data-group-id="5521818692-1">)</span><span class="w"> </span><span class="k" data-group-id="5521818692-4">do</span><span class="w">
+  </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">keys</span><span class="p" data-group-id="5521818692-5">(</span><span class="n">data</span><span class="p" data-group-id="5521818692-5">)</span><span class="w">
+  </span><span class="p" data-group-id="5521818692-6">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5521818692-7">{</span><span class="n">req_id</span><span class="p">,</span><span class="w"> </span><span class="n">keys</span><span class="p" data-group-id="5521818692-7">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5521818692-6">}</span><span class="w">
+</span><span class="k" data-group-id="5521818692-4">end</span></code></pre><p>Then, we must do:</p><pre><code class="makeup elixir" translate="no"><span class="n">iex</span><span class="p" data-group-id="5622543551-1">(</span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="5622543551-1">)</span><span class="mi">6</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">coverage_command</span><span class="p" data-group-id="5622543551-2">(</span><span class="ss">:keys</span><span class="p" data-group-id="5622543551-2">)</span><span class="w">
+  </span><span class="mi">14</span><span class="p">:</span><span class="mi">25</span><span class="p">:</span><span class="mf">33.084</span><span class="w"> </span><span class="p" data-group-id="5622543551-3">[</span><span class="n">info</span><span class="p" data-group-id="5622543551-3">]</span><span class="w"> </span><span class="nc">Starting</span><span class="w"> </span><span class="n">coverage</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="mi">74812649</span><span class="w"> </span><span class="n">keys</span><span class="w">
+  </span><span class="err">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="5622543551-4">[</span><span class="w">
+  </span><span class="p" data-group-id="5622543551-5">{</span><span class="mi">1027618338748291114361965898003636498195577569280</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev2@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&#39;</span><span class="p" data-group-id="5622543551-5">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="5622543551-6">{</span><span class="mi">936274486415109681974235595958868809467081785344</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev2@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5622543551-7">[</span><span class="mi">22</span><span class="p" data-group-id="5622543551-7">]</span><span class="p" data-group-id="5622543551-6">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="5622543551-8">{</span><span class="mi">1415829711164312202009819681693899175291684651008</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev2@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;E&#39;</span><span class="p" data-group-id="5622543551-8">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="5622543551-9">{</span><span class="mi">1392993748081016843912887106182707253109560705024</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev2@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;AV&#39;</span><span class="p" data-group-id="5622543551-9">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="5622543551-10">{</span><span class="mi">959110449498405040071168171470060731649205731328</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev2@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;CZ&#39;</span><span class="p" data-group-id="5622543551-10">}</span><span class="p">,</span><span class="w">
+  </span><span class="n">...</span><span class="w">
+  </span><span class="p" data-group-id="5622543551-4">]</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="join/1">
+
+  <div class="detail-header">
+    <a href="#join/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">join(node)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Join the running node with the given argument node.
+This will automatically trigger the handoff - the nodes
+will start distributing partitions (and therefore, keys)
+between them. See the ring_status/0 example.</p>
+  </section>
+</section>
+<section class="detail" id="preferred_node/2">
+
+    <span id="preferred_node/1"></span>
+
+  <div class="detail-header">
+    <a href="#preferred_node/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">preferred_node(key, bucket \\ &quot;riax&quot;)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>This is actually the head of the Active Preference List:
+a list of the available VNodes to handle a given request.
+We always use the first available one.</p><p>The VNode is represented and returned as: {index, node_name}.
+The first element denotes the first key in the partition the vnode is
+responsible for (as an integer), and the second element refers to
+the (physical) node the vnode is running on.</p><h2 id="preferred_node/2-parameters" class="section-heading">
+  <a href="#preferred_node/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">parameters</p>
+  </a>
+  Parameters:
+</h2>
+<ul><li>key: can be any erlang term, but it is
+recommended to use numbers or strings.</li><li>bucket: is the name of the bucket for this key.
+A bucket is a &quot;namespace&quot; for a given Key.
+<a href="https://github.com/basho/riak_core/wiki#buckets">Check this</a>
+for more.</li></ul>
+  </section>
+</section>
+<section class="detail" id="preferred_node_name/2">
+
+    <span id="preferred_node_name/1"></span>
+
+  <div class="detail-header">
+    <a href="#preferred_node_name/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">preferred_node_name(key, bucket \\ &quot;riax&quot;)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Like <a href="#preferred_node/2"><code class="inline">preferred_node/2</code></a>, but returns only
+the node's name.</p>
+  </section>
+</section>
+<section class="detail" id="ring_status/0">
+
+  <div class="detail-header">
+    <a href="#ring_status/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">ring_status()</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Prints the <a href="https://github.com/basho/riak_core/wiki#ring">ring status</a>.
+The ring is, basically, a representation of the partitioned keys over nodes.
+Here's a <a href="https://github.com/lambdaclass/riak_core_tutorial/blob/master/ring.png">visual representation</a>
+of said ring</p><h2 id="ring_status/0-example" class="section-heading">
+  <a href="#ring_status/0-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
+  Example:
+</h2>
+<p>Join 2 running nodes and print the ring, to see the key
+distribution (handoff) result:</p><pre><code class="makeup elixir" translate="no"><span class="n">iex</span><span class="p" data-group-id="1404965254-1">(</span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="1404965254-1">)</span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">ring_status</span><span class="w">
+  </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Nodes</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w">
+  </span><span class="nc">Node</span><span class="w"> </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span><span class="p" data-group-id="1404965254-2">(</span><span class="mf">100.0</span><span class="p">%</span><span class="p" data-group-id="1404965254-2">)</span><span class="w"> </span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+  </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Ring</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">=</span><span class="w">
+  </span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="n">aaaa</span><span class="o">|</span><span class="w">
+  </span><span class="ss">:ok</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="1404965254-3">(</span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="1404965254-3">)</span><span class="mi">13</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">join</span><span class="p" data-group-id="1404965254-4">(</span><span class="sc">&#39;dev1@127.0.0.1&#39;</span><span class="p" data-group-id="1404965254-4">)</span><span class="w">
+  </span><span class="mi">13</span><span class="p">:</span><span class="mi">51</span><span class="p">:</span><span class="mf">21.258</span><span class="w"> </span><span class="p" data-group-id="1404965254-5">[</span><span class="n">debug</span><span class="p" data-group-id="1404965254-5">]</span><span class="w"> </span><span class="nc">Handoff</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="ss">target</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1404965254-6">{</span><span class="ss">:hinted</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1404965254-7">{</span><span class="mi">913438523331814323877303020447676887284957839360</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev1@127.0.0.1&quot;</span><span class="p" data-group-id="1404965254-7">}</span><span class="p" data-group-id="1404965254-6">}</span><span class="w">
+  </span><span class="n">...</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="1404965254-8">(</span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="1404965254-8">)</span><span class="mi">6</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">ring_status</span><span class="w">
+  </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Nodes</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w">
+  </span><span class="nc">Node</span><span class="w"> </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span><span class="p" data-group-id="1404965254-9">(</span><span class="mf">100.0</span><span class="p">%</span><span class="p" data-group-id="1404965254-9">)</span><span class="w"> </span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+  </span><span class="nc">Node</span><span class="w"> </span><span class="ss">b</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p" data-group-id="1404965254-10">(</span><span class="w">  </span><span class="mf">0.0</span><span class="p">%</span><span class="p" data-group-id="1404965254-10">)</span><span class="w"> </span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+  </span><span class="n">...</span><span class="w">
+</span><span class="c1"># After a little while, run the command again</span><span class="w">
+</span><span class="c1"># to check the ring status.</span><span class="w">
+</span><span class="n">iex</span><span class="p" data-group-id="1404965254-11">(</span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="1404965254-11">)</span><span class="mi">11</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">ring_status</span><span class="w">
+  </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Nodes</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w">
+  </span><span class="nc">Node</span><span class="w"> </span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p" data-group-id="1404965254-12">(</span><span class="w"> </span><span class="mf">50.0</span><span class="p">%</span><span class="p" data-group-id="1404965254-12">)</span><span class="w"> </span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+  </span><span class="nc">Node</span><span class="w"> </span><span class="ss">b</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p" data-group-id="1404965254-13">(</span><span class="w"> </span><span class="mf">50.0</span><span class="p">%</span><span class="p" data-group-id="1404965254-13">)</span><span class="w"> </span><span class="n">dev2</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="w">
+  </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="w"> </span><span class="nc">Ring</span><span class="w"> </span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">===</span><span class="o">=</span><span class="w">
+  </span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span><span class="n">abba</span><span class="o">|</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="sync_command/3">
+
+    <span id="sync_command/2"></span>
+
+  <div class="detail-header">
+    <a href="#sync_command/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">sync_command(key, bucket \\ &quot;riax&quot;, command)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Use the VNode master to send a <em>synchronous</em> command
+to the VNode that receives the key.
+Keep in mind this <em>blocks</em> the Master VNode's process,
+and will not be able multiple requests concurrently.</p><h2 id="sync_command/3-parameters" class="section-heading">
+  <a href="#sync_command/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">parameters</p>
+  </a>
+  Parameters:
+</h2>
+<ul><li>key: Can be any erlang term, but it is
+recommended to use a number or a binary.
+This is used to determine on which
+partition will end up, and therefore which VNode
+handles the command.</li><li>bucket: Is the name of the bucket for this key.</li><li>command: The command to send to the VNode.
+This will try to match with the defined handle_command/3
+clause in the VNode module.</li></ul><h2 id="sync_command/3-example" class="section-heading">
+  <a href="#sync_command/3-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
+  Example:
+</h2>
+<p>Let's say we have this function in our VNode module:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">handle_command</span><span class="p" data-group-id="7771643137-1">(</span><span class="p" data-group-id="7771643137-2">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p" data-group-id="7771643137-2">}</span><span class="p">,</span><span class="w"> </span><span class="c">_sender</span><span class="p">,</span><span class="w"> </span><span class="c">_state</span><span class="p" data-group-id="7771643137-1">)</span><span class="w"> </span><span class="k" data-group-id="7771643137-3">do</span><span class="w">
+  </span><span class="nc">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p" data-group-id="7771643137-4">(</span><span class="s">&quot;Received ping command!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7771643137-4">)</span><span class="w">
+  </span><span class="p" data-group-id="7771643137-5">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7771643137-6">{</span><span class="ss">:pong</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">node</span><span class="p" data-group-id="7771643137-7">(</span><span class="p" data-group-id="7771643137-7">)</span><span class="p">,</span><span class="w"> </span><span class="n">partition</span><span class="p" data-group-id="7771643137-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7771643137-5">}</span><span class="w">
+</span><span class="k" data-group-id="7771643137-3">end</span></code></pre><p>We can interact with it like this:</p><pre><code class="makeup elixir" translate="no"><span class="n">iex</span><span class="p" data-group-id="4272845495-1">(</span><span class="n">dev1</span><span class="err">@</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p" data-group-id="4272845495-1">)</span><span class="o">&gt;</span><span class="w"> </span><span class="nc">Riax</span><span class="o">.</span><span class="n">sync_command</span><span class="p" data-group-id="4272845495-2">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;riax&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4272845495-3">{</span><span class="ss">:ping</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="4272845495-3">}</span><span class="p" data-group-id="4272845495-2">)</span><span class="w">
+  </span><span class="mi">13</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mf">08.004</span><span class="w"> </span><span class="p" data-group-id="4272845495-4">[</span><span class="n">debug</span><span class="p" data-group-id="4272845495-4">]</span><span class="w"> </span><span class="nc">Received</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="n">command!</span><span class="w">
+  </span><span class="p" data-group-id="4272845495-5">{</span><span class="ss">:pong</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;dev1@127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">822094670998632891489572718402909198556462055424</span><span class="p" data-group-id="4272845495-5">}</span></code></pre>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+      <footer class="footer">
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
