@@ -60,7 +60,7 @@ defmodule Riax.VNode.Impl do
     end
 
     def handle_command(message, _sender, state) do
-        Logger.debug("unhandle command #{inspect(message)}")
+        Logger.debug("unhandled command #{inspect(message)}")
         {:noreply, state}
     end
 
@@ -293,7 +293,7 @@ defmodule Riax.VNode.Impl do
 
   @doc """
   Callback called in the case that a process linked to the VNode process dies
-  and allows the module using the behaviour to take appropiate action.
+  and allows the module using the behaviour to take appropriate action.
   """
   @callback handle_exit(pid(), reason :: any(), state :: any()) ::
               {:noreply, new_mod_state :: any()}
@@ -310,10 +310,10 @@ defmodule Riax.VNode.Impl do
   handoff. The key-value pairs returned by the fold_function given to
   `handle_handoff_fold/4` will be encoded by this function.
   """
-  @callback encode_handoff_item(key :: any(), value :: any()) :: {:ok, new_state :: any()}
+  @callback encode_handoff_item(key :: any(), value :: any()) :: new_state :: any()
 
   @doc """
-  Set up VNode state and data structure. It recieves a list
+  Set up VNode state and data structure. It receives a list
   its assigned partition and should return the VNode's initial state.
   """
   @callback init([partition()]) :: {:ok, initial_state :: any()}
@@ -323,9 +323,9 @@ defmodule Riax.VNode.Impl do
   requests during a handoff.
 
   # Return
-  This callback can also eturn a tuple that has as
+  This callback can also return a tuple that has as
   its first element :`reply,` `:noreply`, :`forward`, `:drop` or `:stop` tuple.
-  If the function returns `:foward` it forwards the request to another VNode,
+  If the function returns `:forward` it forwards the request to another VNode,
   `:drop` drops the request. Useful if, for example, you don't want to handle
   requests during a handoff.
   """
